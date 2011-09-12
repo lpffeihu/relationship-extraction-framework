@@ -6,13 +6,17 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
+import edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint;
+import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
+
 //TODO: Constraints
 public class RelationshipType {
 	private String type;
 	private Hashtable<String,Integer> indexes;
 	private int numberEntities;
 	
-	private List<RelationshipConstraint> constraints;
+	private List<RoleConstraint> roleConstraints;
+	private List<RelationshipConstraint> relConstraints;
 	
 	public RelationshipType(String type, String ... roles){
 		indexes=new Hashtable<String,Integer>();
@@ -22,7 +26,8 @@ public class RelationshipType {
 		}
 		setType(type);
 		numberEntities=roles.length;
-		constraints=new ArrayList<RelationshipConstraint>();
+		roleConstraints=new ArrayList<RoleConstraint>();
+		relConstraints=new ArrayList<RelationshipConstraint>();
 	}
 	
 	public int getIndex(String role){
@@ -47,5 +52,13 @@ public class RelationshipType {
 
 	public boolean isType(String relType) {
 		return relType.equals(type);
+	}
+	
+	public void addConstraints(RoleConstraint constraint){
+		roleConstraints.add(constraint);
+	}
+	
+	public void addConstraints(RelationshipConstraint constraint){
+		relConstraints.add(constraint);
 	}
 }

@@ -5,6 +5,8 @@ import java.util.Arrays;
 import edu.columbia.cs.cg.document.Document;
 
 public class Entity implements Comparable<Entity> {
+	public static final Entity NULL_ENTITY = new Entity("NULL","NULL",0,0,"NULL",null);
+	
 	private String id;
 	private String entityType;
 	private int offset;
