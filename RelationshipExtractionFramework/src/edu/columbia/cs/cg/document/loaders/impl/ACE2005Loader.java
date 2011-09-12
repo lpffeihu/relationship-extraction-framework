@@ -73,9 +73,9 @@ public class ACE2005Loader extends DocumentLoader {
 	
 	private RelationshipType getCompatibleType(Set<RelationshipType> relationshipTypes, String relType){
 		for(RelationshipType type : relationshipTypes){
-			if(type.isCompatible(relType)){
+			//if(type.isCompatible(relType)){
 				return type;
-			}
+			//}
 		}
 		return null;
 	}

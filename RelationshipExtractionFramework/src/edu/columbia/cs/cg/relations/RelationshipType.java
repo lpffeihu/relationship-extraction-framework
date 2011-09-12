@@ -1,7 +1,9 @@
 package edu.columbia.cs.cg.relations;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Set;
 
 //TODO: Constraints
@@ -9,6 +11,8 @@ public class RelationshipType {
 	private String type;
 	private Hashtable<String,Integer> indexes;
 	private int numberEntities;
+	
+	private List<RelationshipConstraint> constraints;
 	
 	public RelationshipType(String type, String ... roles){
 		indexes=new Hashtable<String,Integer>();
@@ -18,6 +22,7 @@ public class RelationshipType {
 		}
 		setType(type);
 		numberEntities=roles.length;
+		constraints=new ArrayList<RelationshipConstraint>();
 	}
 	
 	public int getIndex(String role){
@@ -34,10 +39,6 @@ public class RelationshipType {
 	
 	public int getNumberEntities(){
 		return numberEntities;
-	}
-
-	public boolean isCompatible(String relType) {
-		return type.equals(relType);
 	}
 	
 	public Set<String> getRoles(){

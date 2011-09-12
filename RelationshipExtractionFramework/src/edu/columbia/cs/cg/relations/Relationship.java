@@ -10,7 +10,12 @@ public class Relationship {
 	
 	public Relationship(RelationshipType type, String id){
 		this.type=type;
+		entities = new Entity[type.getNumberEntities()];
 		this.id=id;
+	}
+	
+	public void setRelationshipType(RelationshipType type){
+		this.type=type;
 		entities = new Entity[type.getNumberEntities()];
 	}
 	
