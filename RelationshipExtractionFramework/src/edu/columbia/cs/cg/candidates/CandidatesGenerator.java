@@ -79,9 +79,9 @@ public class CandidatesGenerator {
 			System.out.println(sentenceRelationships);
 
 			for(RelationshipType t : relationshipTypes){
-				result.addAll(generateCandidateSentences(sent,
-						sentenceEntities, sentenceRelationships,
-						t));
+				//result.addAll(generateCandidateSentences(sent,
+				//		sentenceEntities, sentenceRelationships,
+				//		t));
 			}
 		}
 

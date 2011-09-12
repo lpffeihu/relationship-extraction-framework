@@ -64,7 +64,7 @@ public class ACE2005Loader extends DocumentLoader {
 						newRelation.setRole("Arg-2", arg2);
 						newDocument.addRelationship(newRelation);
 					}
-				}
+				} 
 			}
 		}
 		
@@ -73,25 +73,11 @@ public class ACE2005Loader extends DocumentLoader {
 	
 	private RelationshipType getCompatibleType(Set<RelationshipType> relationshipTypes, String relType){
 		for(RelationshipType type : relationshipTypes){
-			//if(type.isCompatible(relType)){
+			if(type.isType(relType)){
 				return type;
-			//}
+			}
 		}
 		return null;
-	}
-	
-	public static void main(String[] args) throws FileNotFoundException{
-		ACE2005Loader l = new ACE2005Loader();
-		RelationshipType relationshipType = new RelationshipType("ORG-AFF","Arg-1","Arg-2");
-		Set<RelationshipType> relationshipTypes = new HashSet<RelationshipType>();
-		relationshipTypes.add(relationshipType);
-		Document doc = l.load(new File("/home/goncalo/ACE/data/English/bc/adj/CNN_CF_20030303.1900.00.sgm"), relationshipTypes);
-		
-		OpenNLPMESplitter splitter = new OpenNLPMESplitter("en-sent.bin");
-		
-		CandidatesGenerator generator = new CandidatesGenerator(splitter);
-		
-		generator.generateCandidates(doc, relationshipTypes);
 	}
 
 }

@@ -44,4 +44,8 @@ public class RelationshipType {
 	public Set<String> getRoles(){
 		return indexes.keySet();
 	}
+
+	public boolean isType(String relType) {
+		return relType.equals(type);
+	}
 }
