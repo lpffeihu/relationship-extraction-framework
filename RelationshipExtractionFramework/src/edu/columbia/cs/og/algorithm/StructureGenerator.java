@@ -13,7 +13,7 @@ public class StructureGenerator {
 	public static Set<OperableStructure> generateStructures(Set<CandidateSentence> candidates, StructureConfiguration config){
 		Set<OperableStructure> result = new HashSet<OperableStructure>();
 		for(CandidateSentence sent : candidates){
-			result.add(config.getOperableStructure(sent.getSentence()));
+			result.add(config.getOperableStructure(sent));
 		}
 		return result;
 	}

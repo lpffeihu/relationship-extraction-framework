@@ -1,5 +1,7 @@
 package edu.columbia.cs.og.structure;
 
-public class OperableStructure {
+import java.io.Serializable;
+
+public class OperableStructure implements Serializable {
 
 }
