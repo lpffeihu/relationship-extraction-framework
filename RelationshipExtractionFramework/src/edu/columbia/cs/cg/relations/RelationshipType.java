@@ -1,5 +1,6 @@
 package edu.columbia.cs.cg.relations;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -10,15 +11,15 @@ import edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint
 import edu.columbia.cs.cg.relations.constraints.roles.NoConstraint;
 import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
 
-public class RelationshipType {
+public class RelationshipType implements Serializable {
 	public static final String NOT_A_RELATIONSHIP = "";
 	
 	private String type;
 	private Hashtable<String,Integer> indexes;
 	private int numberEntities;
 	
-	private RoleConstraint[] roleConstraints;
-	private RelationshipConstraint relConstraints;
+	private transient RoleConstraint[] roleConstraints;
+	private transient RelationshipConstraint relConstraints;
 	
 	public RelationshipType(String type, String ... roles){
 		indexes=new Hashtable<String,Integer>();

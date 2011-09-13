@@ -1,10 +1,11 @@
 package edu.columbia.cs.cg.relations;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import edu.columbia.cs.cg.document.Document;
 
-public class Entity implements Comparable<Entity> {
+public class Entity implements Comparable<Entity>, Serializable {
 	public static final Entity NULL_ENTITY = new Entity("NULL","NULL",0,0,"NULL",null);
 	
 	private String id;

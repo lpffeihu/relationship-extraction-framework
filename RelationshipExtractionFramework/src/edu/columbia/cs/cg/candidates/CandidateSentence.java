@@ -1,12 +1,13 @@
 package edu.columbia.cs.cg.candidates;
 
+import java.io.Serializable;
+
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.cg.sentence.Sentence;
 
-//TODO: MAKE ALL THESE SERIALIZABLE
-public class CandidateSentence {
+public class CandidateSentence implements Serializable {
 	private Sentence sentence;
 	private Relationship relationship;
 	private Document document;

@@ -1,8 +1,9 @@
 package edu.columbia.cs.cg.relations;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Relationship {
+public class Relationship implements Serializable {
 	
 	private String id=null;
 	private RelationshipType type;

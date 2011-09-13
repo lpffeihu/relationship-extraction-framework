@@ -1,5 +1,6 @@
 package edu.columbia.cs.cg.document;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +11,7 @@ import java.util.Set;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 
-public class Document {
+public class Document implements Serializable {
 	private List<Segment> text;
 	private Map<String,Entity> entities;
 	private Map<String,Relationship> relationships;

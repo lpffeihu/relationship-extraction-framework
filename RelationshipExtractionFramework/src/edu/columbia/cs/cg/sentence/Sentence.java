@@ -1,8 +1,10 @@
 package edu.columbia.cs.cg.sentence;
 
+import java.io.Serializable;
+
 import edu.columbia.cs.cg.document.Document;
 
-public class Sentence {
+public class Sentence implements Serializable {
 	private Document d;
 	private int offset;
 	//The length of the sentence comes from the text

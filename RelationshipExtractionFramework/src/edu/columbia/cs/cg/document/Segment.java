@@ -1,6 +1,8 @@
 package edu.columbia.cs.cg.document;
 
-public class Segment {
+import java.io.Serializable;
+
+public class Segment implements Serializable {
 	private String value;
 	private int offset;
 	
