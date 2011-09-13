@@ -4,14 +4,14 @@ import java.util.Arrays;
 
 public class Relationship {
 	
-	private String id;
+	private String id=null;
 	private RelationshipType type;
 	private Entity[] entities;
+	private String label=null;
 	
-	public Relationship(RelationshipType type, String id){
+	public Relationship(RelationshipType type){
 		this.type=type;
 		entities = new Entity[type.getNumberEntities()];
-		this.id=id;
 	}
 	
 	public void setRelationshipType(RelationshipType type){
@@ -28,6 +28,18 @@ public class Relationship {
 	}
 
 	public String getId() {
+		if(id==null){
+			StringBuffer middleId = new StringBuffer();
+			for(int i=0; i<entities.length; i++){
+				if(i==0){
+					middleId.append(entities[i].getId());
+				}else{
+					middleId.append("," + entities[i].getId());
+				}
+			}
+			
+			id=type.getType() + "(" + middleId + ")";
+		}
 		return id;
 	}
 	
@@ -38,5 +50,22 @@ public class Relationship {
 	@Override
 	public String toString(){
 		return type.getType() + Arrays.toString(entities);
+	}
+	
+	@Override
+	public int hashCode(){
+		return getId().hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof Relationship){
+			return getId().equals(((Relationship) o).getId());
+		}
+		return false;
+	}
+	
+	public void setLabel(String label){
+		this.label=label;
 	}
 }

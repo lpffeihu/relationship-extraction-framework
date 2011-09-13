@@ -37,4 +37,17 @@ public class CandidateSentence {
 	public Entity getRole(String role){
 		return relationship.getRole(role);
 	}
+	
+	@Override
+	public int hashCode(){
+		return relationship.getId().hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof CandidateSentence){
+			return relationship.equals(((CandidateSentence) o).relationship);
+		}
+		return false;
+	}
 }

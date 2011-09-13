@@ -9,14 +9,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.Segment;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.cg.relations.RelationshipType;
+import edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint;
+import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.cg.sentence.SentenceSplitter;
+import edu.columbia.cs.utils.MegaCartesianProduct;
 import edu.columbia.cs.utils.Pair;
 
 public class CandidatesGenerator {
@@ -38,11 +42,13 @@ public class CandidatesGenerator {
 
 		Sentence[] sents = splitter.split(doc);
 
+		//TODO: Think about problems with the sentence splitter separating
+		//entities
 		for(int sentId=0; sentId<sents.length; sentId++){
 			Sentence sent = sents[sentId];
-			System.out.println(sent);
+			//System.out.println(sent);
 			Map<String,Entity> sentenceEntities = new HashMap<String,Entity>();
-			List<Relationship> sentenceRelationships = new ArrayList<Relationship>();
+			Set<Relationship> sentenceRelationships = new HashSet<Relationship>();
 
 			int entityIndex=currentEntity;
 			while(entityIndex<numEntities){
@@ -61,7 +67,7 @@ public class CandidatesGenerator {
 			}
 			currentEntity=entityIndex;
 
-			System.out.println(sentenceEntities);
+			//System.out.println(sentenceEntities);
 
 			int relationshipsSize = relationships.size();
 			for(int i=0; i<relationshipsSize; i++){
@@ -76,12 +82,12 @@ public class CandidatesGenerator {
 				}
 			}
 			
-			System.out.println(sentenceRelationships);
+			//System.out.println(sentenceRelationships);
 
 			for(RelationshipType t : relationshipTypes){
-				//result.addAll(generateCandidateSentences(sent,
-				//		sentenceEntities, sentenceRelationships,
-				//		t));
+				result.addAll(generateCandidateSentences(doc,sent,
+						new HashSet<Entity>(sentenceEntities.values()), sentenceRelationships,
+						t));
 			}
 		}
 
@@ -98,15 +104,37 @@ public class CandidatesGenerator {
 	}
 	
 	private Set<CandidateSentence> generateCandidateSentences(
-			Sentence sent, Map<String, Entity> ents,
-			List<Relationship> sentenceRelationships,
+			Document doc,
+			Sentence sent, Set<Entity> ents,
+			Set<Relationship> sentenceRelationships,
 			RelationshipType relationshipType) {
-		Set<Pair<String,String>> alreadyConsideredPairs = new HashSet<Pair<String,String>>();
-
-		List<CandidateSentence> result = new ArrayList<CandidateSentence>();
+		Set<CandidateSentence> result = new HashSet<CandidateSentence>();
+		
+		Set<String> roles = relationshipType.getRoles();
+		Map<String,Set<Entity>> candidateEntitiesForRole = new HashMap<String,Set<Entity>>();
+		for(String role : roles){
+			RoleConstraint roleConstraint = relationshipType.getConstraint(role);
+			Set<Entity> entitiesForRole = roleConstraint.getCompatibleEntities(ents);
+			candidateEntitiesForRole.put(role, entitiesForRole);
+		}
+		
+		List<Map<String,Entity>> candidates = MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole);
+		for(Map<String,Entity> candidate : candidates){
+			Relationship newRelationship = new Relationship(relationshipType);
+			for(Entry<String,Entity> entry : candidate.entrySet()){
+				newRelationship.setRole(entry.getKey(), entry.getValue());
+			}
+			
+			if(sentenceRelationships.contains(newRelationship)){
+				newRelationship.setLabel(relationshipType.getType());
+			}else{
+				newRelationship.setLabel(RelationshipType.NOT_A_RELATIONSHIP);
+			}
+			
+			result.add(new CandidateSentence(sent, newRelationship, doc));
+		}
 		
 		
-		
-		return null;
+		return result;
 	}
 }

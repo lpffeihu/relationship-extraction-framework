@@ -59,7 +59,7 @@ public class ACE2005Loader extends DocumentLoader {
 					Entity arg1 = newDocument.getEntity(men.getArg1().getId());
 					Entity arg2 = newDocument.getEntity(men.getArg2().getId());
 					if(arg1!=null && arg2!=null){
-						Relationship newRelation = new Relationship(relType,men.getId());
+						Relationship newRelation = new Relationship(relType);
 						newRelation.setRole("Arg-1", arg1);
 						newRelation.setRole("Arg-2", arg2);
 						newDocument.addRelationship(newRelation);

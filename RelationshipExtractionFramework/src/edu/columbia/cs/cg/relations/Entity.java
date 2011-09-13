@@ -98,4 +98,17 @@ public class Entity implements Comparable<Entity> {
 		return 0;
 	}
 	
+	@Override
+	public int hashCode(){
+		return id.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof Entity){
+			return id.equals(((Entity) o).id);
+		}
+		return false;
+	}
+	
 }

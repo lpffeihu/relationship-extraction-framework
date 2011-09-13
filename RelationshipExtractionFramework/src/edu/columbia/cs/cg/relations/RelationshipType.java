@@ -7,16 +7,18 @@ import java.util.List;
 import java.util.Set;
 
 import edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint;
+import edu.columbia.cs.cg.relations.constraints.roles.NoConstraint;
 import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
 
-//TODO: Constraints
 public class RelationshipType {
+	public static final String NOT_A_RELATIONSHIP = "";
+	
 	private String type;
 	private Hashtable<String,Integer> indexes;
 	private int numberEntities;
 	
-	private List<RoleConstraint> roleConstraints;
-	private List<RelationshipConstraint> relConstraints;
+	private RoleConstraint[] roleConstraints;
+	private RelationshipConstraint relConstraints;
 	
 	public RelationshipType(String type, String ... roles){
 		indexes=new Hashtable<String,Integer>();
@@ -26,8 +28,11 @@ public class RelationshipType {
 		}
 		setType(type);
 		numberEntities=roles.length;
-		roleConstraints=new ArrayList<RoleConstraint>();
-		relConstraints=new ArrayList<RelationshipConstraint>();
+		roleConstraints=new RoleConstraint[rolesSize];
+		for(int i=0;i<rolesSize; i++){
+			roleConstraints[i]=new NoConstraint();
+		}
+		relConstraints=null;
 	}
 	
 	public int getIndex(String role){
@@ -54,11 +59,15 @@ public class RelationshipType {
 		return relType.equals(type);
 	}
 	
-	public void addConstraints(RoleConstraint constraint){
-		roleConstraints.add(constraint);
+	public void setConstraints(RoleConstraint constraint, String role){
+		roleConstraints[indexes.get(role)]=constraint;
 	}
 	
-	public void addConstraints(RelationshipConstraint constraint){
-		relConstraints.add(constraint);
+	public void setConstraints(RelationshipConstraint constraint){
+		relConstraints=constraint;
+	}
+	
+	public RoleConstraint getConstraint(String role){
+		return roleConstraints[indexes.get(role)];
 	}
 }
