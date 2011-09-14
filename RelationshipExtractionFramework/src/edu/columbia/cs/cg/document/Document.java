@@ -1,5 +1,6 @@
 package edu.columbia.cs.cg.document;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,13 +11,18 @@ import java.util.Set;
 
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.data.Writable;
 
-public class Document implements Serializable {
+public class Document implements Serializable, Writable {
+	private String path;
+	private String fileName;
 	private List<Segment> text;
 	private Map<String,Entity> entities;
 	private Map<String,Relationship> relationships;
 	
-	public Document(List<Segment> text){
+	public Document(String path, String fileName, List<Segment> text){
+		setPath(path);
+		setFilename(fileName);
 		setPlainText(text);
 		entities = new HashMap<String,Entity>();
 		relationships = new HashMap<String,Relationship>();
@@ -76,5 +82,26 @@ public class Document implements Serializable {
 		}
 		System.out.println(offset + " " + length);
 		throw new UnsupportedOperationException();
+	}
+
+	public void setPath(String path){
+		this.path=path;
+	}
+	
+	public void setFilename(String f) {
+		this.fileName = f;
+	}
+
+	public String getFilename() {
+		return fileName;
+	}
+	
+	public String getPath() {
+		return path;
+	}
+
+	@Override
+	public String getWritableValue() {
+		return fileName;
 	}
 }

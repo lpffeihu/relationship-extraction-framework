@@ -8,6 +8,7 @@ import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.candidates.CandidatesGenerator;
 import edu.columbia.cs.cg.candidates.CandidatesSentenceReader;
 import edu.columbia.cs.cg.candidates.CandidatesSentenceWriter;
+import edu.columbia.cs.cg.collection.split.KFoldSplitter;
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.loaders.impl.ACE2005Loader;
 import edu.columbia.cs.cg.relations.RelationshipType;
@@ -17,7 +18,7 @@ import edu.columbia.cs.data.Dataset;
 import edu.columbia.cs.utils.SGMFileFilter;
 
 
-public class GenerateCandidatesACE2005 {
+public class SplitACE2005 {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException{
 		RelationshipType relationshipType = new RelationshipType("ORG-AFF","Arg-1","Arg-2");
@@ -33,12 +34,10 @@ public class GenerateCandidatesACE2005 {
 		File ACEDir = new File("/home/goncalo/ACEFlat/");
 		Dataset<Document> ace2005 = new Dataset<Document>(l,ACEDir,false);
 		
-		String outputFolder = "/home/goncalo/ACEProcessedFlat/";
+		String outputFolder = "/home/goncalo/ACEsplits2/";
 		
-		for(Document d : ace2005){
-			Set<CandidateSentence> candidates = generator.generateCandidates(d, relationshipTypes);	
-			CandidatesSentenceWriter.writeCandidateSentences(candidates, outputFolder+d.getFilename());
-		}
+		KFoldSplitter docSplitter = new KFoldSplitter(20);
+		docSplitter.split(ace2005, new File(outputFolder));
 	}
 
 }

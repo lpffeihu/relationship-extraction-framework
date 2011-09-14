@@ -1,5 +1,7 @@
 package edu.columbia.cs.og.features.featureset;
 
-public  class FeatureSet {
+import java.io.Serializable;
+
+public  class FeatureSet implements Serializable{
 	
 }

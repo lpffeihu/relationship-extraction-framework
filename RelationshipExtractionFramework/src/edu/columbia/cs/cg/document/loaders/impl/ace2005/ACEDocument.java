@@ -30,7 +30,6 @@ public class ACEDocument {
 
 	public void load(String strFile)
 	{
-		strFile = strFile.substring(0,strFile.length()-4);
 		loadXML(strFile + ".apf.xml");
 		loadSGM(strFile + ".sgm");
 	}

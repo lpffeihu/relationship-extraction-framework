@@ -66,6 +66,10 @@ public class Relationship implements Serializable {
 		return false;
 	}
 	
+	public String getLabel(){
+		return label;
+	}
+	
 	public void setLabel(String label){
 		this.label=label;
 	}

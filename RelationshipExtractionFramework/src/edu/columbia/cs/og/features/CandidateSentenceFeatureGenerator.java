@@ -7,7 +7,7 @@ import edu.columbia.cs.og.structure.OperableStructure;
 public abstract class CandidateSentenceFeatureGenerator extends FeatureGenerator {
 
 	@Override
-	protected FeatureSet process(OperableStructure s) {
+	protected final FeatureSet process(OperableStructure s) {
 		return process(s.getCandidateSentence());
 	}
 

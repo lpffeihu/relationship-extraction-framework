@@ -29,6 +29,14 @@ public class CandidateSentence extends FeaturableObject implements Serializable 
 		return relationship.getRole(role);
 	}
 	
+	public Entity[] getEntities(){
+		return relationship.getEntities();
+	}
+	
+	public String getLabel(){
+		return relationship.getLabel();
+	}
+	
 	@Override
 	public int hashCode(){
 		return relationship.getId().hashCode();
@@ -40,5 +48,9 @@ public class CandidateSentence extends FeaturableObject implements Serializable 
 			return relationship.equals(((CandidateSentence) o).relationship);
 		}
 		return false;
+	}
+	
+	public String getId(){
+		return relationship.getId();
 	}
 }

@@ -7,15 +7,15 @@ import java.util.Set;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.relations.RelationshipType;
+import edu.columbia.cs.data.Loader;
 
-public abstract class DocumentLoader {
-	public Set<Document> load(Collection<File> files, Set<RelationshipType> relationshipTypes){
-		Set<Document> documents = new HashSet<Document>();
-		for(File f : files){
-			documents.add(load(f,relationshipTypes));
-		}
-		return documents;
+public abstract class DocumentLoader extends Loader<Document> {
+	
+	protected Set<RelationshipType> relationshipTypes;
+	
+	public DocumentLoader(Set<RelationshipType> relationshipTypes){
+		this.relationshipTypes=relationshipTypes;
 	}
 	
-	public abstract Document load(File file, Set<RelationshipType> relationshipTypes);
+	public abstract Set<Document> load(File file);
 }

@@ -1,8 +1,9 @@
 package edu.columbia.cs.og.features.featureset;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class SequenceFS<E> extends FeatureSet {
+public class SequenceFS<E extends Serializable> extends FeatureSet {
 	private E[] sequence;
 	
 	public SequenceFS(E[] sequence){

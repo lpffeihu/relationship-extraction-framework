@@ -9,8 +9,12 @@ import edu.columbia.cs.cg.relations.RelationshipType;
 
 public class AImedLoader extends DocumentLoader {
 
+	public AImedLoader(Set<RelationshipType> relationshipTypes){
+		super(relationshipTypes);
+	}
+	
 	@Override
-	public Document load(File file, Set<RelationshipType> relationshipTypes) {
+	public Set<Document> load(File file) {
 		// TODO Auto-generated method stub
 		return null;
 	}
