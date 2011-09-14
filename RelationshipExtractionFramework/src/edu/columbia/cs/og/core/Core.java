@@ -8,15 +8,25 @@ import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.structure.OperableStructure;
 
 public abstract class Core {
-	private List<FeatureGenerator> mandatoryFg;
+	List<FeatureGenerator> mandatoryFG=null;
 	
-	public void setMandatoryFeatureGenerators(List<FeatureGenerator> mandatoryFg) {
-		this.mandatoryFg = mandatoryFg;
+	public List<FeatureGenerator> getMandatoryFeatureGenerators(){
+		if(mandatoryFG==null){
+			mandatoryFG=createMandatoryFeatureGenerators();
+		}
+		return mandatoryFG;
 	}
 	
-	public List<FeatureGenerator> getMandatoryFeatureGenerators() {
-		return mandatoryFg;
-	}
+	protected abstract List<FeatureGenerator> createMandatoryFeatureGenerators();
 
-	public abstract OperableStructure getStructure(CandidateSentence sent);
+	public OperableStructure getStructure(CandidateSentence sent){
+		OperableStructure newStructure = createOperableStructure(sent);
+		for(FeatureGenerator fg : getMandatoryFeatureGenerators()){
+			fg.generateFeatures(newStructure);
+		}
+		newStructure.initialize();
+		return newStructure;
+	}
+	
+	protected abstract OperableStructure createOperableStructure(CandidateSentence sent);
 }

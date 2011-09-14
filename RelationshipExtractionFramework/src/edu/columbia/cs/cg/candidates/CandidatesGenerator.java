@@ -131,7 +131,7 @@ public class CandidatesGenerator {
 				newRelationship.setLabel(RelationshipType.NOT_A_RELATIONSHIP);
 			}
 			
-			result.add(new CandidateSentence(sent, newRelationship, doc));
+			result.add(new CandidateSentence(sent, newRelationship));
 		}
 		
 		

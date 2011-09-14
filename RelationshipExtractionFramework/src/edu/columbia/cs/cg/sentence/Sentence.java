@@ -3,8 +3,9 @@ package edu.columbia.cs.cg.sentence;
 import java.io.Serializable;
 
 import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.og.features.FeaturableObject;
 
-public class Sentence implements Serializable {
+public class Sentence extends FeaturableObject implements Serializable {
 	private Document d;
 	private int offset;
 	//The length of the sentence comes from the text
@@ -30,6 +31,10 @@ public class Sentence implements Serializable {
 
 	public int getLength() {
 		return length;
+	}
+	
+	public String getValue(){
+		return d.getSubstring(getOffset(), getLength());
 	}
 	
 	@Override

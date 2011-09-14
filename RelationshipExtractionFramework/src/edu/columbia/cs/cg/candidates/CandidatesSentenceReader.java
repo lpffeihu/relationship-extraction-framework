@@ -13,7 +13,6 @@ import java.util.Set;
 
 public class CandidatesSentenceReader {
 	public static Set<CandidateSentence> readCandidateSentences(String output) throws IOException, ClassNotFoundException{
-		//use buffering
 		InputStream file = new FileInputStream( output );
 		InputStream buffer = new BufferedInputStream( file );
 		ObjectInput input = new ObjectInputStream ( buffer );

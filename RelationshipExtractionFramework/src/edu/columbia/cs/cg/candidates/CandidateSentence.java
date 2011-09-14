@@ -6,17 +6,15 @@ import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.cg.sentence.Sentence;
+import edu.columbia.cs.og.features.FeaturableObject;
 
-public class CandidateSentence implements Serializable {
+public class CandidateSentence extends FeaturableObject implements Serializable {
 	private Sentence sentence;
 	private Relationship relationship;
-	private Document document;
 	
-	public CandidateSentence(Sentence sentence,Relationship relationship,
-			Document document){
+	public CandidateSentence(Sentence sentence,Relationship relationship){
 		this.setSentence(sentence);
 		this.relationship=relationship;
-		this.setDocument(document);
 	}
 
 	public void setSentence(Sentence sentence) {
@@ -25,14 +23,6 @@ public class CandidateSentence implements Serializable {
 
 	public Sentence getSentence() {
 		return sentence;
-	}
-
-	public void setDocument(Document document) {
-		this.document = document;
-	}
-
-	public Document getDocument() {
-		return document;
 	}
 	
 	public Entity getRole(String role){
