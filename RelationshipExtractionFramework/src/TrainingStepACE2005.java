@@ -14,6 +14,7 @@ import edu.berkeley.compbio.jlibsvm.binary.BinaryModel;
 import edu.berkeley.compbio.jlibsvm.binary.C_SVC;
 import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
 import edu.columbia.cs.og.core.CoreReader;
+import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
 import edu.columbia.cs.og.core.impl.SubsequencesKernel;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.svm.problem.OperableStructureToBinarySVMproblemConverter;
@@ -45,7 +46,7 @@ public class TrainingStepACE2005 {
 	}
 	
 	private static BinaryModel<String,OperableStructure> trainSVMModel(List<OperableStructure> train) {
-		KernelFunction<OperableStructure> kernel = new SubsequencesKernel();
+		KernelFunction<OperableStructure> kernel = new BagOfNGramsKernel();
 		ImmutableSvmParameterPoint.Builder<String, OperableStructure> builder = new ImmutableSvmParameterPoint.Builder<String, OperableStructure>();
 		builder.C=50;
 		builder.kernel=kernel;
@@ -73,7 +74,7 @@ public class TrainingStepACE2005 {
 		String rootDir=args[0];
 		
 		String path = rootDir+"ACEsplits/";
-		String pathProc = rootDir+"ACESubseqFlat/";
+		String pathProc = rootDir+"ACEBoNGramsFlat/";
 		
 		List<String> trainFiles = getFiles(path + trainFile);
 		List<OperableStructure> trainingFiles=new ArrayList<OperableStructure>();
