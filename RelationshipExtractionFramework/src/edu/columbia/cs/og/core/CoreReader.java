@@ -19,9 +19,6 @@ public class CoreReader {
 		InputStream buffer = new BufferedInputStream( file );
 		ObjectInput input = new ObjectInputStream ( buffer );
 		Set<OperableStructure> candidates = (Set<OperableStructure>)input.readObject();
-		for(OperableStructure oper : candidates){
-			oper.normalizeFeatures();
-		}
 		input.close();
 		return candidates;
 	}

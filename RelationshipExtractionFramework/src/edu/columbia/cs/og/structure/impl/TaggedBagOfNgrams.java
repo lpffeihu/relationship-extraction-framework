@@ -1,5 +1,6 @@
 package edu.columbia.cs.og.structure.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.relations.Entity;
+import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.features.impl.EntityBasedChunkingFG;
 import edu.columbia.cs.og.features.impl.OpenNLPTokenizationFG;
@@ -15,14 +17,14 @@ import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.utils.Span;
 
 public class TaggedBagOfNgrams extends OperableStructure {
-	
+
 	private static final int DEFAULT_NGRAMS_SIZE = 3;
 	private static final int DEFAULT_WINDOW_SIZE = 2;
-	
+
 	private Map<List<String>,Integer>[] ngramsB;
 	private Map<List<String>,Integer>[] ngramsFB;
 	private Map<List<String>,Integer>[] ngramsBA;
-	
+
 	private List<String>[] featLeft;
 	private List<String>[] featRight;
 	private String entity1Type;
@@ -37,11 +39,11 @@ public class TaggedBagOfNgrams extends OperableStructure {
 	private int endBA;
 	private int sizeNgrams;
 	private int sizeWindow;
-	
+
 	public TaggedBagOfNgrams(CandidateSentence s){
 		this(s,DEFAULT_NGRAMS_SIZE,DEFAULT_WINDOW_SIZE);
 	}
-	
+
 	public TaggedBagOfNgrams(CandidateSentence s, int sizeNGrams, int sizeWindow){
 		super(s);
 		this.sizeNgrams=sizeNGrams;
@@ -55,7 +57,7 @@ public class TaggedBagOfNgrams extends OperableStructure {
 			ngramsFB[i]=new HashMap<List<String>,Integer>();
 		}
 	}
-	
+
 	public int[] getEntityIndexes(Entity[] entities, SequenceFS<Span> sentenceTokens){
 		int numTokens = sentenceTokens.size();
 		int[] entityIndex=new int[entities.length];
@@ -74,23 +76,23 @@ public class TaggedBagOfNgrams extends OperableStructure {
 				}
 			}
 		}
-		
+
 		return entityIndex;
 	}
-	
+
 	private String[] getTokenValues(SequenceFS<Span> tokenization){
 		String[] result = new String[tokenization.size()];
 		String sentenceValue = getCandidateSentence().getSentence().getValue();
-		
+
 		int sizeTokenization = tokenization.size();
 		for(int i=0; i<sizeTokenization; i++){
 			Span s = tokenization.getElement(i);
 			result[i]=sentenceValue.substring(s.getStart(),s.getEnd());
 		}
-		
+
 		return result;
 	}
-	
+
 	@Override
 	public void initialize() {
 		//TODO: In the case of SSK and JSRE there should be only 2 entities
@@ -99,10 +101,10 @@ public class TaggedBagOfNgrams extends OperableStructure {
 		//I will assume that we have two entities only
 		Entity[] entities = getCandidateSentence().getEntities();
 		int[] entityIndexes =getEntityIndexes(entities, tokenization);
-		
+
 		entity1Index=entityIndexes[0];
 		entity2Index=entityIndexes[1];
-		
+
 		entity1Type=entities[0].getEntityType();
 		entity2Type=entities[1].getEntityType();
 		if(entity1Index>entity2Index){
@@ -112,7 +114,7 @@ public class TaggedBagOfNgrams extends OperableStructure {
 			entity1Type=entities[1].getEntityType();
 			entity2Type=entities[0].getEntityType();
 		}
-		
+
 		startFB=0;
 		endFB=entity1Index;
 		startB=entity1Index+1;
@@ -126,7 +128,7 @@ public class TaggedBagOfNgrams extends OperableStructure {
 		featLeft=createFeatureToken(tokens, entity1Index);
 		featRight=createFeatureToken(tokens, entity2Index);
 	}
-	
+
 	private List<String>[] createFeatureToken(String[] sent, int pos){
 		List<String>[] feat = new List[sizeWindow*2 + 1];
 		feat[sizeWindow]=new ArrayList<String>();
@@ -137,17 +139,17 @@ public class TaggedBagOfNgrams extends OperableStructure {
 		}else{
 			feat[sizeWindow].add(sent[pos]);
 		}
-		
+
 		int left=Math.max(0, pos-sizeWindow);
 		int right=Math.min(sent.length-1, pos+sizeWindow);
-		
+
 		for(int i=0; i<sizeWindow; i++){
 			feat[i]=null;
 		}
 		for(int i=sizeWindow+1; i<sizeWindow*2 + 1; i++){
 			feat[i]=null;
 		}
-		
+
 		for(int i=pos-1; i>=left ;i--){
 			feat[sizeWindow+i-pos]= new ArrayList<String>();
 			if(i==entity1Index){
@@ -168,10 +170,10 @@ public class TaggedBagOfNgrams extends OperableStructure {
 				feat[sizeWindow+i-pos].add(sent[i]);
 			}
 		}
-		
+
 		return feat;
 	}
-	
+
 	public void createNGrams(String[] tokens, Map<List<String>,Integer>[] ngrams,
 			int begin, int end){
 		for(int i=0; i<sizeNgrams; i++){
@@ -186,7 +188,7 @@ public class TaggedBagOfNgrams extends OperableStructure {
 						ngram.add(tokens[k]);
 					}
 				}
-				
+
 				Integer freq = ngrams[i].get(ngram);
 				if(freq==null){
 					freq=0;
@@ -195,7 +197,7 @@ public class TaggedBagOfNgrams extends OperableStructure {
 			}
 		}
 	}
-	
+
 	public Map<List<String>, Integer>[] getNgramsB() {
 		return ngramsB;
 	}
@@ -207,7 +209,7 @@ public class TaggedBagOfNgrams extends OperableStructure {
 	public Map<List<String>, Integer>[] getNgramsBA() {
 		return ngramsBA;
 	}
-	
+
 	public List<String>[] getFeatLeft() {
 		return featLeft;
 	}
@@ -216,8 +218,27 @@ public class TaggedBagOfNgrams extends OperableStructure {
 		return featRight;
 	}
 
-	@Override
-	public void normalizeFeatures() {
+	public void add(SequenceFS<? extends Serializable> sequence){
+		int pos=entity1Index;
+		int left=Math.max(0, pos-sizeWindow);
+		int right=Math.min(sequence.size()-1, pos+sizeWindow);
+		featLeft[sizeWindow].add(sequence.getElement(pos).toString());
+		for(int i=pos-1; i>=left ;i--){
+			featLeft[sizeWindow+i-pos].add(sequence.getElement(i).toString());
+		}
+		for(int i=pos+1; i<=right ;i++){
+			featLeft[sizeWindow+i-pos].add(sequence.getElement(i).toString());
+		}
 		
+		pos=entity2Index;
+		left=Math.max(0, pos-sizeWindow);
+		right=Math.min(sequence.size()-1, pos+sizeWindow);
+		featRight[sizeWindow].add(sequence.getElement(pos).toString());
+		for(int i=pos-1; i>=left ;i--){
+			featRight[sizeWindow+i-pos].add(sequence.getElement(i).toString());
+		}
+		for(int i=pos+1; i<=right ;i++){
+			featRight[sizeWindow+i-pos].add(sequence.getElement(i).toString());
+		}
 	}
 }

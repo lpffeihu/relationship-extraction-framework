@@ -1,5 +1,6 @@
 package edu.columbia.cs.og.structure.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,7 @@ public class TaggedSequence extends OperableStructure {
 	private String entity1Type;
 	private String entity2Type;
 	private static FeaturesDictionary fd = new FeaturesDictionary();
+	private transient boolean normalized = false;
 	
 	public TaggedSequence(CandidateSentence s){
 		super(s);
@@ -168,40 +170,56 @@ public class TaggedSequence extends OperableStructure {
 		return result;
 	}
 
-	@Override
-	public void normalizeFeatures() {
-		
-		for(int i=0; i<fb.length; i++){
-			List<String> list = fb[i];
-			List<String> newList = new ArrayList<String>();
-			int sizeList = list.size();
-			for(int j=0; j<sizeList; j++){
-				String str = list.get(j);
-				newList.add(fd.getFeature(str));
+	public synchronized void normalizeFeatures() {
+		if(!normalized){
+			for(int i=0; i<fb.length; i++){
+				List<String> list = fb[i];
+				List<String> newList = new ArrayList<String>();
+				int sizeList = list.size();
+				for(int j=0; j<sizeList; j++){
+					String str = list.get(j);
+					newList.add(fd.getFeature(str));
+				}
+				fb[i]=newList;
 			}
-			fb[i]=newList;
+			
+			for(int i=0; i<b.length; i++){
+				List<String> list = b[i];
+				List<String> newList = new ArrayList<String>();
+				int sizeList = list.size();
+				for(int j=0; j<sizeList; j++){
+					String str = list.get(j);
+					newList.add(fd.getFeature(str));
+				}
+				b[i]=newList;
+			}
+			
+			for(int i=0; i<ba.length; i++){
+				List<String> list = ba[i];
+				List<String> newList = new ArrayList<String>();
+				int sizeList = list.size();
+				for(int j=0; j<sizeList; j++){
+					String str = list.get(j);
+					newList.add(fd.getFeature(str));
+				}
+				ba[i]=newList;
+			}
+			
+			normalized=true;
 		}
-		
-		for(int i=0; i<b.length; i++){
-			List<String> list = b[i];
-			List<String> newList = new ArrayList<String>();
-			int sizeList = list.size();
-			for(int j=0; j<sizeList; j++){
-				String str = list.get(j);
-				newList.add(fd.getFeature(str));
-			}
-			b[i]=newList;
+	}
+	
+	public void add(SequenceFS<? extends Serializable> sequence){
+		for(int j=0; j<fb.length; j++){
+			fb[j].add(sequence.getElement(startFB+j).toString());
 		}
-		
-		for(int i=0; i<ba.length; i++){
-			List<String> list = ba[i];
-			List<String> newList = new ArrayList<String>();
-			int sizeList = list.size();
-			for(int j=0; j<sizeList; j++){
-				String str = list.get(j);
-				newList.add(fd.getFeature(str));
-			}
-			ba[i]=newList;
+		entity1.add(sequence.getElement(entity1Index).toString());
+		for(int j=0; j<b.length; j++){
+			b[j].add(sequence.getElement(startB+j).toString());
+		}
+		entity2.add(sequence.getElement(entity2Index).toString());
+		for(int j=0; j<ba.length; j++){
+			ba[j].add(sequence.getElement(startBA+j).toString());
 		}
 	}
 }

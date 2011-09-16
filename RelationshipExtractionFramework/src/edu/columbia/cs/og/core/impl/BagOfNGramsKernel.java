@@ -171,10 +171,7 @@ public class BagOfNGramsKernel extends Core implements KernelFunction<OperableSt
 			//The only mandatory feature is the chunker... However, the chunker
 			//also depends on the results of the tokenizer. Thus, we need to create a
 			//tokenizer and a DependentFeatureGenerator in this case
-			List<FeatureGenerator> dependencies = new ArrayList<FeatureGenerator>();
-			OpenNLPTokenizationFG tokenizer = new OpenNLPTokenizationFG("en-token.bin");
-			dependencies.add(tokenizer);
-			fg.add(new DependentFeatureGenerator(dependencies,new EntityBasedChunkingFG()));
+			fg.add(new DependentFeatureGenerator(new EntityBasedChunkingFG(),new OpenNLPTokenizationFG("en-token.bin")));
 		} catch (InvalidFormatException e) {
 			e.printStackTrace();
 			System.exit(1);

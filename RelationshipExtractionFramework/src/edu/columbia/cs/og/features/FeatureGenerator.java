@@ -33,7 +33,7 @@ public abstract class FeatureGenerator {
 
 	protected abstract FeatureSet getFeatures(OperableStructure s, Class<? extends FeatureGenerator> featureGeneratorClass);
 	
-	protected Class<? extends FeatureGenerator> getKey() {
+	public Class<? extends FeatureGenerator> getKey() {
 		return this.getClass();
 	}
 	protected abstract FeatureSet process(OperableStructure s);

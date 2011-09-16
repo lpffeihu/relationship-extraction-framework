@@ -1,5 +1,7 @@
 package edu.columbia.cs.og.features;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import edu.columbia.cs.cg.sentence.Sentence;
@@ -11,8 +13,8 @@ public class DependentFeatureGenerator extends FeatureGenerator {
 	private List<FeatureGenerator> fgs;
 	private FeatureGenerator fg;
 	
-	public DependentFeatureGenerator(List<FeatureGenerator> fgs, FeatureGenerator fg){
-		this.fgs=fgs;
+	public DependentFeatureGenerator(FeatureGenerator fg, FeatureGenerator ... fgs){
+		this.fgs=Arrays.asList(fgs);
 		this.fg=fg;
 	}
 	

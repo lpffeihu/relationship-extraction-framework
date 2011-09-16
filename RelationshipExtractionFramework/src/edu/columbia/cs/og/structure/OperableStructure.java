@@ -2,10 +2,13 @@ package edu.columbia.cs.og.structure;
 
 import java.io.Serializable;
 import java.util.Hashtable;
+import java.util.List;
 
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
+import edu.columbia.cs.og.features.featureset.GraphFS;
+import edu.columbia.cs.og.features.featureset.SequenceFS;
 
 public abstract class OperableStructure implements Serializable {
 
@@ -55,5 +58,18 @@ public abstract class OperableStructure implements Serializable {
 		return hashCode;
 	}
 
-	public abstract void normalizeFeatures();
+	public void enrich(List<Class<? extends FeatureGenerator>> userFgKeys){
+		for(Class<? extends FeatureGenerator> c : userFgKeys){
+			FeatureSet fs = getFeatures(c);
+			fs.enrichMe(this);
+		}
+	}
+	
+	public void add(GraphFS graph){
+		throw new UnsupportedOperationException();
+	}
+	
+	public void add(SequenceFS<? extends Serializable> graph){
+		throw new UnsupportedOperationException();
+	}
 }
