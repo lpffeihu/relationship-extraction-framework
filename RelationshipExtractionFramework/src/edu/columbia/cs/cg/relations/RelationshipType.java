@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
+import edu.columbia.cs.cg.relations.constraints.relations.DummyRelationshipConstraint;
 import edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint;
 import edu.columbia.cs.cg.relations.constraints.roles.NoConstraint;
 import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
@@ -33,7 +34,7 @@ public class RelationshipType implements Serializable {
 		for(int i=0;i<rolesSize; i++){
 			roleConstraints[i]=new NoConstraint();
 		}
-		relConstraints=null;
+		relConstraints=new DummyRelationshipConstraint();
 	}
 	
 	public int getIndex(String role){
@@ -70,5 +71,9 @@ public class RelationshipType implements Serializable {
 	
 	public RoleConstraint getConstraint(String role){
 		return roleConstraints[indexes.get(role)];
+	}
+	
+	public RelationshipConstraint getRelationshipConstraint(){
+		return relConstraints;
 	}
 }

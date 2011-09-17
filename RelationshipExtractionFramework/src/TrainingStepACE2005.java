@@ -13,6 +13,9 @@ import edu.berkeley.compbio.jlibsvm.binary.BinaryClassificationSVM;
 import edu.berkeley.compbio.jlibsvm.binary.BinaryModel;
 import edu.berkeley.compbio.jlibsvm.binary.C_SVC;
 import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
+import edu.columbia.cs.engine.Engine;
+import edu.columbia.cs.engine.impl.JLibSVMEngine;
+import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.core.CoreReader;
 import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
 import edu.columbia.cs.og.core.impl.SubsequencesKernel;
@@ -44,27 +47,6 @@ public class TrainingStepACE2005 {
 		
 		return fileSentences;
 	}
-	
-	private static BinaryModel<String,OperableStructure> trainSVMModel(List<OperableStructure> train) {
-		KernelFunction<OperableStructure> kernel = new BagOfNGramsKernel();
-		ImmutableSvmParameterPoint.Builder<String, OperableStructure> builder = new ImmutableSvmParameterPoint.Builder<String, OperableStructure>();
-		builder.C=50;
-		builder.kernel=kernel;
-		builder.eps=1f;
-		builder.redistributeUnbalancedC=true;
-		builder.probability=true;
-		
-		ImmutableSvmParameterPoint<String, OperableStructure> params = builder.build();
-		
-		BinaryClassificationProblemImpl<String,OperableStructure> problem = OperableStructureToBinarySVMproblemConverter.convert(train,"ORG-AFF");
-
-		BinaryClassificationSVM<String,OperableStructure> binary = new C_SVC<String,OperableStructure>();
-		
-		//TODO: Multiclass
-		//MultiClassificationSVM<String,TaggedSequence> multi = new MultiClassificationSVM<String,TaggedSequence>(binary);
-		
-		return binary.train(problem, params);
-	}
 
 	public static void main(String[] args) throws Exception {
 		int numberSplit=Integer.parseInt(args[1]);
@@ -84,19 +66,9 @@ public class TrainingStepACE2005 {
 			System.out.println("processing [" + s + "]");
 			trainingFiles.addAll(getOperableStructure(pathProc,s));
 		}
-		int positive=0;
-		int negative=0;
-		for(int i=0; i<trainingFiles.size(); i++){
-			if(trainingFiles.get(i).getLabel().equals("")){
-				negative++;
-			}else{
-				positive++;
-			}
-		}
 		
-		System.out.println("Loaded " + trainingFiles.size() + " training sentences (" + positive + " positive examples and " + negative + " negative examples)");
-		
-		BinaryModel<String,OperableStructure> svmModel = trainSVMModel(trainingFiles);
+		Engine classificationEngine = new JLibSVMEngine(new BagOfNGramsKernel());
+		Model svmModel = classificationEngine.train(trainingFiles);
 		
 		List<String> testFiles = getFiles(path + testFile);
 		List<OperableStructure> testingFiles=new ArrayList<OperableStructure>();
@@ -117,13 +89,13 @@ public class TrainingStepACE2005 {
 				OperableStructure s = testingFiles.get(i);
 				
 				String predicted;
-				//predicted = svmModel.predictLabel(s);
-				double confidence = svmModel.getTrueProbability(s);
+				predicted = svmModel.predictLabel(s);
+				/*double confidence = svmModel.getTrueProbability(s);
 				if(confidence<w){
 					predicted="";
 				}else{
 					predicted="ORG-AFF";
-				}
+				}*/
 				
 				String trueLabel = s.getLabel();
 				System.out.println("i=" + i + ": [" + predicted + "," + trueLabel + "]");

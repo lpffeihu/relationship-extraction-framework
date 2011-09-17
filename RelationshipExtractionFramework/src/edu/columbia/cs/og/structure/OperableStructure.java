@@ -58,11 +58,8 @@ public abstract class OperableStructure implements Serializable {
 		return hashCode;
 	}
 
-	public void enrich(List<Class<? extends FeatureGenerator>> userFgKeys){
-		for(Class<? extends FeatureGenerator> c : userFgKeys){
-			FeatureSet fs = getFeatures(c);
-			fs.enrichMe(this);
-		}
+	public void enrich(FeatureSet fs){
+		fs.enrichMe(this);
 	}
 	
 	public void add(GraphFS graph){

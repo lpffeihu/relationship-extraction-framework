@@ -11,6 +11,7 @@ import edu.columbia.cs.cg.candidates.CandidatesSentenceWriter;
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.loaders.impl.ACE2005Loader;
 import edu.columbia.cs.cg.relations.RelationshipType;
+import edu.columbia.cs.cg.relations.constraints.relations.DistanceBetweenEntitiesConstraint;
 import edu.columbia.cs.cg.relations.constraints.roles.EntityTypeConstraint;
 import edu.columbia.cs.cg.sentence.impl.OpenNLPMESplitter;
 import edu.columbia.cs.data.Dataset;
@@ -23,6 +24,7 @@ public class GenerateCandidatesACE2005 {
 		RelationshipType relationshipType = new RelationshipType("ORG-AFF","Arg-1","Arg-2");
 		relationshipType.setConstraints(new EntityTypeConstraint("PER"), "Arg-1");
 		relationshipType.setConstraints(new EntityTypeConstraint("ORG"), "Arg-2");
+		//relationshipType.setConstraints(new DistanceBetweenEntitiesConstraint(20));
 		Set<RelationshipType> relationshipTypes = new HashSet<RelationshipType>();
 		relationshipTypes.add(relationshipType);
 		

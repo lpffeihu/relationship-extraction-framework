@@ -11,6 +11,7 @@ import opennlp.tools.util.InvalidFormatException;
 import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.og.core.Core;
+import edu.columbia.cs.og.core.Kernel;
 import edu.columbia.cs.og.features.DependentFeatureGenerator;
 import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.impl.EntityBasedChunkingFG;
@@ -18,7 +19,7 @@ import edu.columbia.cs.og.features.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.og.structure.impl.TaggedSequence;
 
-public class SubsequencesKernel extends Core implements KernelFunction<OperableStructure> {
+public class SubsequencesKernel extends Kernel {
 
 	static final int DEFAULT_FORE = 4;
 	static final int DEFAULT_INTRA = 4;

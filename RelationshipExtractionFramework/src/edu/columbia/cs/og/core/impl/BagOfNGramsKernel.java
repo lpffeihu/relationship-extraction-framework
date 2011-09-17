@@ -12,6 +12,7 @@ import opennlp.tools.util.InvalidFormatException;
 import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.og.core.Core;
+import edu.columbia.cs.og.core.Kernel;
 import edu.columbia.cs.og.features.DependentFeatureGenerator;
 import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.impl.EntityBasedChunkingFG;
@@ -19,7 +20,7 @@ import edu.columbia.cs.og.features.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.og.structure.impl.TaggedBagOfNgrams;
 
-public class BagOfNGramsKernel extends Core implements KernelFunction<OperableStructure> {
+public class BagOfNGramsKernel extends Kernel {
 	boolean m_bCache=true;
 	boolean m_bNorm=true;
 	static double num=0;

@@ -7,6 +7,7 @@ import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.og.core.Core;
 import edu.columbia.cs.og.features.FeatureGenerator;
+import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.structure.OperableStructure;
 
 public class StructureConfiguration {
@@ -31,8 +32,9 @@ public class StructureConfiguration {
 		int numFeatures = userFg.size();
 		for(int i=0; i<numFeatures; i++){
 			userFg.get(i).generateFeatures(newStructure);
+			FeatureSet fs = newStructure.getFeatures(userFg.get(i).getKey());
+			newStructure.enrich(fs);
 		}
-		newStructure.enrich(userFgKeys);
 		
 		return newStructure;
 	}
