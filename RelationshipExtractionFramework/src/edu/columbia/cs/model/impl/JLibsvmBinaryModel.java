@@ -18,15 +18,13 @@ public class JLibsvmBinaryModel extends Model{
 	
 	@Override
 	public String getPredictedLabel(OperableStructure s) {
+		String predictedLabel=svmModel.predictLabel(s);
+		
 		lastPositiveProbability=svmModel.getTrueProbability(s);
 		lastNegativeProbability=1-lastPositiveProbability;
-		double confidence = Math.max(lastPositiveProbability, lastNegativeProbability);
+		lastConfidence = Math.max(lastPositiveProbability, lastNegativeProbability);
 		
-		if(lastPositiveProbability>=lastNegativeProbability){
-			return svmModel.getTrueLabel();
-		}else{
-			return svmModel.getFalseLabel();
-		}
+		return predictedLabel;
 	}
 
 	@Override

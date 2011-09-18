@@ -15,6 +15,14 @@ import edu.berkeley.compbio.jlibsvm.binary.C_SVC;
 import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
 import edu.columbia.cs.engine.Engine;
 import edu.columbia.cs.engine.impl.JLibSVMEngine;
+import edu.columbia.cs.evaluation.Evaluator;
+import edu.columbia.cs.evaluation.measures.Accuracy;
+import edu.columbia.cs.evaluation.measures.FMeasure;
+import edu.columbia.cs.evaluation.measures.NumberOfExpectedPositiveAnswers;
+import edu.columbia.cs.evaluation.measures.NumberOfPositiveAnswers;
+import edu.columbia.cs.evaluation.measures.NumberOfTruePositives;
+import edu.columbia.cs.evaluation.measures.Precision;
+import edu.columbia.cs.evaluation.measures.Recall;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.core.CoreReader;
 import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
@@ -77,55 +85,17 @@ public class TrainingStepACE2005 {
 		}
 		System.out.println("Loaded " + testingFiles.size() + " testing sentences");
 		
-		double[] weights = new double[]{0.2};
-		
-		for(double w : weights){
-			int testingFilesSize=testingFiles.size();
-			int numCorrect=0;
-			int numAnswers=0;
-			int numExpected=0;
-			int numOk=0;
-			for(int i=0; i<testingFilesSize; i++){
-				OperableStructure s = testingFiles.get(i);
-				
-				String predicted;
-				predicted = svmModel.predictLabel(s);
-				/*double confidence = svmModel.getTrueProbability(s);
-				if(confidence<w){
-					predicted="";
-				}else{
-					predicted="ORG-AFF";
-				}*/
-				
-				String trueLabel = s.getLabel();
-				System.out.println("i=" + i + ": [" + predicted + "," + trueLabel + "]");
-				if((predicted==null || predicted.equals("")) && trueLabel.equals("")){
-					//do nothing
-					numOk++;
-				}else if(trueLabel.equals(predicted)){
-					numCorrect++;
-				}
-				if(!(predicted==null || predicted.equals(""))){
-					numAnswers++;
-				}
-				if(!trueLabel.equals("")){
-					numExpected++;
-				}
-			}
-			
-			double recall=(double)numCorrect/(double)numExpected;
-			double precision=(double)numCorrect/(double)numAnswers;
-			double f1 = 2*(recall*precision)/(recall+precision);
-			double acc = (numOk+numCorrect)/(double)testingFilesSize;
-			
-			System.out.println("Num Correct= " + numCorrect);
-			System.out.println("Num Answers= " + numAnswers);
-			System.out.println("Num Expected= " + numExpected);
-			System.out.println("Accuracy=" + acc);
-			System.out.println("Recall= " + recall);
-			System.out.println("Precision= " + precision);
-			System.out.println("F1=" + f1);
-		}
+		Evaluator eval = new Evaluator();
+		eval.addMeasure(new NumberOfTruePositives());
+		eval.addMeasure(new NumberOfPositiveAnswers());
+		eval.addMeasure(new NumberOfExpectedPositiveAnswers());
+		eval.addMeasure(new Accuracy());
+		eval.addMeasure(new Recall());
+		eval.addMeasure(new Precision());
+		eval.addMeasure(new FMeasure(1.0));
+		eval.addMeasure(new FMeasure(0.5));
+		eval.addMeasure(new FMeasure(2.0));
+		eval.printEvaluationReport(testingFiles, svmModel);
 		
 		Parallel.shutdown();
 	}
