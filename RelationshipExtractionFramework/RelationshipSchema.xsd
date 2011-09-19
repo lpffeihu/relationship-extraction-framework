@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="edu.columbia.cs.relationship" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="edu.columbia.cs.relationship">
+
+	<xsd:complexType name="EntityTypeConstraintType">
+		<xsd:attribute name="Type" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="IsOptionalConstraintType"/>
+	
+	<xsd:complexType name="RoleConstraintType">
+		<xsd:choice>
+			<xsd:element name="EntityTypeConstraint" type="EntityTypeConstraintType"/>
+			<xsd:element name="IsOptionalConstraint" type="IsOptionalConstraintType"/>
+			<xsd:element name="And" type="AndRoleConstraintType"/>
+			<xsd:element name="Or" type="OrRoleConstraintType"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	<xsd:complexType name="AndRoleConstraintType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="2" name="RoleConstraint" type="RoleConstraintType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="OrRoleConstraintType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="2" name="RoleConstraint" type="RoleConstraintType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="RoleType">
+		<xsd:sequence>
+			<xsd:element name="RoleConstraint" type="RoleConstraintType"/>
+		</xsd:sequence>
+		<xsd:attribute name="Role" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DistanceBetweenEntitiesConstraintType">
+		<xsd:attribute name="Distance" type="xsd:integer" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="RelationshipConstraintType">
+		<xsd:choice>
+			<xsd:element name="DistanceBetweenEntitiesConstraint" type="DistanceBetweenEntitiesConstraintType"/>
+			<xsd:element name="And" type="AndRelationshipConstraintType"/>
+			<xsd:element name="Or" type="OrRelationshipConstraintType"/>
+		</xsd:choice>
+	</xsd:complexType>
+	
+	<xsd:complexType name="AndRelationshipConstraintType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="2" name="RelationshipConstraint" type="RelationshipConstraintType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="OrRelationshipConstraintType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="2" name="RelationshipConstraint" type="RelationshipConstraintType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="RelationshipType">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="0" name="Role" type="RoleType"/>
+			<xsd:element name="RelationshipConstraint" type="RelationshipConstraintType"/>
+		</xsd:sequence>
+		<xsd:attribute name="Type" type="xsd:string" use="required"/>
+	</xsd:complexType>
+  
+	<xsd:element name="Relationship" type="RelationshipType"/>
+  
+</xsd:schema>
