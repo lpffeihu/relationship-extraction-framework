@@ -26,6 +26,8 @@ import edu.columbia.cs.evaluation.measures.Recall;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.core.CoreReader;
 import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
+import edu.columbia.cs.og.core.impl.DependencyGraphsKernel;
+import edu.columbia.cs.og.core.impl.ShortestPathKernel;
 import edu.columbia.cs.og.core.impl.SubsequencesKernel;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.svm.problem.OperableStructureToBinarySVMproblemConverter;
@@ -64,7 +66,7 @@ public class TrainingStepACE2005 {
 		String rootDir=args[0];
 		
 		String path = rootDir+"ACEsplits/";
-		String pathProc = rootDir+"ACEBoNGramsFlat/";
+		String pathProc = rootDir+"ACEGraphsFlat/ORG-AFF/";
 		
 		List<String> trainFiles = getFiles(path + trainFile);
 		List<OperableStructure> trainingFiles=new ArrayList<OperableStructure>();
@@ -75,7 +77,7 @@ public class TrainingStepACE2005 {
 			trainingFiles.addAll(getOperableStructure(pathProc,s));
 		}
 		
-		Engine classificationEngine = new JLibSVMEngine(new BagOfNGramsKernel());
+		Engine classificationEngine = new JLibSVMEngine(new DependencyGraphsKernel());
 		Model svmModel = classificationEngine.train(trainingFiles);
 		
 		List<String> testFiles = getFiles(path + testFile);

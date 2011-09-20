@@ -1,5 +1,7 @@
 package edu.columbia.cs.model.impl;
 
+import java.io.IOException;
+
 import edu.berkeley.compbio.jlibsvm.SolutionModel;
 import edu.berkeley.compbio.jlibsvm.binary.BinaryModel;
 import edu.columbia.cs.model.Model;
@@ -65,5 +67,14 @@ public class JLibsvmBinaryModel extends Model{
 
 	private Object getConfidenceValue() {
 		return lastConfidence;
+	}
+
+	@Override
+	public void saveModel(String path) throws IOException {
+		svmModel.save(path);
+	}
+	
+	public static JLibsvmBinaryModel loadModel(String path){
+		return new JLibsvmBinaryModel((BinaryModel<String,OperableStructure>)SolutionModel.identifyTypeAndLoad(path));
 	}
 }

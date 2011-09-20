@@ -62,7 +62,7 @@ public abstract class OperableStructure implements Serializable {
 		fs.enrichMe(this);
 	}
 	
-	public void add(GraphFS graph){
+	public void add(GraphFS<? extends Serializable,? extends Serializable> graph){
 		throw new UnsupportedOperationException();
 	}
 	

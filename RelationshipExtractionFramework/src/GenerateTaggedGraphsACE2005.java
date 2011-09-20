@@ -1,33 +1,27 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import edu.columbia.cs.cg.candidates.CandidateSentence;
+import edu.columbia.cs.cg.candidates.CandidatesGenerator;
 import edu.columbia.cs.cg.candidates.CandidatesSentenceReader;
 import edu.columbia.cs.cg.candidates.CandidatesSentenceWriter;
 import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.cg.document.loaders.impl.ACE2005Loader;
+import edu.columbia.cs.cg.relations.RelationshipType;
+import edu.columbia.cs.cg.relations.constraints.roles.EntityTypeConstraint;
+import edu.columbia.cs.cg.sentence.impl.OpenNLPMESplitter;
+import edu.columbia.cs.data.Dataset;
 import edu.columbia.cs.og.algorithm.StructureGenerator;
 import edu.columbia.cs.og.configuration.StructureConfiguration;
 import edu.columbia.cs.og.core.CoreWriter;
-import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
 import edu.columbia.cs.og.core.impl.ShortestPathKernel;
-import edu.columbia.cs.og.core.impl.SubsequencesKernel;
-import edu.columbia.cs.og.features.DependentFeatureGenerator;
-import edu.columbia.cs.og.features.FeatureGenerator;
-import edu.columbia.cs.og.features.impl.EntityBasedChunkingFG;
-import edu.columbia.cs.og.features.impl.GenericPartOfSpeechFG;
-import edu.columbia.cs.og.features.impl.OpenNLPPartOfSpeechFG;
-import edu.columbia.cs.og.features.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.og.structure.OperableStructure;
-import edu.columbia.cs.utils.SGMFileFilter;
 
 
-
-public class OperableStructuresGenerationACE2005 {
-
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
+public class GenerateTaggedGraphsACE2005 {
+	public static void main(String[] args) throws IOException, ClassNotFoundException{
 		StructureConfiguration conf = new StructureConfiguration(new ShortestPathKernel());
 		
 		
@@ -38,20 +32,19 @@ public class OperableStructuresGenerationACE2005 {
 		//conf.addFeatureGenerator(fgPOS);
 		//conf.addFeatureGenerator(fgGPOS);
 		
-		String inputFolder = "/home/goncalo/ACEProcessedFlat/";
+		String inputFolder = args[1] + args[0] + "/";
 		File ACEDir = new File(inputFolder);
 		File[] files = ACEDir.listFiles();
-		String outputFolder = "/home/goncalo/ACEGraphsFlat/ORG-AFF/";
-		for(int i=400; i<files.length; i++){
+		String outputFolder = args[2] + args[0] + "/";
+		for(int i=0; i<files.length; i++){
+			System.out.println("Processing file " + (i+1) + " of " + files.length);
 			File f = files[i];
 			
 			String fileName = f.getName();
 			Set<CandidateSentence> sents = CandidatesSentenceReader.readCandidateSentences(inputFolder+fileName);
-			System.out.println("Processing file " + (i+1) + " of " + files.length + " containing " + sents.size() + " sentences");
 			Set<OperableStructure> structures = StructureGenerator.generateStructures(sents, conf);
 			
 			CoreWriter.writeOperableStructures(structures, outputFolder+fileName);
 		}
 	}
-
 }

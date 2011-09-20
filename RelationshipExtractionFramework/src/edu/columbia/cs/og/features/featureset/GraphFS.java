@@ -4,25 +4,22 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 import edu.columbia.cs.og.structure.OperableStructure;
+import edu.columbia.cs.utils.SimpleGraph;
 
-public class GraphFS<E extends Serializable> extends FeatureSet {
-	private E[] sequence;
+public class GraphFS<N extends Serializable, L extends Serializable> extends FeatureSet {
+	private SimpleGraph<N,L> graph;
 	
-	public GraphFS(E[] sequence){
-		this.sequence=sequence;
-	}
-
-	public int size(){
-		return sequence.length;
+	public GraphFS(SimpleGraph<N,L> graph){
+		this.graph=graph;
 	}
 	
-	public E getElement(int position){
-		return sequence[position];
+	public SimpleGraph<N,L> getGraph(){
+		return graph;
 	}
 	
 	@Override
 	public String toString(){
-		return Arrays.toString(sequence);
+		return graph.toString();
 	}
 
 	@Override

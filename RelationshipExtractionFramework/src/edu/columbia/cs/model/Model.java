@@ -1,5 +1,6 @@
 package edu.columbia.cs.model;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,4 +55,7 @@ public abstract class Model {
 	protected abstract Object getPredictionPropertyValue(
 			PredictionProperties predictionProperties);
 	protected abstract PredictionProperties[] getAvailablePredictionProperties();
+	
+	public abstract void saveModel(String path) throws IOException;
 }
+
