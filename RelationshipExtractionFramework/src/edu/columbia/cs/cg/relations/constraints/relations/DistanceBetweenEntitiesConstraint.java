@@ -15,6 +15,10 @@ public class DistanceBetweenEntitiesConstraint implements RelationshipConstraint
 		this.k=k;
 	}
 	
+	public DistanceBetweenEntitiesConstraint(Integer k){
+		this.k = k;
+	}
+	
 	@Override
 	public boolean checkConstraint(Relationship rel) {
 		Entity[] entities = rel.getEntities();

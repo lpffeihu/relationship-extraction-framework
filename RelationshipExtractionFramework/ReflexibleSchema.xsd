@@ -2,8 +2,9 @@
 <xsd:schema xmlns="edu.columbia.cs.reflexible" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="edu.columbia.cs.reflexible">
 
 	<xsd:complexType name="ParameterType">
-		<xsd:attribute name="Name" type="xsd:string" use="required"/>
-		<xsd:attribute name="Value" type="xsd:string" use="required"/>
+		<xsd:attribute name="Name" type="xsd:string" use="required" />
+		<xsd:attribute name="Type" type="xsd:string"></xsd:attribute>
+		<xsd:attribute name="Value" type="xsd:string" use="required" />
 	</xsd:complexType>
 
 	<xsd:complexType name="ReflexibleType">

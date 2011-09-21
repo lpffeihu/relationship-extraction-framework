@@ -1,5 +1,6 @@
 package edu.columbia.cs.cg.relations.constraints.roles;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ public class OrRoleConstraint implements RoleConstraint {
 	RoleConstraint[] constraints;
 	
 	public OrRoleConstraint(RoleConstraint ... constraints){
+		
 		this.constraints=constraints;
 	}
 

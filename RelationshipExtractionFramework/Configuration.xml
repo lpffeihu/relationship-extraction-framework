@@ -3,33 +3,40 @@
 	<Relationship Type="ORG-AFF">
 		<Role Role="Arg-1">
 			<RoleConstraint>
-				<Or>
-					<RoleConstraint>
-						<EntityTypeConstraint Type="PER"/>
-					</RoleConstraint>
-					<RoleConstraint>
-						<IsOptionalConstraint/>
-					</RoleConstraint>
-				</Or>
+			<SimpleRoleConstraint RoleConstraintName="edu.columbia.cs.cg.relations.constraints.roles.EntityTypeConstraint">
+			<Parameter Name="entityType" Value='PER' Type="java.lang.String"/>
+
+			</SimpleRoleConstraint>
+			
 			</RoleConstraint>
 		</Role>
 		<Role Role="Arg-2">
 			<RoleConstraint>
-				<EntityTypeConstraint Type="ORG"/>
+			<CompositeRoleConstraint CombinationType="edu.columbia.cs.cg.relations.constraints.roles.OrRoleConstraint">
+			<RoleConstraint>
+			<SimpleRoleConstraint RoleConstraintName="edu.columbia.cs.cg.relations.constraints.roles.EntityTypeConstraint">
+				<Parameter Name="entityType" Value="LOC"
+					Type="java.lang.String" />
+
+			</SimpleRoleConstraint>
+
+			</RoleConstraint>
+			<RoleConstraint>
+			<SimpleRoleConstraint RoleConstraintName="edu.columbia.cs.cg.relations.constraints.roles.IsOptionalConstraint"></SimpleRoleConstraint>
+
+			</RoleConstraint>
+			</CompositeRoleConstraint>
 			</RoleConstraint>
 		</Role>
 		<RelationshipConstraint>
-			<Or>
+			<CompositeRelationshipConstraint CombinationType="edu.columbia.cs.cg.relations.constraints.relations.OrRelationshipConstraint">
 				<RelationshipConstraint>
-					<DistanceBetweenEntitiesConstraint Distance="10" />
-				</RelationshipConstraint>
-				<RelationshipConstraint>
-					<DistanceBetweenEntitiesConstraint Distance="100" />
-				</RelationshipConstraint>
-			</Or>
-		</RelationshipConstraint>
+					
+					<SimpleRelationshipConstraint RelationshipConstraintName="edu.columbia.cs.cg.relations.constraints.relations.DistanceBetweenEntitiesConstraint"><Parameter Name="distance" Value="10" Type="java.lang.Integer"></Parameter></SimpleRelationshipConstraint></RelationshipConstraint><RelationshipConstraint>
+					
+					<SimpleRelationshipConstraint RelationshipConstraintName="edu.columbia.cs.cg.relations.constraints.relations.DistanceBetweenEntitiesConstraint"><Parameter Name="distance" Value="10" Type="java.lang.Integer"></Parameter></SimpleRelationshipConstraint></RelationshipConstraint></CompositeRelationshipConstraint></RelationshipConstraint>
 	</Relationship>
 	<SentenceSplitter path="edu.columbia.cs.cg.sentence.impl.OpenNLPMESplitter">
-		<Parameter Name="path" Value="en-sent.bin" />
+		<Parameter Name="path" Value="en-sent.bin" Type="java.lang.String"/>
 	</SentenceSplitter>
 </Phase1>
