@@ -29,8 +29,7 @@ public class OperableStructuresGenerationACE2005 {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		StructureConfiguration conf = new StructureConfiguration(new BagOfNGramsKernel());
-		
-		
+				
 		//FeatureGenerator tokenizer = new OpenNLPTokenizationFG("en-token.bin");
 		//FeatureGenerator fgChunk = new DependentFeatureGenerator(new EntityBasedChunkingFG(),tokenizer);
 		//FeatureGenerator fgPOS = new DependentFeatureGenerator(new OpenNLPPartOfSpeechFG("en-pos-maxent.bin"),fgChunk);

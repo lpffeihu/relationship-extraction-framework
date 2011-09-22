@@ -29,6 +29,9 @@ public class GenericPartOfSpeechFG extends CandidateSentenceFeatureGenerator {
 
 	@Override
 	protected FeatureSet process(CandidateSentence sentence) {
+		
+		//TODO The part of speech doesn't have to be hard coded
+		
 		SequenceFS<String> pos = (SequenceFS<String>) sentence.getFeatures(OpenNLPPartOfSpeechFG.class);
 
 		String[] gpos = new String[pos.size()];
