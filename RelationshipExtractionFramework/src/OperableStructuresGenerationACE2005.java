@@ -28,7 +28,7 @@ import edu.columbia.cs.utils.SGMFileFilter;
 public class OperableStructuresGenerationACE2005 {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		StructureConfiguration conf = new StructureConfiguration(new ShortestPathKernel());
+		StructureConfiguration conf = new StructureConfiguration(new BagOfNGramsKernel());
 		
 		
 		//FeatureGenerator tokenizer = new OpenNLPTokenizationFG("en-token.bin");
@@ -41,8 +41,8 @@ public class OperableStructuresGenerationACE2005 {
 		String inputFolder = "/home/goncalo/ACEProcessedFlat/";
 		File ACEDir = new File(inputFolder);
 		File[] files = ACEDir.listFiles();
-		String outputFolder = "/home/goncalo/ACEGraphsFlat/ORG-AFF/";
-		for(int i=400; i<files.length; i++){
+		String outputFolder = "/home/goncalo/ACEBoNGramsFlat/";
+		for(int i=0; i<files.length; i++){
 			File f = files[i];
 			
 			String fileName = f.getName();

@@ -29,7 +29,6 @@ public class LocalizedDependencyGraphsKernel implements KernelFunction<Dependenc
 	private boolean m_bCache=true;
 	static SparseDoubleAlgebra al;
 	private boolean m_bNorm=true;
-	private Map<DependencyGraph,Double> m_mapStoK = Collections.synchronizedMap(new HashMap<DependencyGraph,Double>());
 	
 	static{
 		al = new SparseDoubleAlgebra();
@@ -51,23 +50,6 @@ public class LocalizedDependencyGraphsKernel implements KernelFunction<Dependenc
 	
 	public double selfKernel(DependencyGraph s)
 	{
-		if (m_bCache) {
-			// get string representation of relation instance
-			
-			//System.out.println(strText);
-			//for (int i = 0; i < s.length; i++)
-			//	strText += s[i][0] + " ";
-			// get cached value
-			Double dblk = (Double) m_mapStoK .get(s);
-			if (dblk == null) {
-				double k = kernel(s, s);
-				m_mapStoK.put(s, k);
-				return k;
-			}
-			
-			return dblk.doubleValue();
-		}
-
 		return kernel(s, s);
 	}
 	

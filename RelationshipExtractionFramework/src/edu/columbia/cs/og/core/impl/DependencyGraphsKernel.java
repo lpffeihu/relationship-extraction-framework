@@ -34,7 +34,7 @@ public class DependencyGraphsKernel extends Kernel {
 	SimpleGraphUtils util = new SimpleGraphUtils();
 	private boolean m_bCache=true;
 	static SparseDoubleAlgebra al;
-	protected HashMap<TaggedGraph,Double> m_mapStoK;
+	protected Map<TaggedGraph,Double> m_mapStoK;
 	private boolean m_bNorm=true;
 	private LocalizedDependencyGraphsKernel innerKernel = new LocalizedDependencyGraphsKernel();
 	private LocalizedDependencyGraphsKernel outerKernel = new LocalizedDependencyGraphsKernel();
@@ -47,14 +47,14 @@ public class DependencyGraphsKernel extends Kernel {
 	public DependencyGraphsKernel(double gamma, double lambda)
 	{
 		m_lambda = lambda;
-		m_mapStoK = new HashMap<TaggedGraph,Double>();
+		m_mapStoK = Collections.synchronizedMap(new HashMap<TaggedGraph,Double>());
 	}
 
 
 	public DependencyGraphsKernel() 
 	{
 		// Default values.
-		m_mapStoK = new HashMap<TaggedGraph,Double>();
+		m_mapStoK = Collections.synchronizedMap(new HashMap<TaggedGraph,Double>());
 		
 	}
 	

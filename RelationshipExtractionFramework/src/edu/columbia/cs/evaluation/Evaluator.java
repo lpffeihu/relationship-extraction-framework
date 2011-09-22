@@ -13,8 +13,14 @@ import edu.columbia.cs.og.structure.OperableStructure;
 public class Evaluator {
 	private List<Measure> measures = new ArrayList<Measure>();
 	
+	private Map<Measure,Double> results = new HashMap<Measure,Double>();
+	
 	public void addMeasure(Measure measure){
 		measures.add(measure);
+	}
+	
+	public double getResult(Measure m){
+		return results.get(m);
 	}
 	
 	public void printEvaluationReport(List<OperableStructure> testingFiles, Model m){
@@ -34,7 +40,9 @@ public class Evaluator {
 		}
 		
 		for(Measure measure : measures){
-			System.out.println(measure + ": " + measure.getValue(labels, properties));
+			double result = measure.getValue(labels, properties);
+			results.put(measure, result);
+			System.out.println(measure + ": " + result);
 		}
 	}
 }

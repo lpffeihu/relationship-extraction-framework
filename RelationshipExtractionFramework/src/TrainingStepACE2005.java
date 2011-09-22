@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.davidsoergel.conja.Parallel;
+import com.google.gdata.data.spreadsheet.TableEntry;
 
 import edu.berkeley.compbio.jlibsvm.ImmutableSvmParameterPoint;
 import edu.berkeley.compbio.jlibsvm.binary.BinaryClassificationProblemImpl;
@@ -18,6 +19,7 @@ import edu.columbia.cs.engine.impl.JLibSVMEngine;
 import edu.columbia.cs.evaluation.Evaluator;
 import edu.columbia.cs.evaluation.measures.Accuracy;
 import edu.columbia.cs.evaluation.measures.FMeasure;
+import edu.columbia.cs.evaluation.measures.Measure;
 import edu.columbia.cs.evaluation.measures.NumberOfExpectedPositiveAnswers;
 import edu.columbia.cs.evaluation.measures.NumberOfPositiveAnswers;
 import edu.columbia.cs.evaluation.measures.NumberOfTruePositives;
@@ -66,18 +68,19 @@ public class TrainingStepACE2005 {
 		String rootDir=args[0];
 		
 		String path = rootDir+"ACEsplits/";
-		String pathProc = rootDir+"ACEGraphsFlat/ORG-AFF/";
+		//String pathProc = rootDir+"ACEGraphsFlat/ORG-AFF/";
+		String pathProc = rootDir+"ACEBoNGramsFlat/";
 		
 		List<String> trainFiles = getFiles(path + trainFile);
 		List<OperableStructure> trainingFiles=new ArrayList<OperableStructure>();
-		int trainFilesSize=(int) (trainFiles.size()*0.1);
+		int trainFilesSize=(int) (trainFiles.size()*1.0);
 		for(int i=0; i<trainFilesSize; i++){
 			String s = trainFiles.get(i);
 			System.out.println("processing [" + s + "]");
 			trainingFiles.addAll(getOperableStructure(pathProc,s));
 		}
 		
-		Engine classificationEngine = new JLibSVMEngine(new DependencyGraphsKernel());
+		Engine classificationEngine = new JLibSVMEngine(new BagOfNGramsKernel());
 		Model svmModel = classificationEngine.train(trainingFiles);
 		
 		List<String> testFiles = getFiles(path + testFile);
@@ -88,16 +91,32 @@ public class TrainingStepACE2005 {
 		System.out.println("Loaded " + testingFiles.size() + " testing sentences");
 		
 		Evaluator eval = new Evaluator();
-		eval.addMeasure(new NumberOfTruePositives());
-		eval.addMeasure(new NumberOfPositiveAnswers());
-		eval.addMeasure(new NumberOfExpectedPositiveAnswers());
-		eval.addMeasure(new Accuracy());
-		eval.addMeasure(new Recall());
-		eval.addMeasure(new Precision());
-		eval.addMeasure(new FMeasure(1.0));
-		eval.addMeasure(new FMeasure(0.5));
-		eval.addMeasure(new FMeasure(2.0));
+		Measure tp = new NumberOfTruePositives();
+		eval.addMeasure(tp);
+		Measure pa = new NumberOfPositiveAnswers();
+		eval.addMeasure(pa);
+		Measure epa = new NumberOfExpectedPositiveAnswers();
+		eval.addMeasure(epa);
+		Measure acc = new Accuracy();
+		eval.addMeasure(acc);
+		Measure rec = new Recall();
+		eval.addMeasure(rec);
+		Measure pre = new Precision();
+		eval.addMeasure(pre);
+		Measure f = new FMeasure(1.0);
+		eval.addMeasure(f);
 		eval.printEvaluationReport(testingFiles, svmModel);
+		
+		String id = "BoW Split=" + numberSplit;
+		GoogleSpreadsheetsAPI api = new GoogleSpreadsheetsAPI("configFiles/googleAPI.properties");
+		TableEntry tableEntry = api.getTable("ResultsACEDataset", "TableACEEvaluation");
+		api.updateField(tableEntry, id, "NumCorrect", "" + eval.getResult(tp));
+		api.updateField(tableEntry, id, "NumAnswers", "" + eval.getResult(pa));
+		api.updateField(tableEntry, id, "NumExpected", "" + eval.getResult(epa));
+		api.updateField(tableEntry, id, "Accuracy", "" + eval.getResult(acc));
+		api.updateField(tableEntry, id, "Recall", "" + eval.getResult(rec));
+		api.updateField(tableEntry, id, "Precision", "" + eval.getResult(pre));
+		api.updateField(tableEntry, id, "F1", "" + eval.getResult(f));
 		
 		Parallel.shutdown();
 	}
