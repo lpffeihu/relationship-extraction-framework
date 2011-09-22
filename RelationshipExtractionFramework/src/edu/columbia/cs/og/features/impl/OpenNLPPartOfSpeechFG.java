@@ -51,6 +51,7 @@ public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator {
 
 	@Override
 	protected FeatureSet process(CandidateSentence sentence) {
+		
 		SequenceFS<Span> tokenization = (SequenceFS<Span>) sentence.getFeatures(EntityBasedChunkingFG.class);
 
 		String[] tokens = getTokens(tokenization, sentence);

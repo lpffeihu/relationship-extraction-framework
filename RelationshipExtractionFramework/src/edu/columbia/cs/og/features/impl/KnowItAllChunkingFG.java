@@ -14,8 +14,6 @@ import edu.washington.cs.knowitall.util.DefaultObjects;
 
 public class KnowItAllChunkingFG extends SentenceFeatureGenerator {
 
-	opennlp.tools.util.featuregen.SentenceFeatureGenerator g;
-	
 	@Override
 	protected FeatureSet process(Sentence sentence) {
 		// TODO Auto-generated method stub
