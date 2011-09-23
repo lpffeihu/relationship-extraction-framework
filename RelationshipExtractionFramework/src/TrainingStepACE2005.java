@@ -1,6 +1,14 @@
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +34,7 @@ import edu.columbia.cs.evaluation.measures.NumberOfTruePositives;
 import edu.columbia.cs.evaluation.measures.Precision;
 import edu.columbia.cs.evaluation.measures.Recall;
 import edu.columbia.cs.model.Model;
+import edu.columbia.cs.model.impl.JLibsvmBinaryModel;
 import edu.columbia.cs.og.core.CoreReader;
 import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
 import edu.columbia.cs.og.core.impl.DependencyGraphsKernel;
@@ -70,18 +79,27 @@ public class TrainingStepACE2005 {
 		String path = rootDir+"ACEsplits/";
 		//String pathProc = rootDir+"ACEGraphsFlat/ORG-AFF/";
 		String pathProc = rootDir+"ACEBoNGramsFlat/";
+		//String pathProc = rootDir+"ACESubseqFlat/";
 		
 		List<String> trainFiles = getFiles(path + trainFile);
 		List<OperableStructure> trainingFiles=new ArrayList<OperableStructure>();
-		int trainFilesSize=(int) (trainFiles.size()*1.0);
+		int trainFilesSize=(int) (trainFiles.size()*0.1);
 		for(int i=0; i<trainFilesSize; i++){
 			String s = trainFiles.get(i);
 			System.out.println("processing [" + s + "]");
 			trainingFiles.addAll(getOperableStructure(pathProc,s));
 		}
 		
+		//Engine classificationEngine = new JLibSVMEngine(new DependencyGraphsKernel());
 		Engine classificationEngine = new JLibSVMEngine(new BagOfNGramsKernel());
+		//Engine classificationEngine = new JLibSVMEngine(new SubsequencesKernel());
 		Model svmModel = classificationEngine.train(trainingFiles);
+		//svmModel.saveModel("/home/goncalo/Desktop/ORG-AFFModel.svm");
+		//svmModel=null;
+		//svmModel=JLibsvmBinaryModel.loadModel("/home/goncalo/Desktop/ORG-AFFModel.svm");
+		weka.core.SerializationHelper.write("/home/goncalo/Desktop/ORG-AFFModel.svm", svmModel);
+		svmModel=null;
+		svmModel = (Model) weka.core.SerializationHelper.read("/home/goncalo/Desktop/ORG-AFFModel.svm");
 		
 		List<String> testFiles = getFiles(path + testFile);
 		List<OperableStructure> testingFiles=new ArrayList<OperableStructure>();
@@ -107,7 +125,7 @@ public class TrainingStepACE2005 {
 		eval.addMeasure(f);
 		eval.printEvaluationReport(testingFiles, svmModel);
 		
-		String id = "BoW Split=" + numberSplit;
+		/*String id = "BoW Split=" + numberSplit;
 		GoogleSpreadsheetsAPI api = new GoogleSpreadsheetsAPI("configFiles/googleAPI.properties");
 		TableEntry tableEntry = api.getTable("ResultsACEDataset", "TableACEEvaluation");
 		api.updateField(tableEntry, id, "NumCorrect", "" + eval.getResult(tp));
@@ -116,7 +134,7 @@ public class TrainingStepACE2005 {
 		api.updateField(tableEntry, id, "Accuracy", "" + eval.getResult(acc));
 		api.updateField(tableEntry, id, "Recall", "" + eval.getResult(rec));
 		api.updateField(tableEntry, id, "Precision", "" + eval.getResult(pre));
-		api.updateField(tableEntry, id, "F1", "" + eval.getResult(f));
+		api.updateField(tableEntry, id, "F1", "" + eval.getResult(f));*/
 		
 		Parallel.shutdown();
 	}

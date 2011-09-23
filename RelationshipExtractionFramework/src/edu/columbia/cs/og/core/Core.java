@@ -1,5 +1,6 @@
 package edu.columbia.cs.og.core;
 
+import java.io.Serializable;
 import java.util.List;
 
 import edu.columbia.cs.cg.candidates.CandidateSentence;
@@ -7,7 +8,7 @@ import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.structure.OperableStructure;
 
-public abstract class Core {
+public abstract class Core implements Serializable{
 	List<FeatureGenerator> mandatoryFG=null;
 	
 	public List<FeatureGenerator> getMandatoryFeatureGenerators(){

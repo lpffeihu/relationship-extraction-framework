@@ -35,14 +35,4 @@ public class WekaClassifierModel extends Model {
 		return null;
 	}
 
-	@Override
-	public void saveModel(String path) throws IOException {
-		try {
-			SerializationHelper.write(path, classifier);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }

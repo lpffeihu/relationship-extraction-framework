@@ -1,12 +1,13 @@
 package edu.columbia.cs.model;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.columbia.cs.og.structure.OperableStructure;
 
-public abstract class Model {
+public abstract class Model implements Serializable{
 	public enum PredictionProperties {
 		CONFIDENCE,
 		PROBABILITY_POSITIVE,
@@ -55,7 +56,5 @@ public abstract class Model {
 	protected abstract Object getPredictionPropertyValue(
 			PredictionProperties predictionProperties);
 	protected abstract PredictionProperties[] getAvailablePredictionProperties();
-	
-	public abstract void saveModel(String path) throws IOException;
 }
 
