@@ -1,20 +1,18 @@
 package edu.columbia.cs.og.features.impl;
 
-import java.io.IOException;
 import java.util.List;
 
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
-import weka.core.Instances;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
+import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.og.features.CandidateSentenceFeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.features.featureset.WekaInstanceFS;
 import edu.columbia.cs.utils.Span;
 import edu.washington.cs.knowitall.extractor.conf.BooleanFeatureSet;
-import edu.washington.cs.knowitall.extractor.conf.ReVerbFeatures;
 import edu.washington.cs.knowitall.nlp.ChunkedSentence;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedArgumentExtraction;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
@@ -24,17 +22,49 @@ import edu.washington.cs.knowitall.util.Range;
 public class OpenInformationExtractionFG extends
 		CandidateSentenceFeatureGenerator {
 
+	public static transient final String POSITIVE_LABEL = "positive";
+
+	public static transient final String NEGATIVE_LABEL = "neagative";
+
 	//Should receive different types of FeatureSets...
 	
-	private static BooleanFeatureSet<ChunkedBinaryExtraction> featureSet = new ReVerbFeatures().getFeatureSet();
-	private static int numFeatures = featureSet.getNumFeatures();
-	private static FastVector attributes = null;
-	@Override
-	protected FeatureSet process(CandidateSentence candidateSentence) {
+	private BooleanFeatureSet<ChunkedBinaryExtraction> featureSet; //= new ReVerbFeatures().getFeatureSet();
+
+	private int numFeatures;
+
+	private FastVector attributes = null;
+	
+	public OpenInformationExtractionFG(BooleanFeatureSet<ChunkedBinaryExtraction> featureSet){
 		
-		if (attributes == null){
-			initializeAttributes();
-		}
+		this.featureSet = featureSet;
+		
+		numFeatures = featureSet.getNumFeatures();
+		
+		attributes = new FastVector(numFeatures+1);
+		
+		List<String> featureNames = featureSet.getFeatureNames();
+		for (int i = 0; i < numFeatures; i++) {
+			attributes.addElement(new Attribute(featureNames.get(i)));
+			
+		}		
+		
+		//just for optimization, we add the class attribute.
+		
+		FastVector classVals = new FastVector(2);
+		
+		classVals.addElement(POSITIVE_LABEL);
+		
+		classVals.addElement(NEGATIVE_LABEL);
+		
+		Attribute classAttr = new Attribute("class", classVals);
+		
+		attributes.addElement(classAttr);
+
+	}
+	
+	@Override
+	
+	protected FeatureSet process(CandidateSentence candidateSentence) {
 		
 		SequenceFS<String> tokensString = (SequenceFS<String>)candidateSentence.getSentence().getFeatures(OpenNLPStringTokenizationFG.class);
 		
@@ -67,31 +97,27 @@ public class OpenInformationExtractionFG extends
 		ChunkedArgumentExtraction arg2 = new ChunkedArgumentExtraction(sent, arg2Range, rel);
 		ChunkedBinaryExtraction labeled = new ChunkedBinaryExtraction(rel, arg1, arg2);
 				
-		Instance inst = new Instance(numFeatures);
+		Instance inst = new Instance(numFeatures + 1);
 		double[] featureVals = featureSet.featurizeToDouble(labeled);
 		for (int i = 0; i < numFeatures; i++) {
 			inst.setValue((Attribute)attributes.elementAt(i), featureVals[i]);
 		}
 
+		//just for optimization, we add the class attribute.
+		
+		inst.setValue((Attribute)attributes.elementAt(numFeatures), generateLabel(candidateSentence.getLabel()));
+		
 		return new WekaInstanceFS(inst);
 
-//		private void initializeWekaObjects() {
-//			numFeatures = featureSet.getNumFeatures();
-//			List<String> featureNames = featureSet.getFeatureNames();
-//			attributes = new FastVector(numFeatures + 1); // +1 for class attribute
-//			// Construct a numeric attribute for each feature in the set
-//			for (int i = 0; i < numFeatures; i++) {
-//				Attribute featureAttr = new Attribute(featureNames.get(i));
-//				attributes.addElement(featureAttr);
-//			}
-//			FastVector classVals = new FastVector(2);
-//			classVals.addElement("positive");
-//			classVals.addElement("negative");
-//			Attribute classAttr = new Attribute("class", classVals);
-//			attributes.addElement(classAttr);
-//			instances = new Instances(INST_NAME, attributes, 0);
-//			instances.setClassIndex(numFeatures);
-//		}
+	}
+
+	private String generateLabel(String label) {
+		
+		if (label.equals(RelationshipType.NOT_A_RELATIONSHIP)){
+			return NEGATIVE_LABEL;
+		}
+	
+		return POSITIVE_LABEL;
 		
 	}
 
@@ -99,14 +125,6 @@ public class OpenInformationExtractionFG extends
 		
 		return sequence.toArray();
 		
-	}
-
-	private void initializeAttributes() {
-		attributes = new FastVector(numFeatures);
-		List<String> featureNames = featureSet.getFeatureNames();
-		for (int i = 0; i < numFeatures; i++) {
-			attributes.addElement(new Attribute(featureNames.get(i)));
-		}
 	}
 
 	private Range readRange(Span span){

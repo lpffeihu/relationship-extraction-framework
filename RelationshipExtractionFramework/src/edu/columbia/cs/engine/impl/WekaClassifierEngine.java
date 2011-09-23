@@ -9,10 +9,16 @@ import java.util.List;
 import org.apache.tools.ant.filters.StringInputStream;
 
 import weka.classifiers.Classifier;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
+import weka.core.Instances;
 
 import edu.columbia.cs.engine.Engine;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.model.impl.WekaClassifierModel;
+import edu.columbia.cs.og.features.featureset.WekaInstanceFS;
+import edu.columbia.cs.og.features.impl.OpenInformationExtractionFG;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.washington.cs.knowitall.extractor.conf.BooleanFeatureSet;
 import edu.washington.cs.knowitall.extractor.conf.LabeledBinaryExtraction;
@@ -25,38 +31,37 @@ public class WekaClassifierEngine implements Engine {
 
 	private Classifier classifier;
 	private WekaDataSet<ChunkedBinaryExtraction> dataSet;
+	private BooleanFeatureSet<ChunkedBinaryExtraction> featureSet;
 	
-	public WekaClassifierEngine(Classifier classifier){
+	public WekaClassifierEngine(Classifier classifier, BooleanFeatureSet<ChunkedBinaryExtraction> featureSet){
 		this.classifier = classifier;
+		this.featureSet = featureSet;
 	}
 	@Override
 	public Model train(List<OperableStructure> list) {
+
+		Instance sampleInstance = ((WekaInstanceFS)list.get(0).getFeatures(OpenInformationExtractionFG.class)).getInstance();
 		
-		StringBuilder sb = new StringBuilder();
+		FastVector attributes = generateAttributeFastVector(sampleInstance);
 		
-		if (list.size()>0){
-			sb.append(list.get(0).toString());
-		}
+		Instances instances = new Instances("train", attributes, 0);
 		
-		for (int i = 1; i < list.size(); i++) {
+		instances.setClassIndex(featureSet.getNumFeatures());
+
+		for (OperableStructure operableStructure : list) {
+		
+			Instance instance = ((WekaInstanceFS)operableStructure.getFeatures(OpenInformationExtractionFG.class)).getInstance();
 			
-			sb.append(list.get(i).toString());
+			Instance inst = new Instance(instance);
+			
+			instances.add(inst);
+			
+			inst.setDataset(instances);
 			
 		}
-		
-		InputStream in = new StringInputStream(sb.toString());
-		
-		LabeledBinaryExtractionReader reader;
-		
+
 		try {
-			
-			reader = new LabeledBinaryExtractionReader(in);
-			
-			trainClassifier(reader.readExtractions(), classifier);
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			train(instances, classifier);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,11 +71,21 @@ public class WekaClassifierEngine implements Engine {
 		
 	}
 
-	private void trainClassifier(Iterable<LabeledBinaryExtraction> examples, Classifier classifier) throws Exception {
-		ReVerbFeatures feats = new ReVerbFeatures();
-		createDataSet(examples,feats.getFeatureSet());
-		this.classifier = classifier;
-		train();
+	private FastVector generateAttributeFastVector(
+			Instance sampleInstance) {
+		
+		int numFeatures = sampleInstance.numAttributes();
+
+		FastVector attributes = new FastVector(numFeatures); // has space for class attribute already 
+		// Construct a numeric attribute for each feature in the set
+		for (int i = 0; i < numFeatures; i++) {
+
+			attributes.addElement(sampleInstance.attribute(i));
+
+		}
+		
+		return attributes;
+
 	}
 	
 	/**
@@ -95,8 +110,8 @@ public class WekaClassifierEngine implements Engine {
 		}
 	}
 
-	private void train() throws Exception {
-		classifier.buildClassifier(dataSet.getWekaInstances());
+	private void train(Instances instances, Classifier classifier2) throws Exception {
+		classifier.buildClassifier(instances);
 	}
 
 	

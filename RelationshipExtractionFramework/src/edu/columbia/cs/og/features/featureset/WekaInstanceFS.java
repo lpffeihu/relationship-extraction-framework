@@ -16,4 +16,7 @@ public class WekaInstanceFS extends FeatureSet {
 		operableStructure.add(this);
 	}
 
+	public Instance getInstance(){
+		return instance;
+	}
 }
