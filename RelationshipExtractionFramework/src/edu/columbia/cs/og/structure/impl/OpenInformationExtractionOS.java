@@ -1,6 +1,7 @@
 package edu.columbia.cs.og.structure.impl;
 
 import edu.columbia.cs.cg.candidates.CandidateSentence;
+import edu.columbia.cs.model.impl.WekaClassifierModel;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.features.impl.EntitySplitsFG;
 import edu.columbia.cs.og.features.impl.KnowItAllChunkingFG;
@@ -61,7 +62,16 @@ public class OpenInformationExtractionOS extends OperableStructure {
 		
 		secondIndexes = getString(span.getElement(3));
 		
-		label = getLabel();
+		label = generateLabel(getLabel());
+
+	}
+
+	private String generateLabel(String label) {
+		
+		if (label.equals(WekaClassifierModel.NEGATIVE_LABEL))
+			return "0";
+		return "1";
+		
 	}
 
 	private String getString(Span span) {

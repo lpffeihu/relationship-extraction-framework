@@ -20,6 +20,7 @@ public class WekaClassifierModel extends Model {
 		this.classifier = classifier;
 	}
 	
+	
 	@Override
 	protected String getPredictedLabel(OperableStructure s) {
 		

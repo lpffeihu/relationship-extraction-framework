@@ -30,11 +30,15 @@ import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 public class WekaClassifierEngine implements Engine {
 
 	private Classifier classifier;
+	
 	private BooleanFeatureSet<ChunkedBinaryExtraction> featureSet;
 	
 	public WekaClassifierEngine(Classifier classifier, BooleanFeatureSet<ChunkedBinaryExtraction> featureSet){
+	
 		this.classifier = classifier;
+		
 		this.featureSet = featureSet;
+		
 	}
 	@Override
 	public Model train(List<OperableStructure> list) {
