@@ -20,10 +20,13 @@ public class OpenInformationExtractionOS extends OperableStructure {
 	private String middleIndexes;
 	private String second;
 	private String secondIndexes;
+	private String string;
+	private String label;
 	
 	
 	public OpenInformationExtractionOS(CandidateSentence c) {
 		super(c);
+		
 	}
 
 	/**
@@ -33,6 +36,8 @@ public class OpenInformationExtractionOS extends OperableStructure {
 
 	@Override
 	public void initialize() {
+		
+		string = null;	
 		
 		SequenceFS<String> tokensString = (SequenceFS<String>)getFeatures(OpenNLPStringTokenizationFG.class);
 		
@@ -56,6 +61,7 @@ public class OpenInformationExtractionOS extends OperableStructure {
 		
 		secondIndexes = getString(span.getElement(3));
 		
+		label = getLabel();
 	}
 
 	private String getString(Span span) {
@@ -96,4 +102,17 @@ public class OpenInformationExtractionOS extends OperableStructure {
 		
 	}
 
+	public String toString(){
+		
+		return getStringVersion();
+	
+	}
+
+	private String getStringVersion() {
+		
+		if (string == null){
+			string = tokens + "\n" + pos + "\n" + chunks + "\n" + first + "\n" + firstIndexes + "\n" + middle + "\n" + middleIndexes + "\n" + second + "\n" + secondIndexes + "\n" + label;
+		}
+		return string;
+	}
 }

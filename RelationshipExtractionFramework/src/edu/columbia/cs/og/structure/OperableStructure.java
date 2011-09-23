@@ -9,6 +9,7 @@ import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.GraphFS;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
+import edu.columbia.cs.og.features.featureset.WekaInstanceFS;
 
 public abstract class OperableStructure implements Serializable {
 
@@ -68,5 +69,10 @@ public abstract class OperableStructure implements Serializable {
 	
 	public void add(SequenceFS<? extends Serializable> graph){
 		throw new UnsupportedOperationException();
+	}
+
+	public void add(WekaInstanceFS wekaInstanceFS) {
+		throw new UnsupportedOperationException();
+		
 	}
 }

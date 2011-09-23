@@ -29,4 +29,8 @@ public class SequenceFS<E extends Serializable> extends FeatureSet {
 	public void enrichMe(OperableStructure operableStructure) {
 		operableStructure.add(this);
 	}
+
+	public E[] toArray() {
+		return sequence;
+	}
 }
