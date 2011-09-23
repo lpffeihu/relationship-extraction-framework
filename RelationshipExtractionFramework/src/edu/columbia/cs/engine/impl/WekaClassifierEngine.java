@@ -30,7 +30,6 @@ import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 public class WekaClassifierEngine implements Engine {
 
 	private Classifier classifier;
-	private WekaDataSet<ChunkedBinaryExtraction> dataSet;
 	private BooleanFeatureSet<ChunkedBinaryExtraction> featureSet;
 	
 	public WekaClassifierEngine(Classifier classifier, BooleanFeatureSet<ChunkedBinaryExtraction> featureSet){
@@ -61,7 +60,7 @@ public class WekaClassifierEngine implements Engine {
 		}
 
 		try {
-			train(instances, classifier);
+			classifier.buildClassifier(instances);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,32 +86,5 @@ public class WekaClassifierEngine implements Engine {
 		return attributes;
 
 	}
-	
-	/**
-	 * @return the data set used to train the classifier
-	 */
-	public WekaDataSet<ChunkedBinaryExtraction> getDataSet() {
-		return dataSet;
-	}
-	
-	/**
-	 * @return the trained classifier.
-	 */
-	public Classifier getClassifier() {
-		return classifier;
-	}
-	
-	private void createDataSet(Iterable<LabeledBinaryExtraction> examples, BooleanFeatureSet<ChunkedBinaryExtraction> featureSet) {
-		dataSet = new WekaDataSet<ChunkedBinaryExtraction>("train", featureSet);
-		for (LabeledBinaryExtraction extr : examples) {
-			int label = extr.isPositive() ? 1 : 0;
-			dataSet.addInstance(extr, label);
-		}
-	}
-
-	private void train(Instances instances, Classifier classifier2) throws Exception {
-		classifier.buildClassifier(instances);
-	}
-
 	
 }

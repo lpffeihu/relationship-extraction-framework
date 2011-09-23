@@ -7,6 +7,7 @@ import weka.core.FastVector;
 import weka.core.Instance;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.relations.RelationshipType;
+import edu.columbia.cs.model.impl.WekaClassifierModel;
 import edu.columbia.cs.og.features.CandidateSentenceFeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
@@ -22,12 +23,6 @@ import edu.washington.cs.knowitall.util.Range;
 public class OpenInformationExtractionFG extends
 		CandidateSentenceFeatureGenerator {
 
-	public static transient final String POSITIVE_LABEL = "positive";
-
-	public static transient final String NEGATIVE_LABEL = "neagative";
-
-	//Should receive different types of FeatureSets...
-	
 	private BooleanFeatureSet<ChunkedBinaryExtraction> featureSet; //= new ReVerbFeatures().getFeatureSet();
 
 	private int numFeatures;
@@ -52,9 +47,9 @@ public class OpenInformationExtractionFG extends
 		
 		FastVector classVals = new FastVector(2);
 		
-		classVals.addElement(POSITIVE_LABEL);
+		classVals.addElement(WekaClassifierModel.POSITIVE_LABEL);
 		
-		classVals.addElement(NEGATIVE_LABEL);
+		classVals.addElement(WekaClassifierModel.NEGATIVE_LABEL);
 		
 		Attribute classAttr = new Attribute("class", classVals);
 		
@@ -114,10 +109,10 @@ public class OpenInformationExtractionFG extends
 	private String generateLabel(String label) {
 		
 		if (label.equals(RelationshipType.NOT_A_RELATIONSHIP)){
-			return NEGATIVE_LABEL;
+			return WekaClassifierModel.NEGATIVE_LABEL;
 		}
 	
-		return POSITIVE_LABEL;
+		return WekaClassifierModel.POSITIVE_LABEL;
 		
 	}
 
