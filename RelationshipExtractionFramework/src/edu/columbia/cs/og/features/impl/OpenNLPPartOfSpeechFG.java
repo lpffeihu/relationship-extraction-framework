@@ -28,9 +28,9 @@ import edu.columbia.cs.utils.Span;
 public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<SequenceFS<String>> {
 
 	private POSTaggerME tagger;
-	private FeatureGenerator<SequenceFS<Span>> tokenizer;
+	private FeatureGenerator<SequenceFS<String>> tokenizer;
 
-	public OpenNLPPartOfSpeechFG(String path,FeatureGenerator<SequenceFS<Span>> tokenizer) throws InvalidFormatException, IOException{
+	public OpenNLPPartOfSpeechFG(String path,FeatureGenerator<SequenceFS<String>> tokenizer) throws InvalidFormatException, IOException{
 		InputStream modelIn = null;
 		POSModel modelPOS=null;
 		modelIn = new FileInputStream(path);
@@ -40,26 +40,12 @@ public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<Seq
 		this.tokenizer = tokenizer;
 	}
 	
-	private String[] getTokens(SequenceFS<Span> spans, CandidateSentence sentence){
-		String value = sentence.getSentence().getValue();
-		String[] tokens = new String[spans.size()];
-		
-		for(int i=0; i<spans.size(); i++){
-			Span s = spans.getElement(i);
-			tokens[i]=value.substring(s.getStart(),s.getEnd());
-		}
-		
-		return tokens;
-	}
-
 	@Override
 	protected SequenceFS<String> extractFeatures(CandidateSentence sentence) {
 		
-		SequenceFS<Span> tokenization = (SequenceFS<Span>) sentence.getFeatures(tokenizer.getClass());
+		SequenceFS<String> tokenization = (SequenceFS<String>) sentence.getFeatures(tokenizer.getClass());
 
-		String[] tokens = getTokens(tokenization, sentence);
-
-		return new SequenceFS<String>(tagger.tag(tokens));
+		return new SequenceFS<String>(tagger.tag(tokenization.toArray()));
 	}
 
 	@Override
