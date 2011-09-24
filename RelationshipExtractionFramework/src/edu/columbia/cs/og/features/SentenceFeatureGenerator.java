@@ -1,17 +1,19 @@
 package edu.columbia.cs.og.features;
 
+import java.util.List;
+
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.structure.OperableStructure;
 
-public abstract class SentenceFeatureGenerator extends FeatureGenerator {
+public abstract class SentenceFeatureGenerator<E extends FeatureSet> extends FeatureGenerator<E> {
 
 	@Override
-	protected final FeatureSet process(OperableStructure s) {
-		return process(s.getCandidateSentence().getSentence());
+	protected final E extractFeatures(OperableStructure s) {
+		return extractFeatures(s.getCandidateSentence().getSentence());
 	}
 
-	protected abstract FeatureSet process(Sentence sentence);
+	protected abstract E extractFeatures(Sentence sentence);
 
 	@Override
 	protected final FeatureSet getFeatures(OperableStructure s,
@@ -28,4 +30,5 @@ public abstract class SentenceFeatureGenerator extends FeatureGenerator {
 		
 	}
 
+	protected abstract List<FeatureGenerator> retrieveRequiredFeatureGenerators();
 }

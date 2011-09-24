@@ -18,23 +18,26 @@ import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.og.features.CandidateSentenceFeatureGenerator;
+import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.SentenceFeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.utils.Span;
 
-public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator {
+public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<SequenceFS<String>> {
 
 	private POSTaggerME tagger;
+	private FeatureGenerator<SequenceFS<Span>> tokenizer;
 
-	public OpenNLPPartOfSpeechFG(String path) throws InvalidFormatException, IOException{
+	public OpenNLPPartOfSpeechFG(String path,FeatureGenerator<SequenceFS<Span>> tokenizer) throws InvalidFormatException, IOException{
 		InputStream modelIn = null;
 		POSModel modelPOS=null;
 		modelIn = new FileInputStream(path);
 		modelPOS = new POSModel(modelIn);
 		modelIn.close();
 		tagger = new POSTaggerME(modelPOS);
+		this.tokenizer = tokenizer;
 	}
 	
 	private String[] getTokens(SequenceFS<Span> spans, CandidateSentence sentence){
@@ -50,12 +53,21 @@ public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator {
 	}
 
 	@Override
-	protected FeatureSet process(CandidateSentence sentence) {
+	protected SequenceFS<String> extractFeatures(CandidateSentence sentence) {
 		
-		SequenceFS<Span> tokenization = (SequenceFS<Span>) sentence.getFeatures(EntityBasedChunkingFG.class);
+		SequenceFS<Span> tokenization = (SequenceFS<Span>) sentence.getFeatures(tokenizer.getClass());
 
 		String[] tokens = getTokens(tokenization, sentence);
 
 		return new SequenceFS<String>(tagger.tag(tokens));
+	}
+
+	@Override
+	protected List<FeatureGenerator> retrieveRequiredFeatureGenerators() {
+		ArrayList<FeatureGenerator> ret = new ArrayList<FeatureGenerator>();
+		
+		ret.add(tokenizer);
+	
+		return ret;
 	}
 }

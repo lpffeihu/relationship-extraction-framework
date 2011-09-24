@@ -16,13 +16,20 @@ import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.og.features.CandidateSentenceFeatureGenerator;
+import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.SentenceFeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.utils.Span;
 
-public class EntityBasedChunkingFG extends CandidateSentenceFeatureGenerator {
+public class EntityBasedChunkingFG extends CandidateSentenceFeatureGenerator<SequenceFS<Span>> {
+	
+	private FeatureGenerator<SequenceFS<Span>> tokenizer;
+
+	public EntityBasedChunkingFG(FeatureGenerator<SequenceFS<Span>> tokenizer){
+		this.tokenizer = tokenizer;
+	}
 	
 	private SequenceFS<Span> normalizeTokenization(CandidateSentence sent, SequenceFS<Span> sentenceTokens){
 		for(Entity ent : sent.getEntities()){
@@ -123,11 +130,21 @@ public class EntityBasedChunkingFG extends CandidateSentenceFeatureGenerator {
 	}
 
 	@Override
-	protected FeatureSet process(CandidateSentence sentence) {
-		SequenceFS<Span> tokenization = (SequenceFS<Span>) sentence.getSentence().getFeatures(OpenNLPTokenizationFG.class);
+	protected SequenceFS<Span> extractFeatures(CandidateSentence sentence) {
+		SequenceFS<Span> tokenization = (SequenceFS<Span>) sentence.getSentence().getFeatures(tokenizer.getClass());
 		
 		SequenceFS<Span> spans=normalizeTokenization(sentence, tokenization);
 				
 		return spans;
+	}
+
+	@Override
+	protected List<FeatureGenerator> retrieveRequiredFeatureGenerators() {
+		
+		ArrayList<FeatureGenerator> ret = new ArrayList<FeatureGenerator>();
+		
+		ret.add(tokenizer);
+	
+		return ret;
 	}
 }

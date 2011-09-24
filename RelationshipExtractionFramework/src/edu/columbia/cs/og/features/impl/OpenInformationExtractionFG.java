@@ -59,7 +59,7 @@ public class OpenInformationExtractionFG extends
 	
 	@Override
 	
-	protected FeatureSet process(CandidateSentence candidateSentence) {
+	protected FeatureSet extractFeatures(CandidateSentence candidateSentence) {
 		
 		SequenceFS<String> tokensString = (SequenceFS<String>)candidateSentence.getSentence().getFeatures(OpenNLPStringTokenizationFG.class);
 		

@@ -8,21 +8,26 @@ import java.util.List;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.og.features.CandidateSentenceFeatureGenerator;
+import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.utils.Span;
 
 public class EntitySplitsFG extends
-		CandidateSentenceFeatureGenerator {
+		CandidateSentenceFeatureGenerator<SequenceFS<Span>> {
 
+	private FeatureGenerator<SequenceFS<Span>> tokenizer;
+
+	public EntitySplitsFG(FeatureGenerator<SequenceFS<Span>> tokenizer){
+		this.tokenizer = tokenizer;
+	}
+	
 	@Override
-	protected FeatureSet process(CandidateSentence candidateSentence) {
+	protected SequenceFS<Span> extractFeatures(CandidateSentence candidateSentence) {
 		
 		List<Span> spansList = new ArrayList<Span>();
 		
-		SequenceFS<String> tokens = (SequenceFS<String>)candidateSentence.getSentence().getFeatures(OpenNLPStringTokenizationFG.class);
-
-		SequenceFS<Span> spans = (SequenceFS<Span>)candidateSentence.getSentence().getFeatures(OpenNLPTokenizationFG.class);
+		SequenceFS<Span> spans = (SequenceFS<Span>)candidateSentence.getSentence().getFeatures(tokenizer.getClass());
 		
 		int sentenceOffset = candidateSentence.getSentence().getOffset();
 		
@@ -120,7 +125,7 @@ public class EntitySplitsFG extends
 //			
 //		}
 		
-		spansList.add(new Span(indexEnd2+1,tokens.size()-1));
+		spansList.add(new Span(indexEnd2+1,spans.size()-1));
 
 		return new SequenceFS<Span>(spansList.toArray(new Span[0]));
 
@@ -133,6 +138,16 @@ public class EntitySplitsFG extends
 				return i;
 		}
 		return -1;
+	}
+
+	@Override
+	protected List<FeatureGenerator> retrieveRequiredFeatureGenerators() {
+		
+		ArrayList<FeatureGenerator> ret = new ArrayList<FeatureGenerator>();
+		
+		ret.add(tokenizer);
+	
+		return ret;
 	}
 
 }

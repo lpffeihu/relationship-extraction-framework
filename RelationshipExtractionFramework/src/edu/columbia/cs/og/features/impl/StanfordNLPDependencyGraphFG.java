@@ -21,6 +21,7 @@ import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.og.features.CandidateSentenceFeatureGenerator;
+import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.SentenceFeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.GraphFS;
@@ -34,12 +35,14 @@ import edu.stanford.nlp.trees.EnglishGrammaticalStructure;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TypedDependency;
 
-public class StanfordNLPDependencyGraphFG extends CandidateSentenceFeatureGenerator {
+public class StanfordNLPDependencyGraphFG extends CandidateSentenceFeatureGenerator<GraphFS<Integer,String>> {
 
 	private LexicalizedParser parser;
+	private FeatureGenerator<SequenceFS<Span>> tokenizer;
 	
-	public StanfordNLPDependencyGraphFG(String path) throws InvalidFormatException, IOException{
+	public StanfordNLPDependencyGraphFG(String path, FeatureGenerator<SequenceFS<Span>> tokenizer) throws InvalidFormatException, IOException{
 		parser = new LexicalizedParser(path);
+		this.tokenizer = tokenizer;
 	}
 	
 	private List<Word> getTokens(SequenceFS<Span> spans, CandidateSentence sentence){
@@ -57,8 +60,8 @@ public class StanfordNLPDependencyGraphFG extends CandidateSentenceFeatureGenera
 	private Map<List<Word>,Collection<TypedDependency>> depParses = new HashMap<List<Word>,Collection<TypedDependency>>();
 
 	@Override
-	protected FeatureSet process(CandidateSentence sentence) {
-		SequenceFS<Span> tokenization = (SequenceFS<Span>) sentence.getFeatures(EntityBasedChunkingFG.class);
+	protected GraphFS<Integer,String> extractFeatures(CandidateSentence sentence) {
+		SequenceFS<Span> tokenization = (SequenceFS<Span>) sentence.getFeatures(tokenizer.getClass());
 
 		List<Word> tokens = getTokens(tokenization, sentence);
 		
@@ -86,5 +89,12 @@ public class StanfordNLPDependencyGraphFG extends CandidateSentenceFeatureGenera
 		}
 		
 		return new GraphFS<Integer,String>(g);
+	}
+
+	@Override
+	protected List<FeatureGenerator> retrieveRequiredFeatureGenerators() {
+		ArrayList<FeatureGenerator> ret = new ArrayList<FeatureGenerator>();
+		ret.add(tokenizer);
+		return ret;
 	}
 }

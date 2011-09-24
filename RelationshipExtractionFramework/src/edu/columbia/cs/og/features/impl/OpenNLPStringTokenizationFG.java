@@ -26,7 +26,7 @@ public class OpenNLPStringTokenizationFG extends SentenceFeatureGenerator {
 	}
 	
 	@Override
-	protected FeatureSet process(Sentence sentence) {
+	protected FeatureSet extractFeatures(Sentence sentence) {
 		
 		String sentenceValue = sentence.getValue();
 				

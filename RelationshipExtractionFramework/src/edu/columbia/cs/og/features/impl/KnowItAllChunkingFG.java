@@ -12,10 +12,10 @@ import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.washington.cs.knowitall.util.DefaultObjects;
 
-public class KnowItAllChunkingFG extends SentenceFeatureGenerator {
+public class KnowItAllChunkingFG extends SentenceFeatureGenerator<SequenceFS<String>> {
 
 	@Override
-	protected FeatureSet process(Sentence sentence) {
+	protected SequenceFS<String> extractFeatures(Sentence sentence) {
 		// TODO Auto-generated method stub
 
 		SequenceFS<String> tokens = (SequenceFS<String>)sentence.getFeatures(OpenNLPStringTokenizationFG.class); 
@@ -30,6 +30,7 @@ public class KnowItAllChunkingFG extends SentenceFeatureGenerator {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(1);
 		}
 		
 		return null;
