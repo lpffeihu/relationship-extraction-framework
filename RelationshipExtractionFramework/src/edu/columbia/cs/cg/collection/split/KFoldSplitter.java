@@ -26,7 +26,6 @@ public class KFoldSplitter<E extends Writable> extends Splitter<E> {
 			listE.add(element);
 		}
 		Collections.shuffle(listE);
-		int sizeCollection=dataset.size();
 
 		List<E>[] buckets = new List[numberSplits];
 		for(int i=0; i<numberSplits; i++){

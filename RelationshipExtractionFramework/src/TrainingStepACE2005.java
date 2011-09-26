@@ -1,27 +1,12 @@
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import com.davidsoergel.conja.Parallel;
-import com.google.gdata.data.spreadsheet.TableEntry;
 
-import edu.berkeley.compbio.jlibsvm.ImmutableSvmParameterPoint;
-import edu.berkeley.compbio.jlibsvm.binary.BinaryClassificationProblemImpl;
-import edu.berkeley.compbio.jlibsvm.binary.BinaryClassificationSVM;
-import edu.berkeley.compbio.jlibsvm.binary.BinaryModel;
-import edu.berkeley.compbio.jlibsvm.binary.C_SVC;
-import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
 import edu.columbia.cs.engine.Engine;
 import edu.columbia.cs.engine.impl.JLibSVMEngine;
 import edu.columbia.cs.evaluation.Evaluator;
@@ -34,14 +19,9 @@ import edu.columbia.cs.evaluation.measures.NumberOfTruePositives;
 import edu.columbia.cs.evaluation.measures.Precision;
 import edu.columbia.cs.evaluation.measures.Recall;
 import edu.columbia.cs.model.Model;
-import edu.columbia.cs.model.impl.JLibsvmBinaryModel;
 import edu.columbia.cs.og.core.CoreReader;
 import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
-import edu.columbia.cs.og.core.impl.DependencyGraphsKernel;
-import edu.columbia.cs.og.core.impl.ShortestPathKernel;
-import edu.columbia.cs.og.core.impl.SubsequencesKernel;
 import edu.columbia.cs.og.structure.OperableStructure;
-import edu.columbia.cs.svm.problem.OperableStructureToBinarySVMproblemConverter;
 
 
 public class TrainingStepACE2005 {

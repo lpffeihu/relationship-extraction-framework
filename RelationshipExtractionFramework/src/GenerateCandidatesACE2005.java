@@ -1,22 +1,17 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.candidates.CandidatesGenerator;
-import edu.columbia.cs.cg.candidates.CandidatesSentenceReader;
 import edu.columbia.cs.cg.candidates.CandidatesSentenceWriter;
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.loaders.impl.ACE2005Loader;
 import edu.columbia.cs.cg.relations.RelationshipType;
-import edu.columbia.cs.cg.relations.constraints.relations.DistanceBetweenEntitiesConstraint;
-import edu.columbia.cs.cg.relations.constraints.relations.EntitiesOrderNotRelevantConstraint;
 import edu.columbia.cs.cg.relations.constraints.roles.EntityTypeConstraint;
 import edu.columbia.cs.cg.sentence.impl.OpenNLPMESplitter;
 import edu.columbia.cs.data.Dataset;
-import edu.columbia.cs.utils.SGMFileFilter;
 
 
 public class GenerateCandidatesACE2005 {

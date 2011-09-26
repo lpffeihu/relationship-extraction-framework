@@ -1,19 +1,13 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.candidates.CandidatesSentenceReader;
-import edu.columbia.cs.cg.candidates.CandidatesSentenceWriter;
-import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.og.algorithm.StructureGenerator;
 import edu.columbia.cs.og.configuration.StructureConfiguration;
 import edu.columbia.cs.og.core.CoreWriter;
 import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
-import edu.columbia.cs.og.core.impl.ShortestPathKernel;
-import edu.columbia.cs.og.core.impl.SubsequencesKernel;
 import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.features.impl.EntityBasedChunkingFG;
@@ -22,7 +16,6 @@ import edu.columbia.cs.og.features.impl.OpenNLPPartOfSpeechFG;
 import edu.columbia.cs.og.features.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.og.features.impl.SpansToStringsConvertionFG;
 import edu.columbia.cs.og.structure.OperableStructure;
-import edu.columbia.cs.utils.SGMFileFilter;
 import edu.columbia.cs.utils.Span;
 
 

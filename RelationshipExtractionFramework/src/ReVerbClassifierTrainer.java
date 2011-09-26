@@ -1,19 +1,11 @@
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
+import weka.classifiers.Classifier;
 import edu.washington.cs.knowitall.extractor.conf.BooleanFeatureSet;
 import edu.washington.cs.knowitall.extractor.conf.LabeledBinaryExtraction;
-import edu.washington.cs.knowitall.extractor.conf.LabeledBinaryExtractionReader;
 import edu.washington.cs.knowitall.extractor.conf.ReVerbFeatures;
 import edu.washington.cs.knowitall.extractor.conf.WekaDataSet;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
-import weka.classifiers.Classifier;
-import weka.classifiers.functions.Logistic;
-import weka.core.SerializationHelper;
-import weka.core.converters.ArffSaver;
 
 /***
  * Used to train the ReVerb confidence function using the features described
