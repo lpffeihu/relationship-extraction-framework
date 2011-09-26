@@ -1,32 +1,18 @@
 package edu.columbia.cs.og.features.impl;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import opennlp.tools.postag.POSModel;
-import opennlp.tools.postag.POSTaggerME;
-import opennlp.tools.tokenize.Tokenizer;
-import opennlp.tools.tokenize.TokenizerME;
-import opennlp.tools.tokenize.TokenizerModel;
 import opennlp.tools.util.InvalidFormatException;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
-import edu.columbia.cs.cg.relations.Entity;
-import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.og.features.CandidateSentenceFeatureGenerator;
 import edu.columbia.cs.og.features.FeatureGenerator;
-import edu.columbia.cs.og.features.SentenceFeatureGenerator;
-import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.GraphFS;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
-import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.utils.SimpleGraph;
 import edu.columbia.cs.utils.Span;
 import edu.stanford.nlp.ling.Word;
@@ -61,7 +47,7 @@ public class StanfordNLPDependencyGraphFG extends CandidateSentenceFeatureGenera
 
 	@Override
 	protected GraphFS<Integer,String> extractFeatures(CandidateSentence sentence) {
-		SequenceFS<Span> tokenization = (SequenceFS<Span>) sentence.getFeatures(tokenizer.getClass());
+		SequenceFS<Span> tokenization = sentence.getFeatures(tokenizer);
 
 		List<Word> tokens = getTokens(tokenization, sentence);
 		

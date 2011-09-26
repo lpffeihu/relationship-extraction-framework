@@ -24,7 +24,7 @@ public class WekaClassifierModel extends Model {
 	@Override
 	protected String getPredictedLabel(OperableStructure s) {
 		
-		Instance instance = ((WekaInstanceFS)s.getFeatures(OpenInformationExtractionFG.class)).getInstance();
+		Instance instance = (s.getFeatures(OpenInformationExtractionFG.class)).getInstance();
 		
 		try {
 			double classification = classifier.classifyInstance(instance);

@@ -8,15 +8,17 @@ import opennlp.tools.util.InvalidFormatException;
 
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.og.core.Core;
-import edu.columbia.cs.og.features.DependentFeatureGenerator;
 import edu.columbia.cs.og.features.FeatureGenerator;
+import edu.columbia.cs.og.features.SentenceFeatureGenerator;
+import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.features.impl.EntitySplitsFG;
 import edu.columbia.cs.og.features.impl.KnowItAllChunkingFG;
 import edu.columbia.cs.og.features.impl.OpenNLPPartOfSpeechFG;
-import edu.columbia.cs.og.features.impl.OpenNLPStringTokenizationFG;
+import edu.columbia.cs.og.features.impl.SpansToStringsConvertionFG;
 import edu.columbia.cs.og.features.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.og.structure.impl.OpenInformationExtractionOS;
+import edu.columbia.cs.utils.Span;
 
 public class OpenInformationExtractionCore extends Core {
 
@@ -26,29 +28,26 @@ public class OpenInformationExtractionCore extends Core {
 		
 		List<FeatureGenerator> features = new ArrayList<FeatureGenerator>();
 		
-		FeatureGenerator tokens;
 		try {
-			tokens = new OpenNLPStringTokenizationFG("en-token.bin");
+			//TODO: SOMETHING WRONG!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			
-			FeatureGenerator tokenSpans = new OpenNLPTokenizationFG("en-token.bin");
+			FeatureGenerator<SequenceFS<Span>> tokenSpans = new OpenNLPTokenizationFG("en-token.bin");
 			
-			FeatureGenerator pos = new OpenNLPPartOfSpeechFG("en-pos-maxent.bin");
+			FeatureGenerator<SequenceFS<String>> tokens = new SpansToStringsConvertionFG(tokenSpans);
 			
-			FeatureGenerator chunk = new KnowItAllChunkingFG();
+			FeatureGenerator<SequenceFS<String>> pos = new OpenNLPPartOfSpeechFG("en-pos-maxent.bin",tokens);
 			
-			FeatureGenerator chunker = new DependentFeatureGenerator(chunk, tokens, pos);
+			FeatureGenerator<SequenceFS<String>> chunk = new KnowItAllChunkingFG(tokens,pos);
 			
-			FeatureGenerator entitySplits = new EntitySplitsFG();
-			
-			FeatureGenerator entitySplitFG = new DependentFeatureGenerator(entitySplits, tokens, tokenSpans);
+			//FeatureGenerator<SequenceFS<Span>> entitySplits = new EntitySplitsFG(chunk);
 			
 			features.add(tokens);
 			
 			features.add(pos);
 			
-			features.add(chunker);
+			features.add(chunk);
 			
-			features.add(entitySplitFG);
+			//features.add(entitySplits);
 			
 			return features;
 			
@@ -59,6 +58,8 @@ public class OpenInformationExtractionCore extends Core {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.exit(1);
 		
 		return null;
 		

@@ -1,8 +1,6 @@
 package edu.columbia.cs.cg.candidates;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,16 +10,13 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.document.Segment;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.cg.relations.RelationshipType;
-import edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint;
 import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.cg.sentence.SentenceSplitter;
 import edu.columbia.cs.utils.MegaCartesianProduct;
-import edu.columbia.cs.utils.Pair;
 
 public class CandidatesGenerator {
 	private SentenceSplitter splitter;

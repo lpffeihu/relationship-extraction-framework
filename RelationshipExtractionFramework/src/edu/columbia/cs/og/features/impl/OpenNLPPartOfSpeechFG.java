@@ -43,7 +43,7 @@ public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<Seq
 	@Override
 	protected SequenceFS<String> extractFeatures(CandidateSentence sentence) {
 		
-		SequenceFS<String> tokenization = (SequenceFS<String>) sentence.getFeatures(tokenizer.getClass());
+		SequenceFS<String> tokenization = sentence.getFeatures(tokenizer);
 
 		return new SequenceFS<String>(tagger.tag(tokenization.toArray()));
 	}

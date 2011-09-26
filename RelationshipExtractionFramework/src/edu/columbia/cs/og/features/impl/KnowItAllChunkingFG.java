@@ -1,6 +1,8 @@
 package edu.columbia.cs.og.features.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.midi.Sequence;
 
@@ -10,16 +12,26 @@ import edu.columbia.cs.og.features.SentenceFeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.structure.OperableStructure;
+import edu.columbia.cs.utils.Span;
 import edu.washington.cs.knowitall.util.DefaultObjects;
 
 public class KnowItAllChunkingFG extends SentenceFeatureGenerator<SequenceFS<String>> {
 
+	private FeatureGenerator<SequenceFS<String>> tokenizer;
+	private FeatureGenerator<SequenceFS<String>> posTagger;
+	
+	public KnowItAllChunkingFG(FeatureGenerator<SequenceFS<String>> tokenizer,
+							   FeatureGenerator<SequenceFS<String>> posTagger){
+		this.tokenizer = tokenizer;
+		this.posTagger = posTagger;
+	}
+	
 	@Override
 	protected SequenceFS<String> extractFeatures(Sentence sentence) {
 		// TODO Auto-generated method stub
 
-		SequenceFS<String> tokens = (SequenceFS<String>)sentence.getFeatures(OpenNLPStringTokenizationFG.class); 
-		SequenceFS<String> pos = (SequenceFS<String>)sentence.getFeatures(OpenNLPPartOfSpeechFG.class);
+		SequenceFS<String> tokens = sentence.getFeatures(tokenizer); 
+		SequenceFS<String> pos = sentence.getFeatures(posTagger);
 		
 		String[] tkns = generateArray(tokens);
 		String[] post = generateArray(pos);
@@ -48,6 +60,16 @@ public class KnowItAllChunkingFG extends SentenceFeatureGenerator<SequenceFS<Str
 		
 		return ret;
 		
+	}
+
+	@Override
+	protected List<FeatureGenerator> retrieveRequiredFeatureGenerators() {
+		ArrayList<FeatureGenerator> ret = new ArrayList<FeatureGenerator>();
+		
+		ret.add(tokenizer);
+		ret.add(posTagger);
+	
+		return ret;
 	}
 
 

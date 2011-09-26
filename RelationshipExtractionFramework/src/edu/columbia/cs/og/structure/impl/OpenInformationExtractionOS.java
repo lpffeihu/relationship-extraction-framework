@@ -6,7 +6,7 @@ import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.features.impl.EntitySplitsFG;
 import edu.columbia.cs.og.features.impl.KnowItAllChunkingFG;
 import edu.columbia.cs.og.features.impl.OpenNLPPartOfSpeechFG;
-import edu.columbia.cs.og.features.impl.OpenNLPStringTokenizationFG;
+import edu.columbia.cs.og.features.impl.SpansToStringsConvertionFG;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.utils.Span;
 
@@ -40,15 +40,15 @@ public class OpenInformationExtractionOS extends OperableStructure {
 		
 		string = null;	
 		
-		SequenceFS<String> tokensString = (SequenceFS<String>)getFeatures(OpenNLPStringTokenizationFG.class);
+		SequenceFS<String> tokensString = getFeatures(SpansToStringsConvertionFG.class);
 		
 		tokens = getString(tokensString);
 		
-		pos = getString((SequenceFS<String>)getFeatures(OpenNLPPartOfSpeechFG.class));
+		pos = getString(getFeatures(OpenNLPPartOfSpeechFG.class));
 		
-		chunks = getString((SequenceFS<String>)getFeatures(KnowItAllChunkingFG.class));
+		chunks = getString(getFeatures(KnowItAllChunkingFG.class));
 
-		SequenceFS<Span> span = (SequenceFS<Span>)getFeatures(EntitySplitsFG.class);
+		SequenceFS<Span> span = getFeatures(EntitySplitsFG.class);
 		
 		first = getString(span.getElement(1),tokensString);
 		

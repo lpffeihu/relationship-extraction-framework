@@ -131,7 +131,7 @@ public class EntityBasedChunkingFG extends CandidateSentenceFeatureGenerator<Seq
 
 	@Override
 	protected SequenceFS<Span> extractFeatures(CandidateSentence sentence) {
-		SequenceFS<Span> tokenization = (SequenceFS<Span>) sentence.getSentence().getFeatures(tokenizer.getClass());
+		SequenceFS<Span> tokenization = sentence.getSentence().getFeatures(tokenizer);
 		
 		SequenceFS<Span> spans=normalizeTokenization(sentence, tokenization);
 				

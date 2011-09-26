@@ -71,7 +71,7 @@ public class TaggedGraph extends OperableStructure {
 
 	@Override
 	public void initialize() {
-		SequenceFS<Span> tokenization = (SequenceFS<Span>) getFeatures(EntityBasedChunkingFG.class);
+		SequenceFS<Span> tokenization = getFeatures(EntityBasedChunkingFG.class);
 		String[] tokens = getTokenValues(tokenization);
 		
 		Entity[] entities = getCandidateSentence().getEntities();
@@ -105,7 +105,7 @@ public class TaggedGraph extends OperableStructure {
 			graph.addNode(i, newNode);
 		}
 		
-		GraphFS<Integer,String> depGraph= (GraphFS<Integer,String>) getFeatures(StanfordNLPDependencyGraphFG.class);
+		GraphFS<Integer,String> depGraph= getFeatures(StanfordNLPDependencyGraphFG.class);
 		SimpleGraph<Integer,String> g = depGraph.getGraph();
 		for(Pair<Pair<Integer,Integer>,String> edge : g.getEdges()){
 			Pair<Integer,Integer> edgeNodes = edge.a();

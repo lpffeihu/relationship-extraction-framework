@@ -11,31 +11,31 @@ public abstract class FeatureGenerator<E extends FeatureSet> {
 	
 	public final void generateFeatures(OperableStructure s){
 		
-		FeatureSet fs = s.getFeatures(this.getClass());
+		E fs = s.getFeatures(this);
 		
 		if (fs == null){
 			
-			fs = getFeatures(s,this.getClass());
+			fs = getFeatures(s,this);
 			
 			if (fs == null){
 				
 				fs = process(s);
 				
-				setFeatures(s,this.getClass(),fs);
+				setFeatures(s,this,fs);
 				
 			}
 
-			s.setFeatures(this.getClass(),fs);
+			s.setFeatures(this,fs);
 			
 		}
 		
 		
 	}
 	
-	protected abstract void setFeatures(OperableStructure s, Class<? extends FeatureGenerator> featureGeneratorClass,
-			FeatureSet fs);
+	protected abstract <E extends FeatureSet> void setFeatures(OperableStructure s, FeatureGenerator<E> featureGenerator,
+			E fs);
 
-	protected abstract FeatureSet getFeatures(OperableStructure s, Class<? extends FeatureGenerator> featureGeneratorClass);
+	protected abstract <E extends FeatureSet> E getFeatures(OperableStructure s, FeatureGenerator<E> featureGenerator);
 	
 	/*public Class<? extends FeatureGenerator> getKey() {
 		return this.getClass();

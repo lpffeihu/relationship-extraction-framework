@@ -15,7 +15,6 @@ import cern.colt.matrix.tdouble.algo.SparseDoubleAlgebra;
 import edu.berkeley.compbio.jlibsvm.kernel.KernelFunction;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.og.core.Kernel;
-import edu.columbia.cs.og.features.DependentFeatureGenerator;
 import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.impl.EntityBasedChunkingFG;
 import edu.columbia.cs.og.features.impl.OpenNLPTokenizationFG;
@@ -118,7 +117,7 @@ public class DependencyGraphsKernel extends Kernel {
 			//The only mandatory feature is the chunker... However, the chunker
 			//also depends on the results of the tokenizer. Thus, we need to create a
 			//tokenizer and a DependentFeatureGenerator in this case
-			fg.add(new DependentFeatureGenerator(new StanfordNLPDependencyGraphFG("englishPCFG.ser.gz"),new DependentFeatureGenerator(new EntityBasedChunkingFG(),new OpenNLPTokenizationFG("en-token.bin"))));
+			fg.add(new StanfordNLPDependencyGraphFG("englishPCFG.ser.gz",new EntityBasedChunkingFG(new OpenNLPTokenizationFG("en-token.bin"))));
 		} catch (InvalidFormatException e) {
 			e.printStackTrace();
 			System.exit(1);

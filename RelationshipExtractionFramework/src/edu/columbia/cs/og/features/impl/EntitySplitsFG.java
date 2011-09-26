@@ -27,7 +27,7 @@ public class EntitySplitsFG extends
 		
 		List<Span> spansList = new ArrayList<Span>();
 		
-		SequenceFS<Span> spans = (SequenceFS<Span>)candidateSentence.getSentence().getFeatures(tokenizer.getClass());
+		SequenceFS<Span> spans = candidateSentence.getSentence().getFeatures(tokenizer);
 		
 		int sentenceOffset = candidateSentence.getSentence().getOffset();
 		

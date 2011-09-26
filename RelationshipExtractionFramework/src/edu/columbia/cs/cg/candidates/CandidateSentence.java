@@ -2,13 +2,16 @@ package edu.columbia.cs.cg.candidates;
 
 import java.io.Serializable;
 
-import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.og.features.FeaturableObject;
 
 public class CandidateSentence extends FeaturableObject implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 90249725464599185L;
 	private Sentence sentence;
 	private Relationship relationship;
 	

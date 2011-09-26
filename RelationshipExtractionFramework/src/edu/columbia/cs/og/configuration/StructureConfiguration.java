@@ -23,7 +23,7 @@ public class StructureConfiguration {
 	
 	public void addFeatureGenerator(FeatureGenerator fg){
 		userFg.add(fg);
-		userFgKeys.add(fg.getKey());
+		userFgKeys.add(fg.getClass());
 	}
 	
 	public OperableStructure getOperableStructure(CandidateSentence sent){
@@ -32,7 +32,7 @@ public class StructureConfiguration {
 		int numFeatures = userFg.size();
 		for(int i=0; i<numFeatures; i++){
 			userFg.get(i).generateFeatures(newStructure);
-			FeatureSet fs = newStructure.getFeatures(userFg.get(i).getKey());
+			FeatureSet fs = newStructure.getFeatures(userFg.get(i));
 			newStructure.enrich(fs);
 		}
 		

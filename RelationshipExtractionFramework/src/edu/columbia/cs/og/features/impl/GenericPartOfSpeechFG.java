@@ -36,7 +36,7 @@ public class GenericPartOfSpeechFG extends CandidateSentenceFeatureGenerator<Seq
 	
 	@Override
 	protected SequenceFS<String> extractFeatures(CandidateSentence sentence) {
-		SequenceFS<String> pos = (SequenceFS<String>) sentence.getFeatures(posTagger.getClass());
+		SequenceFS<String> pos = sentence.getFeatures(posTagger);
 
 		String[] gpos = new String[pos.size()];
 		for(int i=0; i<pos.size(); i++){

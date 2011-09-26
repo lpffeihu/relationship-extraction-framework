@@ -16,18 +16,15 @@ public abstract class CandidateSentenceFeatureGenerator<E extends FeatureSet> ex
 	protected abstract E extractFeatures(CandidateSentence candidateSentence);
 
 	@Override
-	protected final FeatureSet getFeatures(OperableStructure s,
-			Class<? extends FeatureGenerator> featureGeneratorClass) {
-		return s.getCandidateSentence().getFeatures(featureGeneratorClass);
+	protected <E extends FeatureSet> E getFeatures(OperableStructure s,
+			FeatureGenerator<E> featureGenerator){
+		return s.getCandidateSentence().getFeatures(featureGenerator);
 	}
 
 	@Override
-	protected final void setFeatures(OperableStructure s,
-			Class<? extends FeatureGenerator> featureGeneratorClass,
-			FeatureSet fs) {
-		
-		s.getCandidateSentence().setFeatures(featureGeneratorClass, fs);
-		
+	protected <E extends FeatureSet> void setFeatures(OperableStructure s,
+			FeatureGenerator<E> featureGenerator, E fs){		
+		s.getCandidateSentence().setFeatures(featureGenerator, fs);
 	}
 
 	protected abstract List<FeatureGenerator> retrieveRequiredFeatureGenerators();

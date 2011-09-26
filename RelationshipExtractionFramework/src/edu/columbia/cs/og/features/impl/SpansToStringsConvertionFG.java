@@ -11,18 +11,18 @@ import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.utils.Span;
 
-public class OpenNLPStringTokenizationFG extends CandidateSentenceFeatureGenerator<SequenceFS<String>> {
+public class SpansToStringsConvertionFG extends CandidateSentenceFeatureGenerator<SequenceFS<String>> {
 
 	private FeatureGenerator<SequenceFS<Span>> tokenizer;
 	
-	public OpenNLPStringTokenizationFG(FeatureGenerator<SequenceFS<Span>> tokenizer) throws InvalidFormatException, IOException{
+	public SpansToStringsConvertionFG(FeatureGenerator<SequenceFS<Span>> tokenizer) throws InvalidFormatException, IOException{
 		this.tokenizer = tokenizer;
 	}
 	
 	@Override
 	protected SequenceFS<String> extractFeatures(CandidateSentence sentence) {
 		
-		SequenceFS<Span> spans = (SequenceFS<Span>)sentence.getFeatures(tokenizer.getClass());
+		SequenceFS<Span> spans = sentence.getFeatures(tokenizer);
 		
 		return new SequenceFS<String>(getTokens(spans, sentence));
 		

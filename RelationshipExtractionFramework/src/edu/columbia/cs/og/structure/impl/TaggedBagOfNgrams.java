@@ -96,7 +96,7 @@ public class TaggedBagOfNgrams extends OperableStructure {
 	@Override
 	public void initialize() {
 		//TODO: In the case of SSK and JSRE there should be only 2 entities
-		SequenceFS<Span> tokenization = (SequenceFS<Span>) getFeatures(EntityBasedChunkingFG.class);
+		SequenceFS<Span> tokenization = getFeatures(EntityBasedChunkingFG.class);
 		String[] tokens = getTokenValues(tokenization);
 		//I will assume that we have two entities only
 		Entity[] entities = getCandidateSentence().getEntities();

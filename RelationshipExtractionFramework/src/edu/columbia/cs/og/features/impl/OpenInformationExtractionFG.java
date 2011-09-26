@@ -1,5 +1,6 @@
 package edu.columbia.cs.og.features.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import weka.core.Attribute;
@@ -9,6 +10,7 @@ import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.model.impl.WekaClassifierModel;
 import edu.columbia.cs.og.features.CandidateSentenceFeatureGenerator;
+import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.features.featureset.WekaInstanceFS;
@@ -21,8 +23,23 @@ import edu.washington.cs.knowitall.nlp.extraction.ChunkedExtraction;
 import edu.washington.cs.knowitall.util.Range;
 
 public class OpenInformationExtractionFG extends
-		CandidateSentenceFeatureGenerator {
+		CandidateSentenceFeatureGenerator<WekaInstanceFS> {
 
+	private FeatureGenerator<SequenceFS<String>> tokenizer;
+	private FeatureGenerator<SequenceFS<String>> posTagger;
+	private FeatureGenerator<SequenceFS<String>> chunker;
+	private FeatureGenerator<SequenceFS<Span>> sectionSplit;
+	
+	public OpenInformationExtractionFG(FeatureGenerator<SequenceFS<String>> tokenizer,
+			FeatureGenerator<SequenceFS<String>> posTagger,
+			FeatureGenerator<SequenceFS<String>> chunker,
+			FeatureGenerator<SequenceFS<Span>> sectionSplit){
+		this.tokenizer=tokenizer;
+		this.posTagger=posTagger;
+		this.chunker=chunker;
+		this.sectionSplit=sectionSplit;
+	}
+	
 	private BooleanFeatureSet<ChunkedBinaryExtraction> featureSet; //= new ReVerbFeatures().getFeatureSet();
 
 	private int numFeatures;
@@ -58,24 +75,23 @@ public class OpenInformationExtractionFG extends
 	}
 	
 	@Override
-	
-	protected FeatureSet extractFeatures(CandidateSentence candidateSentence) {
+	protected WekaInstanceFS extractFeatures(CandidateSentence candidateSentence) {
 		
-		SequenceFS<String> tokensString = (SequenceFS<String>)candidateSentence.getSentence().getFeatures(OpenNLPStringTokenizationFG.class);
+		SequenceFS<String> tokensString = candidateSentence.getSentence().getFeatures(tokenizer);
 		
 		String[] tokens = generateArray(tokensString);
 
-		SequenceFS<String> pos = (SequenceFS<String>)candidateSentence.getSentence().getFeatures(OpenNLPPartOfSpeechFG.class);
+		SequenceFS<String> pos = candidateSentence.getSentence().getFeatures(posTagger);
 		
 		String[] posTags = generateArray(pos);
 
-		SequenceFS<String> chunks = (SequenceFS<String>)candidateSentence.getSentence().getFeatures(KnowItAllChunkingFG.class);
+		SequenceFS<String> chunks = candidateSentence.getSentence().getFeatures(chunker);
 
 		String[] npChunkTags = generateArray(chunks); 
 		
 		ChunkedSentence sent = new ChunkedSentence(tokens, posTags, npChunkTags);
 
-		SequenceFS<Span> span = (SequenceFS<Span>)candidateSentence.getFeatures(EntitySplitsFG.class);
+		SequenceFS<Span> span = candidateSentence.getFeatures(sectionSplit);
 		
 		// Next two lines define arg1: first is the tokens, then is the range. Only need 
 		// the range to construct the extraction.
@@ -126,6 +142,18 @@ public class OpenInformationExtractionFG extends
 		int start = span.getStart();
 		int length = span.getEnd() - span.getStart() + 1;
 		return new Range(start, length);
+	}
+
+	@Override
+	protected List<FeatureGenerator> retrieveRequiredFeatureGenerators() {
+		ArrayList<FeatureGenerator> ret = new ArrayList<FeatureGenerator>();
+		
+		ret.add(tokenizer);
+		ret.add(posTagger);
+		ret.add(chunker);
+		ret.add(sectionSplit);
+	
+		return ret;
 	}
 
 }

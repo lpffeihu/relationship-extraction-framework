@@ -9,21 +9,17 @@ public class FeaturableObject {
 	private Hashtable<Class<? extends FeatureGenerator>, FeatureSet> featuresTable;
 
 	public FeaturableObject(){
-		
+
 		featuresTable = new Hashtable<Class<? extends FeatureGenerator>, FeatureSet>();
-		
+
 	}
-	
-	public FeatureSet getFeatures(Class<? extends FeatureGenerator> featureGeneratorClass){
-		
-		return featuresTable.get(featureGeneratorClass);
-		
+
+	public <E extends FeatureSet> E getFeatures(FeatureGenerator<E> featureGenerator){
+		return (E) featuresTable.get(featureGenerator.getClass());
 	}
-	
-	 public void setFeatures(Class<? extends FeatureGenerator> featureGeneratorClass, FeatureSet fs){
-		 
-		 featuresTable.put(featureGeneratorClass, fs);
-		 
-	 }
-	
+
+	public <E extends FeatureSet> void setFeatures(FeatureGenerator<E> featureGenerator, E fs){
+		featuresTable.put(featureGenerator.getClass(), fs);
+	}
+
 }

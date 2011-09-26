@@ -97,9 +97,9 @@ public class TrainingStepACE2005 {
 		//svmModel.saveModel("/home/goncalo/Desktop/ORG-AFFModel.svm");
 		//svmModel=null;
 		//svmModel=JLibsvmBinaryModel.loadModel("/home/goncalo/Desktop/ORG-AFFModel.svm");
-		edu.columbia.cs.selialization.SerializationHelper.write("/home/goncalo/Desktop/ORG-AFFModel.svm", svmModel);
-		svmModel=null;
-		svmModel = (Model) edu.columbia.cs.selialization.SerializationHelper.read("/home/goncalo/Desktop/ORG-AFFModel.svm");
+		//edu.columbia.cs.selialization.SerializationHelper.write("/home/goncalo/Desktop/ORG-AFFModel.svm", svmModel);
+		//svmModel=null;
+		//svmModel = (Model) edu.columbia.cs.selialization.SerializationHelper.read("/home/goncalo/Desktop/ORG-AFFModel.svm");
 		
 		List<String> testFiles = getFiles(path + testFile);
 		List<OperableStructure> testingFiles=new ArrayList<OperableStructure>();
