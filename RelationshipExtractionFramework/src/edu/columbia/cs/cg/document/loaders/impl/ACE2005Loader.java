@@ -1,12 +1,10 @@
 package edu.columbia.cs.cg.document.loaders.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import edu.columbia.cs.cg.candidates.CandidatesGenerator;
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.Segment;
 import edu.columbia.cs.cg.document.loaders.DocumentLoader;
@@ -18,7 +16,6 @@ import edu.columbia.cs.cg.document.loaders.impl.ace2005.ACERelation;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.cg.relations.RelationshipType;
-import edu.columbia.cs.cg.sentence.impl.OpenNLPMESplitter;
 import edu.columbia.cs.utils.SGMFileFilter;
 
 /**
@@ -64,14 +61,14 @@ public class ACE2005Loader extends DocumentLoader {
 			Document newDocument = new Document(file.getParent(),fileName,plainText);
 			
 			for(ACEEntity ent : aceDoc.getEntities()){
-				String entityId = ent.getId();
+				//String entityId = ent.getId();
 				String entityType = ent.getType();
-				String entitySubType = ent.getSubtype();
+				//String entitySubType = ent.getSubtype();
 				for(ACEEMention men : ent.getMentions()){
 					String mentionId=men.getId();
-					String mentionType=men.getType();
-					int extStartIndex= men.getExtOffset();
-					int extLength=men.getExtLength();
+					//String mentionType=men.getType();
+					//int extStartIndex= men.getExtOffset();
+					//int extLength=men.getExtLength();
 					int headStartIndex=men.getHeadOffset();
 					int headLength=men.getHeadLength();
 					String value=newDocument.getSubstring(headStartIndex, headLength);
@@ -82,11 +79,11 @@ public class ACE2005Loader extends DocumentLoader {
 			}
 			
 			for(ACERelation rel : aceDoc.getRelationships()){
-				String relationshipId = rel.getId();
+				//String relationshipId = rel.getId();
 				String type = rel.getType();
-				String subType = rel.getSubType();
+				//String subType = rel.getSubType();
 				
-				RelationshipType relType = getCompatibleType(relationshipTypes, subType);
+				RelationshipType relType = getCompatibleType(relationshipTypes, type);
 				if(relType!=null){
 					for(ACERMention men : rel.getMentions()){
 						Entity arg1 = newDocument.getEntity(men.getArg1().getId());

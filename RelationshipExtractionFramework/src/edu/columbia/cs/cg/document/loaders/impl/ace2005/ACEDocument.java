@@ -12,6 +12,14 @@ import edu.columbia.cs.cg.document.Segment;
 /**
  * Internal representation of the ACE 2005 Document.
  * 
+ * <br>
+ * <br>
+ * 
+ * This class should not be used to load documents to our framework. It is only for internal use.
+ * 
+ * <br>
+ * <br>
+ * 
  * This class is an adaptation of the class created by Razvan Bunescu used to load ACE 2003.
  * The original class can be found in http://ace.cs.ohio.edu/~razvan/code/ssk_re.tar.gz
  * 

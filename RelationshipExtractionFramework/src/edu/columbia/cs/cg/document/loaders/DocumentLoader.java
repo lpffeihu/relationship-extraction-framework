@@ -1,8 +1,6 @@
 package edu.columbia.cs.cg.document.loaders;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import edu.columbia.cs.cg.document.Document;
