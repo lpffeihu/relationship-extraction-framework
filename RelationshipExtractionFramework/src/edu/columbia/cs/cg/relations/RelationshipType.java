@@ -76,4 +76,17 @@ public class RelationshipType implements Serializable {
 	public RelationshipConstraint getRelationshipConstraint(){
 		return relConstraints;
 	}
+	
+	@Override
+	public int hashCode(){
+		return type.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof RelationshipType){
+			return type.equals(((RelationshipType) o).type);
+		}
+		return false;
+	}
 }

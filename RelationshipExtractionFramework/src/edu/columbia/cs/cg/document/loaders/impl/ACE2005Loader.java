@@ -66,7 +66,7 @@ public class ACE2005Loader extends DocumentLoader {
 				String type = rel.getType();
 				String subType = rel.getSubType();
 				
-				RelationshipType relType = getCompatibleType(relationshipTypes, type);
+				RelationshipType relType = getCompatibleType(relationshipTypes, subType);
 				if(relType!=null){
 					for(ACERMention men : rel.getMentions()){
 						Entity arg1 = newDocument.getEntity(men.getArg1().getId());

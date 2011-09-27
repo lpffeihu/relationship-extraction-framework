@@ -1,6 +1,7 @@
 package edu.columbia.cs.evaluation.measures;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import edu.columbia.cs.cg.relations.RelationshipType;
@@ -17,7 +18,7 @@ public class FMeasure implements Measure {
 	}
 
 	@Override
-	public double getValue(Map<OperableStructure, String> labels,
+	public double getValue(Map<OperableStructure, Set<String>> labels,
 			Map<OperableStructure, Map<PredictionProperties, Object>> properties) {
 		double recall = this.recall.getValue(labels, properties);
 		double precision = this.precision.getValue(labels, properties);

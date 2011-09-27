@@ -3,8 +3,11 @@ package edu.columbia.cs.og.structure;
 import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import edu.columbia.cs.cg.candidates.CandidateSentence;
+import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.GraphFS;
@@ -41,8 +44,8 @@ public abstract class OperableStructure implements Serializable {
 		featuresTable.put(featureGenerator.getClass(),fs);
 	}
 
-	public String getLabel() {
-		return candidateSentence.getLabel();
+	public Set<String> getLabels() {
+		return candidateSentence.getLabels();
 	}
 	
 	@Override

@@ -1,5 +1,8 @@
 package edu.columbia.cs.model.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import weka.classifiers.Classifier;
 import weka.core.Instance;
 import edu.columbia.cs.cg.relations.RelationshipType;
@@ -22,24 +25,25 @@ public class WekaClassifierModel extends Model {
 	
 	
 	@Override
-	protected String getPredictedLabel(OperableStructure s) {
+	protected Set<String> getPredictedLabel(OperableStructure s) {
+		Set<String> result = new HashSet<String>();
 		
 		Instance instance = (s.getFeatures(OpenInformationExtractionFG.class)).getInstance();
 		
 		try {
 			double classification = classifier.classifyInstance(instance);
 			
-			if (classification == 0.0)
-				return NEGATIVE_LABEL;
-			
-			return POSITIVE_LABEL;
+			if (classification != 0.0){
+				result.add(POSITIVE_LABEL);
+				return result;
+			}
 		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
-		return NEGATIVE_LABEL;
+		return result;
 	}
 
 	@Override

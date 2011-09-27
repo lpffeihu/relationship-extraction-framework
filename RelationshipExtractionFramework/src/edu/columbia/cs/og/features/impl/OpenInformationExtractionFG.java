@@ -116,7 +116,8 @@ public class OpenInformationExtractionFG extends
 
 		//just for optimization, we add the class attribute.
 		
-		inst.setValue((Attribute)attributes.elementAt(numFeatures), generateLabel(candidateSentence.getLabel()));
+		//TODO: CHANGE BECAUSE GETLABEL DOES NOT EXIST ANYMORE
+		//inst.setValue((Attribute)attributes.elementAt(numFeatures), generateLabel(candidateSentence.getLabel()));
 		
 		return new WekaInstanceFS(inst);
 

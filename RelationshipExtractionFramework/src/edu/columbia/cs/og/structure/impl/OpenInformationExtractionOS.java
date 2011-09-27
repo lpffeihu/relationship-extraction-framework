@@ -62,7 +62,8 @@ public class OpenInformationExtractionOS extends OperableStructure {
 		
 		secondIndexes = getString(span.getElement(3));
 		
-		label = generateLabel(getLabel());
+		//TODO: CHANGE BECAUSE GETLABEL DOES NOT EXIST ANYMORE
+		//label = generateLabel(getLabel());
 
 	}
 

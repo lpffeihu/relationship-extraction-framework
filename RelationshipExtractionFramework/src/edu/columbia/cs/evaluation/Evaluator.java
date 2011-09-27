@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.evaluation.measures.Measure;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.model.Model.PredictionProperties;
@@ -24,14 +26,14 @@ public class Evaluator {
 	}
 	
 	public void printEvaluationReport(List<OperableStructure> testingFiles, Model m){
-		Map<OperableStructure, String> labels = new HashMap<OperableStructure, String>();
+		Map<OperableStructure, Set<String>> labels = new HashMap<OperableStructure, Set<String>>();
 		Map<OperableStructure, Map<PredictionProperties, Object>> properties = new HashMap<OperableStructure, Map<PredictionProperties, Object>>();
 		
 		int testingFilesSize=testingFiles.size();
 		for(int i=0; i<testingFilesSize; i++){
 			OperableStructure s = testingFiles.get(i);
-			String trueLabel = s.getLabel();
-			String predicted = m.predictLabel(s);
+			Set<String> trueLabel = s.getLabels();
+			Set<String> predicted = m.predictLabel(s);
 			System.out.println("i=" + i + ": [" + predicted + "," + trueLabel + "]");
 			Map<PredictionProperties, Object> props = m.obtainPredictionPropertyValue(s);
 			

@@ -1,6 +1,7 @@
 package edu.columbia.cs.engine.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import edu.berkeley.compbio.jlibsvm.ImmutableSvmParameterPoint;
 import edu.berkeley.compbio.jlibsvm.binary.BinaryClassificationProblemImpl;
@@ -11,30 +12,21 @@ import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.engine.Engine;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.model.impl.JLibsvmBinaryModel;
+import edu.columbia.cs.model.impl.JLibsvmCompositeBinaryModel;
 import edu.columbia.cs.og.core.Kernel;
 import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.svm.problem.OperableStructureToBinarySVMproblemConverter;
 
-public class JLibSVMEngine implements Engine {
+public class JLibSVMBinaryEngine implements Engine {
 
 	private Kernel kernel;
+	private Set<RelationshipType> relTypes;
 	
-	public JLibSVMEngine(Kernel k){
+	public JLibSVMBinaryEngine(Kernel k, Set<RelationshipType> relationshipTypes){
 		kernel=k;
+		relTypes=relationshipTypes;
 	}
-	
-	private String getPositiveClass(List<OperableStructure> train){
-		for(OperableStructure struc : train){
-			if(!struc.getLabel().equals(RelationshipType.NOT_A_RELATIONSHIP)){
-				return struc.getLabel();
-			}
-		}
-		
-		//SHOULD THROW EXCEPTION BECAUSE THE TRAINING DATA ONLY HAS NEGATIVE EXAMPLES
-		return "ABC";
-	}
-	
 	
 	@Override
 	public Model train(List<OperableStructure> train) {
@@ -48,12 +40,16 @@ public class JLibSVMEngine implements Engine {
 		
 		ImmutableSvmParameterPoint<String, OperableStructure> params = builder.build();
 		
-		//TODO: Select between binary and multiclass classification
-		BinaryClassificationProblemImpl<String,OperableStructure> problem = OperableStructureToBinarySVMproblemConverter.convert(train,"ORG-AFF");
-
-		BinaryClassificationSVM<String,OperableStructure> binary = new C_SVC<String,OperableStructure>();
+		JLibsvmCompositeBinaryModel compositeModel = new JLibsvmCompositeBinaryModel();
 		
-		return new JLibsvmBinaryModel(binary.train(problem, params));
+		for(RelationshipType t : relTypes){
+			BinaryClassificationProblemImpl<String,OperableStructure> problem = OperableStructureToBinarySVMproblemConverter.convert(train,t);
+	
+			BinaryClassificationSVM<String,OperableStructure> binary = new C_SVC<String,OperableStructure>();
+			
+			compositeModel.addModel(new JLibsvmBinaryModel(binary.train(problem, params)));
+		}
+		return compositeModel;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import edu.columbia.cs.og.structure.OperableStructure;
 
@@ -17,10 +18,10 @@ public abstract class Model implements Serializable{
 	private Map<OperableStructure,Map<PredictionProperties,Object>> currentPredictionProperties =
 		new HashMap<OperableStructure,Map<PredictionProperties,Object>>();
 	
-	protected abstract String getPredictedLabel(OperableStructure s);
+	protected abstract Set<String> getPredictedLabel(OperableStructure s);
 	
-	public String predictLabel(OperableStructure s){
-		String result = getPredictedLabel(s);
+	public Set<String> predictLabel(OperableStructure s){
+		Set<String> result = getPredictedLabel(s);
 		PredictionProperties[] pprops = getAvailablePredictionProperties();
 		
 		for (int i = 0; i < pprops.length; i++) {

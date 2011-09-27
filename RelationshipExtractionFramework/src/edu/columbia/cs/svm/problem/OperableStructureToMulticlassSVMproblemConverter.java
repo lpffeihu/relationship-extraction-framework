@@ -6,14 +6,16 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.berkeley.compbio.jlibsvm.binary.BinaryClassificationProblemImpl;
+import edu.berkeley.compbio.jlibsvm.labelinverter.StringLabelInverter;
+import edu.berkeley.compbio.jlibsvm.multi.MultiClassProblemImpl;
 import edu.berkeley.compbio.jlibsvm.scaler.NoopScalingModel;
 import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.og.structure.OperableStructure;
 
-public class OperableStructureToBinarySVMproblemConverter {
+public class OperableStructureToMulticlassSVMproblemConverter {
 
-	public static BinaryClassificationProblemImpl<String, OperableStructure> convert(
-			List<OperableStructure> train, RelationshipType relLabel) {
+	public static MultiClassProblemImpl<String, OperableStructure> convert(
+			List<OperableStructure> train) {
 		Map<OperableStructure,String> examples = new HashMap<OperableStructure,String>();
 		Map<OperableStructure,Integer> exampleIds = new HashMap<OperableStructure,Integer>();
 		
@@ -21,13 +23,17 @@ public class OperableStructureToBinarySVMproblemConverter {
 		
 		int i=0;
 		for(OperableStructure sent : train){
-			String label;
+			String label=RelationshipType.NOT_A_RELATIONSHIP;
 			Set<String> trueLabels = sent.getLabels();
-			if(trueLabels.contains(relLabel.getType())){
-				label=relLabel.getType();
-			}else{
-				label=RelationshipType.NOT_A_RELATIONSHIP;
+			if(trueLabels.size()>1){
+				System.out.println("ERROR: can't deal with overlaping relationships... try binary classification");
+				System.exit(1);
 			}
+			
+			for(String str : trueLabels){
+				label=str;
+			}
+			
 			examples.put(sent, label);
 			exampleIds.put(sent, i);
 			
@@ -42,10 +48,9 @@ public class OperableStructureToBinarySVMproblemConverter {
 		
 		System.out.println(numDocs);
 		
-		BinaryClassificationProblemImpl<String,OperableStructure> result = 
-			new BinaryClassificationProblemImpl<String,OperableStructure>(String.class, 
-					examples, exampleIds, new NoopScalingModel<OperableStructure>(),
-					relLabel.getType(),RelationshipType.NOT_A_RELATIONSHIP);
+		MultiClassProblemImpl<String,OperableStructure> result = 
+			new MultiClassProblemImpl<String,OperableStructure>(String.class, new StringLabelInverter(), 
+					examples, exampleIds, new NoopScalingModel<OperableStructure>());
 		
 		return result;
 	}

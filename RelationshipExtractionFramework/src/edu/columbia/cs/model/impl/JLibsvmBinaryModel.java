@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import cern.colt.Arrays;
@@ -19,6 +20,7 @@ import edu.berkeley.compbio.jlibsvm.ImmutableSvmParameterPoint;
 import edu.berkeley.compbio.jlibsvm.SolutionModel;
 import edu.berkeley.compbio.jlibsvm.binary.BinaryModel;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
+import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.structure.OperableStructure;
 
@@ -42,15 +44,25 @@ public class JLibsvmBinaryModel extends Model{
 	}
 	
 	@Override
-	public String getPredictedLabel(OperableStructure s) {
+	public Set<String> getPredictedLabel(OperableStructure s) {
 		float predictedLabel=svmModel.predictValue(s);
 		//String predictedLabel=svmModel.predictLabel(s);
 		
 		//lastPositiveProbability=svmModel.getTrueProbability(s);
 		//lastNegativeProbability=1-lastPositiveProbability;
 		//lastConfidence = Math.max(lastPositiveProbability, lastNegativeProbability);
+		Set<String> result = new HashSet<String>();
+		if(predictedLabel>0){
+			if(!trueLabel.equals(RelationshipType.NOT_A_RELATIONSHIP)){
+				result.add(trueLabel);
+			}
+		}else{
+			if(!falseLabel.equals(RelationshipType.NOT_A_RELATIONSHIP)){
+				result.add(falseLabel);
+			}
+		}
 		
-		return predictedLabel>0 ? trueLabel : falseLabel;
+		return result;
 		//return predictedLabel;
 	}
 

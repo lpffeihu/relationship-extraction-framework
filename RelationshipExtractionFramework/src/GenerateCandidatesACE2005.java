@@ -17,12 +17,43 @@ import edu.columbia.cs.data.Dataset;
 public class GenerateCandidatesACE2005 {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException{
-		RelationshipType relationshipType = new RelationshipType("ORG-AFF","Arg-1","Arg-2");
-		relationshipType.setConstraints(new EntityTypeConstraint("ORG"), "Arg-2");
-		relationshipType.setConstraints(new EntityTypeConstraint("PER"), "Arg-1");
+		RelationshipType relationshipTypeMembership = new RelationshipType("Membership","Arg-1","Arg-2");
+		relationshipTypeMembership.setConstraints(new EntityTypeConstraint("ORG"), "Arg-2");
+		relationshipTypeMembership.setConstraints(new EntityTypeConstraint("PER"), "Arg-1");
+		
+		RelationshipType relationshipTypeEmployment = new RelationshipType("Employment","Arg-1","Arg-2");
+		relationshipTypeEmployment.setConstraints(new EntityTypeConstraint("ORG"), "Arg-2");
+		relationshipTypeEmployment.setConstraints(new EntityTypeConstraint("PER"), "Arg-1");
+		
+		RelationshipType relationshipTypeFounder = new RelationshipType("Founder","Arg-1","Arg-2");
+		relationshipTypeFounder.setConstraints(new EntityTypeConstraint("ORG"), "Arg-2");
+		relationshipTypeFounder.setConstraints(new EntityTypeConstraint("PER"), "Arg-1");
+		
+		RelationshipType relationshipTypeOwnership = new RelationshipType("Ownership","Arg-1","Arg-2");
+		relationshipTypeOwnership.setConstraints(new EntityTypeConstraint("ORG"), "Arg-2");
+		relationshipTypeOwnership.setConstraints(new EntityTypeConstraint("PER"), "Arg-1");
+		
+		RelationshipType relationshipTypeStudentAlum = new RelationshipType("Student-Alum","Arg-1","Arg-2");
+		relationshipTypeStudentAlum.setConstraints(new EntityTypeConstraint("ORG"), "Arg-2");
+		relationshipTypeStudentAlum.setConstraints(new EntityTypeConstraint("PER"), "Arg-1");
+		
+		RelationshipType relationshipTypeSports = new RelationshipType("Sports-Affiliation","Arg-1","Arg-2");
+		relationshipTypeSports.setConstraints(new EntityTypeConstraint("ORG"), "Arg-2");
+		relationshipTypeSports.setConstraints(new EntityTypeConstraint("PER"), "Arg-1");
+		
+		RelationshipType relationshipTypeInvestor = new RelationshipType("Investor-Shareholder","Arg-1","Arg-2");
+		relationshipTypeInvestor.setConstraints(new EntityTypeConstraint("ORG"), "Arg-2");
+		relationshipTypeInvestor.setConstraints(new EntityTypeConstraint("PER"), "Arg-1");
+		
 		//relationshipType.setConstraints(new EntitiesOrderNotRelevantConstraint());
 		Set<RelationshipType> relationshipTypes = new HashSet<RelationshipType>();
-		relationshipTypes.add(relationshipType);
+		relationshipTypes.add(relationshipTypeEmployment);
+		relationshipTypes.add(relationshipTypeMembership);
+		relationshipTypes.add(relationshipTypeFounder);
+		relationshipTypes.add(relationshipTypeOwnership);
+		relationshipTypes.add(relationshipTypeStudentAlum);
+		relationshipTypes.add(relationshipTypeSports);
+		relationshipTypes.add(relationshipTypeInvestor);
 		
 		OpenNLPMESplitter splitter = new OpenNLPMESplitter("en-sent.bin");
 		CandidatesGenerator generator = new CandidatesGenerator(splitter);

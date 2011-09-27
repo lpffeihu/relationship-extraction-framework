@@ -1,6 +1,7 @@
 package edu.columbia.cs.cg.candidates;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,14 +77,12 @@ public class CandidatesGenerator {
 					i--;
 				}
 			}
-			
+
 			//System.out.println(sentenceRelationships);
 
-			for(RelationshipType t : relationshipTypes){
-				result.addAll(generateCandidateSentences(doc,sent,
-						new HashSet<Entity>(sentenceEntities.values()), sentenceRelationships,
-						t));
-			}
+			result.addAll(generateCandidateSentences(doc,sent,
+					new HashSet<Entity>(sentenceEntities.values()), sentenceRelationships,
+					relationshipTypes));
 		}
 
 		return result;
@@ -97,41 +96,53 @@ public class CandidatesGenerator {
 		}
 		return true;
 	}
-	
+
 	private Set<CandidateSentence> generateCandidateSentences(
 			Document doc,
 			Sentence sent, Set<Entity> ents,
 			Set<Relationship> sentenceRelationships,
-			RelationshipType relationshipType) {
+			Set<RelationshipType> relationshipTypes) {
 		Set<CandidateSentence> result = new HashSet<CandidateSentence>();
-		
-		Set<String> roles = relationshipType.getRoles();
-		Map<String,Set<Entity>> candidateEntitiesForRole = new HashMap<String,Set<Entity>>();
-		for(String role : roles){
-			RoleConstraint roleConstraint = relationshipType.getConstraint(role);
-			Set<Entity> entitiesForRole = roleConstraint.getCompatibleEntities(ents);
-			candidateEntitiesForRole.put(role, entitiesForRole);
+
+		Map<List<Entity>,List<Relationship>> uniqueMaps = new HashMap<List<Entity>,List<Relationship>>();
+		for(RelationshipType t : relationshipTypes){
+			Set<String> roles = t.getRoles();
+			Map<String,Set<Entity>> candidateEntitiesForRole = new HashMap<String,Set<Entity>>();
+			for(String role : roles){
+				RoleConstraint roleConstraint = t.getConstraint(role);
+				Set<Entity> entitiesForRole = roleConstraint.getCompatibleEntities(ents);
+				candidateEntitiesForRole.put(role, entitiesForRole);
+			}
+			for(Map<String,Entity> candidate : MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole)){
+				Relationship newRelationship = new Relationship(t);
+				for(Entry<String,Entity> entry : candidate.entrySet()){
+					newRelationship.setRole(entry.getKey(), entry.getValue());
+				}
+
+				if(sentenceRelationships.contains(newRelationship)){
+					newRelationship.setLabel(t.getType());
+				}else{
+					newRelationship.setLabel(RelationshipType.NOT_A_RELATIONSHIP);
+				}
+
+				List<Entity> entities = Arrays.asList(newRelationship.getEntities());
+				List<Relationship> inputs = uniqueMaps.get(entities);
+				if(inputs==null){
+					inputs=new ArrayList<Relationship>();
+				}
+				inputs.add(newRelationship);
+				uniqueMaps.put(entities, inputs);
+			}
 		}
 		
-		List<Map<String,Entity>> candidates = MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole);
-		for(Map<String,Entity> candidate : candidates){
-			Relationship newRelationship = new Relationship(relationshipType);
-			for(Entry<String,Entity> entry : candidate.entrySet()){
-				newRelationship.setRole(entry.getKey(), entry.getValue());
+		for(Entry<List<Entity>,List<Relationship>> entry : uniqueMaps.entrySet()){
+			CandidateSentence cand = new CandidateSentence(sent, entry.getKey());
+			for(Relationship rel : entry.getValue()){
+				cand.addRelationship(rel);
 			}
-			
-			if(sentenceRelationships.contains(newRelationship)){
-				newRelationship.setLabel(relationshipType.getType());
-			}else{
-				newRelationship.setLabel(RelationshipType.NOT_A_RELATIONSHIP);
-			}
-			
-			if(relationshipType.getRelationshipConstraint().checkConstraint(newRelationship)){
-				result.add(new CandidateSentence(sent, newRelationship));
-			}
+			result.add(cand);
 		}
-		
-		
+
 		return result;
 	}
 }
