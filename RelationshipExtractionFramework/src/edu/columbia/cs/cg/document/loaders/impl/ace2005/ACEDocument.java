@@ -9,7 +9,17 @@ import org.jdom.output.*;
 
 import edu.columbia.cs.cg.document.Segment;
 
-
+/**
+ * Internal representation of the ACE 2005 Document.
+ * 
+ * This class is an adaptation of the class created by Razvan Bunescu used to load ACE 2003.
+ * The original class can be found in http://ace.cs.ohio.edu/~razvan/code/ssk_re.tar.gz
+ * 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class ACEDocument {
 
 	String m_strId;
