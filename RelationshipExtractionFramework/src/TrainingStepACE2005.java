@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import weka.classifiers.functions.Logistic;
 import weka.core.SerializationHelper;
 
 import com.davidsoergel.conja.Parallel;
@@ -23,6 +24,7 @@ import edu.columbia.cs.data.Dataset;
 import edu.columbia.cs.engine.Engine;
 import edu.columbia.cs.engine.impl.JLibSVMBinaryEngine;
 import edu.columbia.cs.engine.impl.JLibSVMMulticlassEngine;
+import edu.columbia.cs.engine.impl.WekaClassifierEngine;
 import edu.columbia.cs.evaluation.Evaluator;
 import edu.columbia.cs.evaluation.measures.FMeasure;
 import edu.columbia.cs.evaluation.measures.Measure;
@@ -36,6 +38,7 @@ import edu.columbia.cs.og.configuration.StructureConfiguration;
 import edu.columbia.cs.og.core.CoreReader;
 import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
 import edu.columbia.cs.og.structure.OperableStructure;
+import edu.washington.cs.knowitall.extractor.conf.ReVerbFeatures;
 
 
 public class TrainingStepACE2005 {
@@ -94,7 +97,7 @@ public class TrainingStepACE2005 {
 			System.out.println("processing [" + s + "]");
 			trainingFiles.addAll(getOperableStructure(pathProc,s));
 		}
-		Engine classificationEngine = new JLibSVMBinaryEngine(conf,relationshipTypes);
+		Engine classificationEngine = new WekaClassifierEngine(new Logistic(),new ReVerbFeatures().getFeatureSet(),conf,relationshipTypes);
 		Model svmModel = classificationEngine.train(trainingFiles);
 		edu.columbia.cs.selialization.SerializationHelper.write("/home/goncalo/Desktop/ORG-AFFModel.svm", svmModel);
 		svmModel=null;

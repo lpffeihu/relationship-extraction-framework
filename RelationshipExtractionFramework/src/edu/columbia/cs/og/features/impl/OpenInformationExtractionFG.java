@@ -6,6 +6,7 @@ import java.util.List;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
+import weka.core.Instances;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.model.impl.WekaClassifierModel;
@@ -25,15 +26,19 @@ import edu.washington.cs.knowitall.util.Range;
 public class OpenInformationExtractionFG extends
 		CandidateSentenceFeatureGenerator<WekaInstanceFS> {
 
+	private static final String TMP_LABEL_OPTIMIZATION = WekaClassifierModel.NEGATIVE_LABEL;
+	
 	private FeatureGenerator<SequenceFS<String>> tokenizer;
 	private FeatureGenerator<SequenceFS<String>> posTagger;
 	private FeatureGenerator<SequenceFS<String>> chunker;
 	private FeatureGenerator<SequenceFS<Span>> sectionSplit;
 	
-	public OpenInformationExtractionFG(FeatureGenerator<SequenceFS<String>> tokenizer,
+	public OpenInformationExtractionFG(BooleanFeatureSet<ChunkedBinaryExtraction> featureSet,
+			FeatureGenerator<SequenceFS<String>> tokenizer,
 			FeatureGenerator<SequenceFS<String>> posTagger,
 			FeatureGenerator<SequenceFS<String>> chunker,
 			FeatureGenerator<SequenceFS<Span>> sectionSplit){
+		this(featureSet);
 		this.tokenizer=tokenizer;
 		this.posTagger=posTagger;
 		this.chunker=chunker;
@@ -46,7 +51,9 @@ public class OpenInformationExtractionFG extends
 
 	private FastVector attributes = null;
 	
-	public OpenInformationExtractionFG(BooleanFeatureSet<ChunkedBinaryExtraction> featureSet){
+	private Instances dataset = null;
+	
+	private OpenInformationExtractionFG(BooleanFeatureSet<ChunkedBinaryExtraction> featureSet){
 		
 		this.featureSet = featureSet;
 		
@@ -71,21 +78,23 @@ public class OpenInformationExtractionFG extends
 		Attribute classAttr = new Attribute("class", classVals);
 		
 		attributes.addElement(classAttr);
+		
+		dataset = new Instances("",attributes, 0);
 
 	}
 	
 	@Override
 	protected WekaInstanceFS extractFeatures(CandidateSentence candidateSentence) {
 		
-		SequenceFS<String> tokensString = candidateSentence.getSentence().getFeatures(tokenizer);
+		SequenceFS<String> tokensString = candidateSentence.getFeatures(tokenizer);
 		
 		String[] tokens = generateArray(tokensString);
 
-		SequenceFS<String> pos = candidateSentence.getSentence().getFeatures(posTagger);
+		SequenceFS<String> pos = candidateSentence.getFeatures(posTagger);
 		
 		String[] posTags = generateArray(pos);
 
-		SequenceFS<String> chunks = candidateSentence.getSentence().getFeatures(chunker);
+		SequenceFS<String> chunks = candidateSentence.getFeatures(chunker);
 
 		String[] npChunkTags = generateArray(chunks); 
 		
@@ -109,28 +118,19 @@ public class OpenInformationExtractionFG extends
 		ChunkedBinaryExtraction labeled = new ChunkedBinaryExtraction(rel, arg1, arg2);
 				
 		Instance inst = new Instance(numFeatures + 1);
+		inst.setDataset(dataset);
 		double[] featureVals = featureSet.featurizeToDouble(labeled);
 		for (int i = 0; i < numFeatures; i++) {
+			//System.out.println(i + " " + numFeatures + " " + attributes.elementAt(i) + " " + featureVals[i]);
 			inst.setValue((Attribute)attributes.elementAt(i), featureVals[i]);
 		}
 
 		//just for optimization, we add the class attribute.
 		
-		//TODO: CHANGE BECAUSE GETLABEL DOES NOT EXIST ANYMORE
-		//inst.setValue((Attribute)attributes.elementAt(numFeatures), generateLabel(candidateSentence.getLabel()));
+		inst.setValue((Attribute)attributes.elementAt(numFeatures), TMP_LABEL_OPTIMIZATION);
 		
 		return new WekaInstanceFS(inst);
 
-	}
-
-	private String generateLabel(String label) {
-		
-		if (label.equals(RelationshipType.NOT_A_RELATIONSHIP)){
-			return WekaClassifierModel.NEGATIVE_LABEL;
-		}
-	
-		return WekaClassifierModel.POSITIVE_LABEL;
-		
 	}
 
 	private String[] generateArray(SequenceFS<String> sequence) {
@@ -142,6 +142,9 @@ public class OpenInformationExtractionFG extends
 	private Range readRange(Span span){
 		int start = span.getStart();
 		int length = span.getEnd() - span.getStart() + 1;
+		if(length<=0){
+			System.out.println(length);
+		}
 		return new Range(start, length);
 	}
 

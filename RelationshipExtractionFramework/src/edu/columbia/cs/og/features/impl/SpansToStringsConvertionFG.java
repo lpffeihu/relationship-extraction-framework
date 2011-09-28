@@ -22,7 +22,7 @@ public class SpansToStringsConvertionFG extends CandidateSentenceFeatureGenerato
 	@Override
 	protected SequenceFS<String> extractFeatures(CandidateSentence sentence) {
 		
-		SequenceFS<Span> spans = sentence.getFeatures(tokenizer);
+		SequenceFS<Span> spans = sentence.getSentence().getFeatures(tokenizer);
 		
 		return new SequenceFS<String>(getTokens(spans, sentence));
 		

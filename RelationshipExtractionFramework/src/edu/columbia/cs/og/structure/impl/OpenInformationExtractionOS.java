@@ -1,16 +1,22 @@
 package edu.columbia.cs.og.structure.impl;
 
+import java.util.Set;
+
+import weka.core.Instance;
+
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.model.impl.WekaClassifierModel;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.features.impl.EntitySplitsFG;
 import edu.columbia.cs.og.features.impl.KnowItAllChunkingFG;
+import edu.columbia.cs.og.features.impl.OpenInformationExtractionFG;
 import edu.columbia.cs.og.features.impl.OpenNLPPartOfSpeechFG;
 import edu.columbia.cs.og.features.impl.SpansToStringsConvertionFG;
 import edu.columbia.cs.og.structure.OperableStructure;
+import edu.columbia.cs.og.structure.WekableStructure;
 import edu.columbia.cs.utils.Span;
 
-public class OpenInformationExtractionOS extends OperableStructure {
+public class OpenInformationExtractionOS extends OperableStructure implements WekableStructure {
 
 	private String tokens;
 	private String pos;
@@ -22,18 +28,18 @@ public class OpenInformationExtractionOS extends OperableStructure {
 	private String second;
 	private String secondIndexes;
 	private String string;
-	private String label;
+	private Instance instance;
 	
 	
 	public OpenInformationExtractionOS(CandidateSentence c) {
 		super(c);
-		
 	}
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2183612647555553754L;
+	
 
 	@Override
 	public void initialize() {
@@ -62,17 +68,7 @@ public class OpenInformationExtractionOS extends OperableStructure {
 		
 		secondIndexes = getString(span.getElement(3));
 		
-		//TODO: CHANGE BECAUSE GETLABEL DOES NOT EXIST ANYMORE
-		//label = generateLabel(getLabel());
-
-	}
-
-	private String generateLabel(String label) {
-		
-		if (label.equals(WekaClassifierModel.NEGATIVE_LABEL))
-			return "0";
-		return "1";
-		
+		instance=getFeatures(OpenInformationExtractionFG.class).getInstance();
 	}
 
 	private String getString(Span span) {
@@ -88,6 +84,10 @@ public class OpenInformationExtractionOS extends OperableStructure {
 		int end = element.getEnd();
 		
 		String ret = "";
+		
+		if(end<index){
+			return ret;
+		}
 		
 		for (int i = index; i <= end; i++) {
 			
@@ -122,8 +122,13 @@ public class OpenInformationExtractionOS extends OperableStructure {
 	private String getStringVersion() {
 		
 		if (string == null){
-			string = tokens + "\n" + pos + "\n" + chunks + "\n" + first + "\n" + firstIndexes + "\n" + middle + "\n" + middleIndexes + "\n" + second + "\n" + secondIndexes + "\n" + label;
+			string = tokens + "\n" + pos + "\n" + chunks + "\n" + first + "\n" + firstIndexes + "\n" + middle + "\n" + middleIndexes + "\n" + second + "\n" + secondIndexes;
 		}
 		return string;
+	}
+
+	@Override
+	public Instance getInstance() {
+		return instance;
 	}
 }

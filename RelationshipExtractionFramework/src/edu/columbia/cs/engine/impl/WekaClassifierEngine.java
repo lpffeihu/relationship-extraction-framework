@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.tools.ant.filters.StringInputStream;
 
@@ -14,9 +15,11 @@ import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
+import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.engine.Engine;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.model.impl.WekaClassifierModel;
+import edu.columbia.cs.og.configuration.StructureConfiguration;
 import edu.columbia.cs.og.features.featureset.WekaInstanceFS;
 import edu.columbia.cs.og.features.impl.OpenInformationExtractionFG;
 import edu.columbia.cs.og.structure.OperableStructure;
@@ -33,47 +36,66 @@ public class WekaClassifierEngine implements Engine {
 	
 	private BooleanFeatureSet<ChunkedBinaryExtraction> featureSet;
 	
-	public WekaClassifierEngine(Classifier classifier, BooleanFeatureSet<ChunkedBinaryExtraction> featureSet){
+	private StructureConfiguration conf;
+	private Set<RelationshipType> relationshipTypes;
+	
+	public WekaClassifierEngine(Classifier classifier, BooleanFeatureSet<ChunkedBinaryExtraction> featureSet, StructureConfiguration conf, Set<RelationshipType> relationshipTypes){
 	
 		this.classifier = classifier;
 		
 		this.featureSet = featureSet;
 		
+		this.conf=conf;
+		
+		this.relationshipTypes=relationshipTypes;
 	}
 	@Override
 	public Model train(List<OperableStructure> list) {
 
-		Instance sampleInstance = ((WekaInstanceFS)list.get(0).getFeatures(OpenInformationExtractionFG.class)).getInstance();
-		
-		FastVector attributes = generateAttributeFastVector(sampleInstance);
-		
-		Instances instances = new Instances("train", attributes, 0);
-		
-		instances.setClassIndex(featureSet.getNumFeatures());
-
-		for (OperableStructure operableStructure : list) {
-		
-			Instance instance = ((WekaInstanceFS)operableStructure.getFeatures(OpenInformationExtractionFG.class)).getInstance();
+		for(RelationshipType type : relationshipTypes){
 			
-			Instance inst = new Instance(instance);
+			Instance sampleInstance = list.get(0).getFeatures(OpenInformationExtractionFG.class).getInstance();
 			
-			instances.add(inst);
+			FastVector attributes = generateAttributeFastVector(sampleInstance);
 			
-			inst.setDataset(instances);
+			Instances instances = new Instances("train", attributes, 0);
 			
+			instances.setClassIndex(featureSet.getNumFeatures());
+	
+			for (OperableStructure operableStructure : list) {
+			
+				Instance instance = ((WekaInstanceFS)operableStructure.getFeatures(OpenInformationExtractionFG.class)).getInstance();
+				
+				instance.setValue((Attribute)attributes.elementAt(featureSet.getNumFeatures()), generateLabel(type,operableStructure));
+				
+				Instance inst = new Instance(instance);
+				
+				instances.add(inst);
+				
+				inst.setDataset(instances);
+				
+			}
+	
+			try {
+				classifier.buildClassifier(instances);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			new WekaClassifierModel(classifier);
 		}
-
-		try {
-			classifier.buildClassifier(instances);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return new WekaClassifierModel(classifier);
+		return null;
 		
 	}
 
+	private String generateLabel(RelationshipType type, OperableStructure operableStructure) {
+		Set<String> labels = operableStructure.getLabels();
+		if(labels.contains(type.getType())){
+			return WekaClassifierModel.POSITIVE_LABEL;
+		}
+		return WekaClassifierModel.NEGATIVE_LABEL;
+	}
 	private FastVector generateAttributeFastVector(
 			Instance sampleInstance) {
 		

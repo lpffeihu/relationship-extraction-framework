@@ -38,7 +38,7 @@ public class EntitySplitsFG extends
 			@Override
 			public int compare(Entity entity1, Entity entity2) {
 				
-				return new Integer(entity1.getLength()).compareTo(entity2.getLength());
+				return new Integer(entity1.getOffset()).compareTo(entity2.getOffset());
 				
 			}
 		});

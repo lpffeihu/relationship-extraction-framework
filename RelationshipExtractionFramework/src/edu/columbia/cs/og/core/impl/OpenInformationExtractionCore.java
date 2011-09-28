@@ -11,14 +11,17 @@ import edu.columbia.cs.og.core.Core;
 import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.SentenceFeatureGenerator;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
+import edu.columbia.cs.og.features.featureset.WekaInstanceFS;
 import edu.columbia.cs.og.features.impl.EntitySplitsFG;
 import edu.columbia.cs.og.features.impl.KnowItAllChunkingFG;
+import edu.columbia.cs.og.features.impl.OpenInformationExtractionFG;
 import edu.columbia.cs.og.features.impl.OpenNLPPartOfSpeechFG;
 import edu.columbia.cs.og.features.impl.SpansToStringsConvertionFG;
 import edu.columbia.cs.og.features.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.og.structure.impl.OpenInformationExtractionOS;
 import edu.columbia.cs.utils.Span;
+import edu.washington.cs.knowitall.extractor.conf.ReVerbFeatures;
 
 public class OpenInformationExtractionCore extends Core {
 
@@ -29,8 +32,6 @@ public class OpenInformationExtractionCore extends Core {
 		List<FeatureGenerator> features = new ArrayList<FeatureGenerator>();
 		
 		try {
-			//TODO: SOMETHING WRONG!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			
 			FeatureGenerator<SequenceFS<Span>> tokenSpans = new OpenNLPTokenizationFG("en-token.bin");
 			
 			FeatureGenerator<SequenceFS<String>> tokens = new SpansToStringsConvertionFG(tokenSpans);
@@ -39,7 +40,10 @@ public class OpenInformationExtractionCore extends Core {
 			
 			FeatureGenerator<SequenceFS<String>> chunk = new KnowItAllChunkingFG(tokens,pos);
 			
-			//FeatureGenerator<SequenceFS<Span>> entitySplits = new EntitySplitsFG(chunk);
+			FeatureGenerator<SequenceFS<Span>> entitySplits = new EntitySplitsFG(tokenSpans);
+			
+			FeatureGenerator<WekaInstanceFS> wekaFS = new OpenInformationExtractionFG(
+					new ReVerbFeatures().getFeatureSet(),tokens,pos,chunk,entitySplits);
 			
 			features.add(tokens);
 			
@@ -47,7 +51,9 @@ public class OpenInformationExtractionCore extends Core {
 			
 			features.add(chunk);
 			
-			//features.add(entitySplits);
+			features.add(entitySplits);
+			
+			features.add(wekaFS);
 			
 			return features;
 			

@@ -6,7 +6,9 @@ import java.util.List;
 
 import javax.sound.midi.Sequence;
 
+import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.sentence.Sentence;
+import edu.columbia.cs.og.features.CandidateSentenceFeatureGenerator;
 import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.SentenceFeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
@@ -15,7 +17,7 @@ import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.utils.Span;
 import edu.washington.cs.knowitall.util.DefaultObjects;
 
-public class KnowItAllChunkingFG extends SentenceFeatureGenerator<SequenceFS<String>> {
+public class KnowItAllChunkingFG extends CandidateSentenceFeatureGenerator<SequenceFS<String>> {
 
 	private FeatureGenerator<SequenceFS<String>> tokenizer;
 	private FeatureGenerator<SequenceFS<String>> posTagger;
@@ -27,7 +29,7 @@ public class KnowItAllChunkingFG extends SentenceFeatureGenerator<SequenceFS<Str
 	}
 	
 	@Override
-	protected SequenceFS<String> extractFeatures(Sentence sentence) {
+	protected SequenceFS<String> extractFeatures(CandidateSentence sentence) {
 		// TODO Auto-generated method stub
 
 		SequenceFS<String> tokens = sentence.getFeatures(tokenizer); 
