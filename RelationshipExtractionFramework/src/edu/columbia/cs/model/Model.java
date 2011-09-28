@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import edu.columbia.cs.cg.relations.RelationshipType;
+import edu.columbia.cs.og.configuration.StructureConfiguration;
+import edu.columbia.cs.og.core.Core;
 import edu.columbia.cs.og.structure.OperableStructure;
 
 public abstract class Model implements Serializable{
@@ -57,5 +60,9 @@ public abstract class Model implements Serializable{
 	protected abstract Object getPredictionPropertyValue(
 			PredictionProperties predictionProperties);
 	protected abstract PredictionProperties[] getAvailablePredictionProperties();
+	
+	
+	public abstract Set<RelationshipType> getRelationshipTypes();
+	public abstract StructureConfiguration getStructureConfiguration();
 }
 

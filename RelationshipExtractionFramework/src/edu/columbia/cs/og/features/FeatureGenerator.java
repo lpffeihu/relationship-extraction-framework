@@ -1,11 +1,12 @@
 package edu.columbia.cs.og.features;
 
+import java.io.Serializable;
 import java.util.List;
 
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.structure.OperableStructure;
 
-public abstract class FeatureGenerator<E extends FeatureSet> {
+public abstract class FeatureGenerator<E extends FeatureSet> implements Serializable {
 	
 	private List<FeatureGenerator> fgs;
 	

@@ -16,6 +16,7 @@ import edu.columbia.cs.model.Model;
 import edu.columbia.cs.model.impl.JLibsvmBinaryModel;
 import edu.columbia.cs.model.impl.JLibsvmCompositeBinaryModel;
 import edu.columbia.cs.model.impl.JLibsvmMulticlassModelModel;
+import edu.columbia.cs.og.configuration.StructureConfiguration;
 import edu.columbia.cs.og.core.Kernel;
 import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
 import edu.columbia.cs.og.structure.OperableStructure;
@@ -24,15 +25,17 @@ import edu.columbia.cs.svm.problem.OperableStructureToMulticlassSVMproblemConver
 
 public class JLibSVMMulticlassEngine implements Engine {
 
-	private Kernel kernel;
+	private StructureConfiguration conf;
+	private Set<RelationshipType> relationshipTypes;
 	
-	public JLibSVMMulticlassEngine(Kernel k){
-		kernel=k;
+	public JLibSVMMulticlassEngine(StructureConfiguration conf, Set<RelationshipType> relationshipTypes){
+		this.conf=conf;
+		this.relationshipTypes=relationshipTypes;
 	}
 	
 	@Override
 	public Model train(List<OperableStructure> train) {
-		KernelFunction<OperableStructure> kernel = this.kernel;
+		KernelFunction<OperableStructure> kernel = (Kernel)conf.getCore();
 		ImmutableSvmParameterPoint.Builder<String, OperableStructure> builder = new ImmutableSvmParameterPoint.Builder<String, OperableStructure>();
 		builder.C=50;
 		builder.kernel=kernel;
@@ -46,7 +49,7 @@ public class JLibSVMMulticlassEngine implements Engine {
 		
 		MultiClassificationSVM<String,OperableStructure> multi = new MultiClassificationSVM<String,OperableStructure>(binary);
 		
-		return new JLibsvmMulticlassModelModel(multi.train(problem, params));
+		return new JLibsvmMulticlassModelModel(multi.train(problem, params),conf,this.relationshipTypes);
 	}
 
 }

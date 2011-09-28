@@ -1,7 +1,7 @@
 import java.io.File;
-import java.io.IOException;
 import java.util.Set;
 
+import weka.core.SerializationHelper;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.candidates.CandidatesSentenceReader;
 import edu.columbia.cs.og.algorithm.StructureGenerator;
@@ -22,16 +22,16 @@ import edu.columbia.cs.utils.Span;
 
 public class OperableStructuresGenerationACE2005 {
 
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
+	public static void main(String[] args) throws Exception {
 		StructureConfiguration conf = new StructureConfiguration(new BagOfNGramsKernel());
 				
-		FeatureGenerator<SequenceFS<Span>> tokenizer = new OpenNLPTokenizationFG("en-token.bin");
+		/*FeatureGenerator<SequenceFS<Span>> tokenizer = new OpenNLPTokenizationFG("en-token.bin");
 		FeatureGenerator<SequenceFS<Span>> fgChunk = new EntityBasedChunkingFG(tokenizer);
 		FeatureGenerator<SequenceFS<String>> fgChuckString = new SpansToStringsConvertionFG(fgChunk);
 		FeatureGenerator<SequenceFS<String>> fgPOS = new OpenNLPPartOfSpeechFG("en-pos-maxent.bin",fgChuckString);
 		FeatureGenerator<SequenceFS<String>> fgGPOS = new GenericPartOfSpeechFG(fgPOS);
 		//conf.addFeatureGenerator(fgPOS);
-		conf.addFeatureGenerator(fgGPOS);
+		conf.addFeatureGenerator(fgGPOS);*/
 		
 		String inputFolder = "/home/goncalo/ACEProcessedFlat/";
 		File ACEDir = new File(inputFolder);
@@ -47,6 +47,8 @@ public class OperableStructuresGenerationACE2005 {
 			
 			CoreWriter.writeOperableStructures(structures, outputFolder+fileName);
 		}
+		
+		SerializationHelper.write(outputFolder+"Configuration.bin",conf);
 	}
 
 }

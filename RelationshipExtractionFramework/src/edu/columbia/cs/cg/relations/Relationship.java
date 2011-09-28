@@ -2,6 +2,7 @@ package edu.columbia.cs.cg.relations;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class Relationship implements Serializable {
 	
@@ -76,5 +77,9 @@ public class Relationship implements Serializable {
 	
 	public RelationshipType getRelationshipType(){
 		return type;
+	}
+
+	public Collection<String> getRoles() {
+		return type.getRoles();
 	}
 }

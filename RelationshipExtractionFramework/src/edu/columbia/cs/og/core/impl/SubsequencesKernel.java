@@ -286,7 +286,6 @@ public class SubsequencesKernel extends Kernel {
 	{
 		assert s.length == t.length;
 		int nCount = 0;
-		//TODO: WARNING... should not be equals
 		for (int i = 0; i < s.length; i++)
 			if (s[i] != null && s[i]==t[i])
 				nCount++;

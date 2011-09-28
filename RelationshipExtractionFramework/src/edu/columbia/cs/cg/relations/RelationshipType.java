@@ -19,8 +19,8 @@ public class RelationshipType implements Serializable {
 	private Hashtable<String,Integer> indexes;
 	private int numberEntities;
 	
-	private transient RoleConstraint[] roleConstraints;
-	private transient RelationshipConstraint relConstraints;
+	private RoleConstraint[] roleConstraints;
+	private RelationshipConstraint relConstraints;
 	
 	public RelationshipType(String type, String ... roles){
 		indexes=new Hashtable<String,Integer>();

@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,8 +29,9 @@ import edu.columbia.cs.utils.Span;
 
 public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<SequenceFS<String>> {
 
-	private POSTaggerME tagger;
+	private transient POSTaggerME tagger;
 	private FeatureGenerator<SequenceFS<String>> tokenizer;
+	private String path;
 
 	public OpenNLPPartOfSpeechFG(String path,FeatureGenerator<SequenceFS<String>> tokenizer) throws InvalidFormatException, IOException{
 		InputStream modelIn = null;
@@ -38,6 +41,7 @@ public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<Seq
 		modelIn.close();
 		tagger = new POSTaggerME(modelPOS);
 		this.tokenizer = tokenizer;
+		this.path=path;
 	}
 	
 	@Override
@@ -55,5 +59,21 @@ public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<Seq
 		ret.add(tokenizer);
 	
 		return ret;
+	}
+	
+	private void writeObject(ObjectOutputStream out) throws IOException{
+		out.defaultWriteObject();
+		out.writeObject(path);
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
+		in.defaultReadObject();
+		path=(String) in.readObject();
+		InputStream modelIn = null;
+		POSModel modelPOS=null;
+		modelIn = new FileInputStream(path);
+		modelPOS = new POSModel(modelIn);
+		modelIn.close();
+		tagger = new POSTaggerME(modelPOS);
 	}
 }

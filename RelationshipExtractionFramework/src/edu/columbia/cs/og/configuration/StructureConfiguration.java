@@ -1,5 +1,6 @@
 package edu.columbia.cs.og.configuration;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.structure.OperableStructure;
 
-public class StructureConfiguration {
+public class StructureConfiguration implements Serializable {
 	private List<FeatureGenerator> userFg;
 	private Core classificationCore;
 	private List<Class<? extends FeatureGenerator>> userFgKeys;
@@ -37,5 +38,13 @@ public class StructureConfiguration {
 		}
 		
 		return newStructure;
+	}
+	
+	public Core getCore(){
+		return classificationCore;
+	}
+	
+	public List<FeatureGenerator> getUserFG(){
+		return userFg;
 	}
 }

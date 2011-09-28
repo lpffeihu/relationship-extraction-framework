@@ -22,6 +22,9 @@ import edu.berkeley.compbio.jlibsvm.binary.BinaryModel;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.model.Model;
+import edu.columbia.cs.og.configuration.StructureConfiguration;
+import edu.columbia.cs.og.core.Core;
+import edu.columbia.cs.og.core.Kernel;
 import edu.columbia.cs.og.structure.OperableStructure;
 
 public class JLibsvmBinaryModel extends Model{
@@ -32,15 +35,19 @@ public class JLibsvmBinaryModel extends Model{
 	private double lastConfidence;
 	private String trueLabel;
 	private String falseLabel;
+	private StructureConfiguration conf;
+	private Set<RelationshipType> relationshipType;
 	
 	public JLibsvmBinaryModel(){
 		
 	}
 	
-	public JLibsvmBinaryModel(BinaryModel<String,OperableStructure> binary){
+	public JLibsvmBinaryModel(BinaryModel<String,OperableStructure> binary, StructureConfiguration conf, Set<RelationshipType> relationshipType){
 		svmModel=binary;
 		trueLabel=svmModel.getTrueLabel();
 		falseLabel=svmModel.getFalseLabel();
+		this.conf=conf;
+		this.relationshipType=relationshipType;
 	}
 	
 	@Override
@@ -136,5 +143,15 @@ public class JLibsvmBinaryModel extends Model{
 		svmModel=model;
 		trueLabel=modelInfo.getTrueLabel();
 		falseLabel=modelInfo.getFalseLabel();
+	}
+
+	@Override
+	public StructureConfiguration getStructureConfiguration() {
+		return conf;
+	}
+
+	@Override
+	public Set<RelationshipType> getRelationshipTypes() {
+		return relationshipType;
 	}
 }

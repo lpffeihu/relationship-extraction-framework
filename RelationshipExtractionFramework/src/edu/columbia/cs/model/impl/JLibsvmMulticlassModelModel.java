@@ -8,6 +8,9 @@ import edu.berkeley.compbio.jlibsvm.multi.MultiClassModel;
 import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.model.Model.PredictionProperties;
+import edu.columbia.cs.og.configuration.StructureConfiguration;
+import edu.columbia.cs.og.core.Core;
+import edu.columbia.cs.og.core.Kernel;
 import edu.columbia.cs.og.structure.OperableStructure;
 
 public class JLibsvmMulticlassModelModel extends Model {
@@ -17,9 +20,13 @@ public class JLibsvmMulticlassModelModel extends Model {
 	 */
 	private static final long serialVersionUID = -5785782738918799493L;
 	private transient MultiClassModel<String,OperableStructure> svmModel;
+	private StructureConfiguration conf;
+	private Set<RelationshipType> relationshipTypes;
 	
-	public JLibsvmMulticlassModelModel(MultiClassModel<String, OperableStructure> model) {
+	public JLibsvmMulticlassModelModel(MultiClassModel<String, OperableStructure> model, StructureConfiguration conf, Set<RelationshipType> relationshipTypes) {
 		svmModel=model;
+		this.conf=conf;
+		this.relationshipTypes=relationshipTypes;
 	}
 
 	@Override
@@ -42,6 +49,16 @@ public class JLibsvmMulticlassModelModel extends Model {
 			result.add(label);
 		}
 		return result;
+	}
+
+	@Override
+	public StructureConfiguration getStructureConfiguration() {
+		return conf;
+	}
+
+	@Override
+	public Set<RelationshipType> getRelationshipTypes() {
+		return relationshipTypes;
 	}
 
 }

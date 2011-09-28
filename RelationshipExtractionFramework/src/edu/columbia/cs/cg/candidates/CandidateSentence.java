@@ -1,6 +1,7 @@
 package edu.columbia.cs.cg.candidates;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -56,9 +57,17 @@ public class CandidateSentence extends FeaturableObject implements Serializable 
 		}
 		return labels;
 	}
+	
+	public Collection<String> getRoles(RelationshipType t){
+		return relationships.get(t).getRoles();
+	}
 
 	public Entity getRole(RelationshipType type,String role){
 		return relationships.get(type).getRole(role);
+	}
+	
+	public Relationship getRelationship(RelationshipType t){
+		return relationships.get(t);
 	}
 
 	@Override
