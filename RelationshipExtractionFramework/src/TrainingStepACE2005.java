@@ -12,7 +12,7 @@ import weka.core.SerializationHelper;
 
 import com.davidsoergel.conja.Parallel;
 
-import edu.columbia.cs.api.RelationshipExtractor;
+import edu.columbia.cs.api.ClassifierBasedRelationshipExtractor;
 import edu.columbia.cs.cg.candidates.CandidateSentence;
 import edu.columbia.cs.cg.candidates.CandidatesSentenceWriter;
 import edu.columbia.cs.cg.document.Document;
@@ -127,7 +127,7 @@ public class TrainingStepACE2005 {
 		eval.printEvaluationReport(testingFiles, svmModel);
 		
 		
-		RelationshipExtractor extractor = new RelationshipExtractor(svmModel, new OpenNLPMESplitter("en-sent.bin"));
+		ClassifierBasedRelationshipExtractor extractor = new ClassifierBasedRelationshipExtractor(svmModel, new OpenNLPMESplitter("en-sent.bin"));
 		ACE2005Loader l = new ACE2005Loader(relationshipTypes);
 		File ACEDir = new File("/home/goncalo/ACEFlat/");
 		Dataset<Document> ace2005 = new Dataset<Document>(l,ACEDir,false);
