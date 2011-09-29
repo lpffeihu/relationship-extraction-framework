@@ -1,7 +1,9 @@
 package edu.columbia.cs.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,7 +28,7 @@ public class ClassifierBasedRelationshipExtractor implements RelationshipExtract
 		this.structGenerator = m.getStructureConfiguration();
 	}
 
-	public Set<Relationship> extractTuples(Document d){
+	public List<Relationship> extractTuples(Document d){
 		
 		Set<CandidateSentence> sents = generator.generateCandidates(d, m.getRelationshipTypes());
 		
@@ -35,7 +37,7 @@ public class ClassifierBasedRelationshipExtractor implements RelationshipExtract
 			types.put(type.getType(), type);
 		}
 		
-		Set<Relationship> results = new HashSet<Relationship>();
+		List<Relationship> results = new ArrayList<Relationship>();
 		
 		for(CandidateSentence s : sents){
 			OperableStructure struc = structGenerator.getOperableStructure(s);

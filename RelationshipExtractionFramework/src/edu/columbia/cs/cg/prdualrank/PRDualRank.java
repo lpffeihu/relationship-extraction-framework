@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import edu.columbia.cs.api.PatternBasedRelationshipExtractor;
@@ -79,7 +80,7 @@ public class PRDualRank implements Engine{
 		
 		PatternBasedRelationshipExtractor pbre = new PatternBasedRelationshipExtractor(extractPatterns);
 		
-		Set<Relationship> extractedTuples = new HashSet<Relationship>();
+		HashMap<Relationship,Integer> extractedTuples = new HashMap<Relationship,Integer>();
 		
 		for (Relationship relationship : seeds) {
 			
@@ -89,7 +90,7 @@ public class PRDualRank implements Engine{
 				
 				for (Document document : documents) {
 					
-					extractedTuples.addAll(filterByRole(role,relationship.getRole(role),pbre.extractTuples(document)));
+					updateExtractedTuples(extractedTuples,filterByRole(role,relationship.getRole(role),pbre.extractTuples(document)));
 					
 				}
 								
@@ -99,10 +100,29 @@ public class PRDualRank implements Engine{
 		
 	}
 
-	private Collection<? extends Relationship> filterByRole(String role,
-			Entity role2, Set<Relationship> extractTuples) {
-		// TODO Auto-generated method stub
-		return null;
+	private Map<Relationship,Integer> filterByRole(String role,
+			Entity value, List<Relationship> extractTuples) {
+		
+		//TODO I have to use the matcher...
+		
+		Map<Relationship, Integer> ret = new HashMap<Relationship, Integer>();
+		
+		for (Relationship relationship : extractTuples) {
+			
+			if (relationship.getRole(role).equals(value)){
+				
+				Integer freq = ret.get(relationship);
+				
+				if (freq == null){
+					freq = 0;
+				}
+				
+				ret.put(relationship, freq+1);
+			}
+			
+		}
+		
+		return ret;
 	}
 
 	private Set<Pattern> filter(HashMap<Pattern, Integer> patterns, int minsupport) {
