@@ -84,8 +84,9 @@ public class TrainingStepACE2005 {
 		
 		String path = rootDir+"ACEsplits/";
 		//String pathProc = rootDir+"ACEGraphsFlat/ORG-AFF/";
-		String pathProc = rootDir+"ACEBoNGramsFlat/";
+		//String pathProc = rootDir+"ACEBoNGramsFlat/";
 		//String pathProc = rootDir+"ACESubseqFlat/";
+		String pathProc = rootDir+"ACEWekaFlat/";
 		
 		StructureConfiguration conf = (StructureConfiguration) SerializationHelper.read(pathProc+"Configuration.bin");
 		

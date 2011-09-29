@@ -45,7 +45,7 @@ public class OpenInformationExtractionFG extends
 		this.sectionSplit=sectionSplit;
 	}
 	
-	private BooleanFeatureSet<ChunkedBinaryExtraction> featureSet; //= new ReVerbFeatures().getFeatureSet();
+	private transient BooleanFeatureSet<ChunkedBinaryExtraction> featureSet; //= new ReVerbFeatures().getFeatureSet();
 
 	private int numFeatures;
 
@@ -105,10 +105,8 @@ public class OpenInformationExtractionFG extends
 		// Next two lines define arg1: first is the tokens, then is the range. Only need 
 		// the range to construct the extraction.
 		Range arg1Range = readRange(span.getElement(1));
-		
 		// Same for the relation and arg2
 		Range relRange = readRange(span.getElement(2));
-		
 		Range arg2Range = readRange(span.getElement(3));
 		
 		// Construct the extraction
@@ -142,9 +140,6 @@ public class OpenInformationExtractionFG extends
 	private Range readRange(Span span){
 		int start = span.getStart();
 		int length = span.getEnd() - span.getStart() + 1;
-		if(length<=0){
-			System.out.println(length);
-		}
 		return new Range(start, length);
 	}
 

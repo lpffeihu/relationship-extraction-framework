@@ -43,7 +43,6 @@ public class OpenInformationExtractionOS extends OperableStructure implements We
 
 	@Override
 	public void initialize() {
-		
 		string = null;	
 		
 		SequenceFS<String> tokensString = getFeatures(SpansToStringsConvertionFG.class);

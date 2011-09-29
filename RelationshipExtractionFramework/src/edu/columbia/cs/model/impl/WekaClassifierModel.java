@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import weka.classifiers.Classifier;
+import weka.core.FastVector;
 import weka.core.Instance;
+import weka.core.Instances;
 import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.configuration.StructureConfiguration;
@@ -13,6 +15,7 @@ import edu.columbia.cs.og.core.impl.OpenInformationExtractionCore;
 import edu.columbia.cs.og.features.featureset.WekaInstanceFS;
 import edu.columbia.cs.og.features.impl.OpenInformationExtractionFG;
 import edu.columbia.cs.og.structure.OperableStructure;
+import edu.columbia.cs.og.structure.WekableStructure;
 
 public class WekaClassifierModel extends Model {
 
@@ -22,7 +25,7 @@ public class WekaClassifierModel extends Model {
 	
 	private Classifier classifier;
 
-	public WekaClassifierModel(Classifier classifier){
+	public WekaClassifierModel(Classifier classifier, String positiveLabel){
 		this.classifier = classifier;
 	}
 	
@@ -31,7 +34,14 @@ public class WekaClassifierModel extends Model {
 	protected Set<String> getPredictedLabel(OperableStructure s) {
 		Set<String> result = new HashSet<String>();
 		
-		Instance instance = (s.getFeatures(OpenInformationExtractionFG.class)).getInstance();
+		Instance instance = ((WekableStructure)s).getInstance();		
+		FastVector attributes = generateAttributeFastVector(instance);
+		
+		Instances instances = new Instances("train", attributes, 0);
+		
+		instances.setClassIndex(22);
+		
+		instance.setDataset(instances);
 		
 		try {
 			double classification = classifier.classifyInstance(instance);
@@ -58,8 +68,7 @@ public class WekaClassifierModel extends Model {
 
 	@Override
 	protected PredictionProperties[] getAvailablePredictionProperties() {
-		// TODO Auto-generated method stub
-		return null;
+		return new PredictionProperties[]{};
 	}
 
 
@@ -74,6 +83,30 @@ public class WekaClassifierModel extends Model {
 	public StructureConfiguration getStructureConfiguration() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private String generateLabel(RelationshipType type, OperableStructure operableStructure) {
+		Set<String> labels = operableStructure.getLabels();
+		if(labels.contains(type.getType())){
+			return WekaClassifierModel.POSITIVE_LABEL;
+		}
+		return WekaClassifierModel.NEGATIVE_LABEL;
+	}
+	private FastVector generateAttributeFastVector(
+			Instance sampleInstance) {
+		
+		int numFeatures = sampleInstance.numAttributes();
+
+		FastVector attributes = new FastVector(numFeatures); // has space for class attribute already 
+		// Construct a numeric attribute for each feature in the set
+		for (int i = 0; i < numFeatures; i++) {
+
+			attributes.addElement(sampleInstance.attribute(i));
+
+		}
+		
+		return attributes;
+
 	}
 
 }

@@ -23,6 +23,7 @@ import edu.columbia.cs.og.configuration.StructureConfiguration;
 import edu.columbia.cs.og.features.featureset.WekaInstanceFS;
 import edu.columbia.cs.og.features.impl.OpenInformationExtractionFG;
 import edu.columbia.cs.og.structure.OperableStructure;
+import edu.columbia.cs.og.structure.WekableStructure;
 import edu.washington.cs.knowitall.extractor.conf.BooleanFeatureSet;
 import edu.washington.cs.knowitall.extractor.conf.LabeledBinaryExtraction;
 import edu.washington.cs.knowitall.extractor.conf.LabeledBinaryExtractionReader;
@@ -54,7 +55,7 @@ public class WekaClassifierEngine implements Engine {
 
 		for(RelationshipType type : relationshipTypes){
 			
-			Instance sampleInstance = list.get(0).getFeatures(OpenInformationExtractionFG.class).getInstance();
+			Instance sampleInstance = ((WekableStructure)list.get(0)).getInstance();
 			
 			FastVector attributes = generateAttributeFastVector(sampleInstance);
 			
@@ -64,7 +65,7 @@ public class WekaClassifierEngine implements Engine {
 	
 			for (OperableStructure operableStructure : list) {
 			
-				Instance instance = ((WekaInstanceFS)operableStructure.getFeatures(OpenInformationExtractionFG.class)).getInstance();
+				Instance instance = ((WekableStructure)operableStructure).getInstance();
 				
 				instance.setValue((Attribute)attributes.elementAt(featureSet.getNumFeatures()), generateLabel(type,operableStructure));
 				
@@ -73,7 +74,6 @@ public class WekaClassifierEngine implements Engine {
 				instances.add(inst);
 				
 				inst.setDataset(instances);
-				
 			}
 	
 			try {
@@ -83,7 +83,7 @@ public class WekaClassifierEngine implements Engine {
 				e.printStackTrace();
 			}
 			
-			new WekaClassifierModel(classifier);
+			return new WekaClassifierModel(classifier, "ORG-AFF");
 		}
 		return null;
 		

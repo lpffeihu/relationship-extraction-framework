@@ -20,6 +20,7 @@ import edu.columbia.cs.og.features.impl.SpansToStringsConvertionFG;
 import edu.columbia.cs.og.features.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.og.structure.impl.OpenInformationExtractionOS;
+import edu.columbia.cs.utils.AlternativeOpenIEFeatures;
 import edu.columbia.cs.utils.Span;
 import edu.washington.cs.knowitall.extractor.conf.ReVerbFeatures;
 
@@ -43,7 +44,7 @@ public class OpenInformationExtractionCore extends Core {
 			FeatureGenerator<SequenceFS<Span>> entitySplits = new EntitySplitsFG(tokenSpans);
 			
 			FeatureGenerator<WekaInstanceFS> wekaFS = new OpenInformationExtractionFG(
-					new ReVerbFeatures().getFeatureSet(),tokens,pos,chunk,entitySplits);
+					new AlternativeOpenIEFeatures().getFeatureSet(),tokens,pos,chunk,entitySplits);
 			
 			features.add(tokens);
 			
