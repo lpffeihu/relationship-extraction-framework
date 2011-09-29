@@ -1,5 +1,6 @@
 package edu.columbia.cs.utils;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,10 +22,10 @@ import edu.washington.cs.knowitall.util.Range;
  * @author afader
  *
  */
-public class AlternativeOpenIEFeatures {
+public class AlternativeOpenIEFeatures implements Serializable{
 	
 	private HashMap<String, Predicate<ChunkedBinaryExtraction>> featureMap;
-	private BooleanFeatureSet<ChunkedBinaryExtraction> featureSet;
+	private transient BooleanFeatureSet<ChunkedBinaryExtraction> featureSet;
 	
 	public AlternativeOpenIEFeatures() {
 		initFeatureSet();
@@ -34,6 +35,9 @@ public class AlternativeOpenIEFeatures {
 	 * @return the feature set used for the ReVerb confidence function
 	 */
 	public BooleanFeatureSet<ChunkedBinaryExtraction> getFeatureSet() {
+		if(featureSet==null){
+			initFeatureSet();
+		}
 		return featureSet;
 	}
 	

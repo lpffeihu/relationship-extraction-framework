@@ -83,7 +83,7 @@ public class WekaClassifierEngine implements Engine {
 				e.printStackTrace();
 			}
 			
-			return new WekaClassifierModel(classifier, "ORG-AFF");
+			return new WekaClassifierModel(classifier, type.getType(), conf, relationshipTypes);
 		}
 		return null;
 		

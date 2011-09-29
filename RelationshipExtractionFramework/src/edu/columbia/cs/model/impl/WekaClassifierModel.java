@@ -24,9 +24,18 @@ public class WekaClassifierModel extends Model {
 	public static transient final String NEGATIVE_LABEL = RelationshipType.NOT_A_RELATIONSHIP;
 	
 	private Classifier classifier;
+	
+	private String positiveLabel;
 
-	public WekaClassifierModel(Classifier classifier, String positiveLabel){
+	private StructureConfiguration conf;
+	
+	private Set<RelationshipType> relationshipTypes;
+	
+	public WekaClassifierModel(Classifier classifier, String positiveLabel, StructureConfiguration conf, Set<RelationshipType> relationshipTypes){
 		this.classifier = classifier;
+		this.positiveLabel=positiveLabel;
+		this.conf=conf;
+		this.relationshipTypes=relationshipTypes;
 	}
 	
 	
@@ -37,17 +46,16 @@ public class WekaClassifierModel extends Model {
 		Instance instance = ((WekableStructure)s).getInstance();		
 		FastVector attributes = generateAttributeFastVector(instance);
 		
-		Instances instances = new Instances("train", attributes, 0);
+		Instances instances = new Instances("test", attributes, 0);
 		
-		instances.setClassIndex(22);
+		instances.setClassIndex(attributes.size()-1);
 		
 		instance.setDataset(instances);
 		
 		try {
 			double classification = classifier.classifyInstance(instance);
-			
 			if (classification != 0.0){
-				result.add(POSITIVE_LABEL);
+				result.add(positiveLabel);
 				return result;
 			}
 		
@@ -74,15 +82,13 @@ public class WekaClassifierModel extends Model {
 
 	@Override
 	public Set<RelationshipType> getRelationshipTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		return relationshipTypes;
 	}
 
 
 	@Override
 	public StructureConfiguration getStructureConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
+		return conf;
 	}
 	
 	private String generateLabel(RelationshipType type, OperableStructure operableStructure) {

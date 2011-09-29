@@ -7,7 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.bayes.NaiveBayesSimple;
 import weka.classifiers.functions.Logistic;
+import weka.classifiers.functions.SMO;
+import weka.classifiers.functions.VotedPerceptron;
 import weka.core.SerializationHelper;
 
 import com.davidsoergel.conja.Parallel;

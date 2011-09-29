@@ -15,6 +15,7 @@ import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.FeatureSet;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.features.featureset.WekaInstanceFS;
+import edu.columbia.cs.utils.AlternativeOpenIEFeatures;
 import edu.columbia.cs.utils.Span;
 import edu.washington.cs.knowitall.extractor.conf.BooleanFeatureSet;
 import edu.washington.cs.knowitall.nlp.ChunkedSentence;
@@ -33,7 +34,7 @@ public class OpenInformationExtractionFG extends
 	private FeatureGenerator<SequenceFS<String>> chunker;
 	private FeatureGenerator<SequenceFS<Span>> sectionSplit;
 	
-	public OpenInformationExtractionFG(BooleanFeatureSet<ChunkedBinaryExtraction> featureSet,
+	public OpenInformationExtractionFG(AlternativeOpenIEFeatures featureSet,
 			FeatureGenerator<SequenceFS<String>> tokenizer,
 			FeatureGenerator<SequenceFS<String>> posTagger,
 			FeatureGenerator<SequenceFS<String>> chunker,
@@ -45,7 +46,7 @@ public class OpenInformationExtractionFG extends
 		this.sectionSplit=sectionSplit;
 	}
 	
-	private transient BooleanFeatureSet<ChunkedBinaryExtraction> featureSet; //= new ReVerbFeatures().getFeatureSet();
+	private AlternativeOpenIEFeatures IEfeatures; //= new ReVerbFeatures().getFeatureSet();
 
 	private int numFeatures;
 
@@ -53,15 +54,15 @@ public class OpenInformationExtractionFG extends
 	
 	private Instances dataset = null;
 	
-	private OpenInformationExtractionFG(BooleanFeatureSet<ChunkedBinaryExtraction> featureSet){
+	private OpenInformationExtractionFG(AlternativeOpenIEFeatures featureSet){
 		
-		this.featureSet = featureSet;
+		this.IEfeatures = featureSet;
 		
-		numFeatures = featureSet.getNumFeatures();
+		numFeatures = featureSet.getFeatureSet().getNumFeatures();
 		
 		attributes = new FastVector(numFeatures+1);
 		
-		List<String> featureNames = featureSet.getFeatureNames();
+		List<String> featureNames = featureSet.getFeatureSet().getFeatureNames();
 		for (int i = 0; i < numFeatures; i++) {
 			attributes.addElement(new Attribute(featureNames.get(i)));
 			
@@ -71,9 +72,9 @@ public class OpenInformationExtractionFG extends
 		
 		FastVector classVals = new FastVector(2);
 		
-		classVals.addElement(WekaClassifierModel.POSITIVE_LABEL);
-		
 		classVals.addElement(WekaClassifierModel.NEGATIVE_LABEL);
+		
+		classVals.addElement(WekaClassifierModel.POSITIVE_LABEL);
 		
 		Attribute classAttr = new Attribute("class", classVals);
 		
@@ -117,7 +118,7 @@ public class OpenInformationExtractionFG extends
 				
 		Instance inst = new Instance(numFeatures + 1);
 		inst.setDataset(dataset);
-		double[] featureVals = featureSet.featurizeToDouble(labeled);
+		double[] featureVals = IEfeatures.getFeatureSet().featurizeToDouble(labeled);
 		for (int i = 0; i < numFeatures; i++) {
 			//System.out.println(i + " " + numFeatures + " " + attributes.elementAt(i) + " " + featureVals[i]);
 			inst.setValue((Attribute)attributes.elementAt(i), featureVals[i]);

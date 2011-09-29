@@ -44,7 +44,7 @@ public class OpenInformationExtractionCore extends Core {
 			FeatureGenerator<SequenceFS<Span>> entitySplits = new EntitySplitsFG(tokenSpans);
 			
 			FeatureGenerator<WekaInstanceFS> wekaFS = new OpenInformationExtractionFG(
-					new AlternativeOpenIEFeatures().getFeatureSet(),tokens,pos,chunk,entitySplits);
+					new AlternativeOpenIEFeatures(),tokens,pos,chunk,entitySplits);
 			
 			features.add(tokens);
 			
