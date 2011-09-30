@@ -2,11 +2,14 @@ package edu.columbia.cs.cg.prdualrank;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import edu.columbia.cs.api.PatternBasedRelationshipExtractor;
 import edu.columbia.cs.cg.document.Document;
@@ -33,8 +36,9 @@ public class PRDualRank implements Engine{
 	private int window;
 	private int searchdepth;
 	private int minsupport;
+	private int k_nolabel;
 
-	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int span, int ngram, int window, int searchdepth, int minsupport){
+	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int span, int ngram, int window, int searchdepth, int minsupport, int k_nolabel){
 		this.se = se;
 		this.qg = qg;
 		this.k_seed = k_seed;
@@ -43,6 +47,7 @@ public class PRDualRank implements Engine{
 		this.window = window;
 		this.searchdepth = searchdepth;
 		this.minsupport = minsupport;
+		this.k_nolabel = k_nolabel;
 	}
 	
 	@Override
@@ -56,11 +61,15 @@ public class PRDualRank implements Engine{
 		
 		HashMap<Pattern, Integer> Pe = new HashMap<Pattern, Integer>();
 		
-		List<Relationship> seeds = new ArrayList<Relationship>();
+		Set<Relationship> seeds = new HashSet<Relationship>();
+		
+		Set<Relationship> initial = new HashSet<Relationship>();
 		
 		for (OperableStructure operableStructure : list) {
 			
 			seeds.add(((RelationOperableStructure)operableStructure).getRelation());
+			
+			initial.add(((RelationOperableStructure)operableStructure).getRelation());
 			
 		}
 		
@@ -90,15 +99,67 @@ public class PRDualRank implements Engine{
 				
 				for (Document document : documents) {
 					
-					updateExtractedTuples(extractedTuples,filterByRole(role,relationship.getRole(role),pbre.extractTuples(document)));
+					updateMap(extractedTuples,filterByRole(role,relationship.getRole(role),pbre.extractTuples(document)));
 					
 				}
 								
 			}
 			
 		}
+		
+		Set<Relationship> topTuples = filterTopK(extractedTuples,k_nolabel,initial);
+		
+		List<Document> document = new ArrayList<Document>();
+		
+		for (Relationship relationship : topTuples) {
+			
+			document.addAll(se.search(qg.generateQuery(relationship), k_seed));
+			
+		}
+		
 		return null;
 		
+	}
+
+	private class ValueComparator<T> implements Comparator<T>{
+
+		private Map<T, Integer> frequencymap;
+
+		private ValueComparator(Map<T,Integer> frequencymap){
+			this.frequencymap = frequencymap;
+		}
+		
+		@Override
+		public int compare(T obj1, T obj2) {
+			
+			return frequencymap.get(obj2).compareTo(frequencymap.get(obj1));
+			
+		}
+		
+	}
+	
+	private <T> Set<T> filterTopK(
+			Map<T, Integer> toSelect, int k, Set<T> initial) {
+		
+		int realLimit = k + initial.size();
+		
+		SortedMap<T,Integer> sorted = new TreeMap<T, Integer>(new ValueComparator<T>(toSelect));
+		
+		for (T element : toSelect.keySet()) {
+			
+			sorted.put(element, toSelect.get(element));
+			
+		}
+		
+		for (T element : sorted.keySet()) {
+			
+			initial.add(element);
+			
+			if (initial.size() == realLimit)
+				break;
+		}
+		
+		return initial;
 	}
 
 	private Map<Relationship,Integer> filterByRole(String role,
@@ -126,30 +187,30 @@ public class PRDualRank implements Engine{
 		return ret;
 	}
 
-	private Set<Pattern> filter(HashMap<Pattern, Integer> patterns, int minsupport) {
+	private <T> Set<T> filter(Map<T, Integer> toFilter, int minsupport) {
 		
-		Set<Pattern> filteredPatterns = new HashSet<Pattern>();
+		Set<T> ret = new HashSet<T>();
 		
-		for (Pattern pattern : patterns.keySet()) {
+		for (T pattern : toFilter.keySet()) {
 
-			Integer freq = patterns.get(pattern);
+			Integer freq = toFilter.get(pattern);
 			
 			if (freq >= minsupport){
-				filteredPatterns.add(pattern);
+				ret.add(pattern);
 			}
 			
 		}
 
-		return filteredPatterns;
+		return ret;
 		
 	}
 
-	private void updateMap(HashMap<Pattern, Integer> accPatterns,
-			HashMap<Pattern, Integer> extractedPatterns) {
+	private <T> void updateMap(Map<T, Integer> acc,
+			Map<T, Integer> actual) {
 		
-		for (Pattern pattern : extractedPatterns.keySet()) {
+		for (T pattern : actual.keySet()) {
 			
-			Integer freq = accPatterns.get(pattern);
+			Integer freq = acc.get(pattern);
 			
 			if (freq == null){
 				
@@ -157,7 +218,7 @@ public class PRDualRank implements Engine{
 				
 			}
 			
-			accPatterns.put(pattern, freq + extractedPatterns.get(pattern));
+			acc.put(pattern, freq + actual.get(pattern));
 			
 		}
 		
