@@ -19,6 +19,7 @@ import edu.columbia.cs.cg.prdualrank.graph.generator.ExtractionGraphGenerator;
 import edu.columbia.cs.cg.prdualrank.graph.generator.SearchGraphGenerator;
 import edu.columbia.cs.cg.prdualrank.inference.InferencePRDualRank;
 import edu.columbia.cs.cg.prdualrank.inference.convergence.NumberOfIterationsConvergence;
+import edu.columbia.cs.cg.prdualrank.inference.quest.MapBasedQuestCalculator;
 import edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction;
 import edu.columbia.cs.cg.prdualrank.model.PRDualRankModel;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
@@ -45,9 +46,10 @@ public class PRDualRank implements Engine{
 	private int minsupport;
 	private int k_nolabel;
 	private int iterations;
-	private RankFunction rankFunction;
-
-	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int span, int ngram, int window, int searchdepth, int minsupport, int k_nolabel, int iterations, RankFunction rankFunction){
+	private RankFunction<Pattern> patternRankFunction;
+	private RankFunction<Relationship> tupleRankFunction;
+	
+	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int span, int ngram, int window, int searchdepth, int minsupport, int k_nolabel, int iterations, RankFunction<Pattern> patternRankFunction, RankFunction<Relationship> tupleRankFunction){
 		this.se = se;
 		this.qg = qg;
 		this.k_seed = k_seed;
@@ -58,7 +60,8 @@ public class PRDualRank implements Engine{
 		this.minsupport = minsupport;
 		this.k_nolabel = k_nolabel;
 		this.iterations = iterations;
-		this.rankFunction = rankFunction;
+		this.patternRankFunction = patternRankFunction;
+		this.tupleRankFunction = tupleRankFunction;
 	}
 	
 	@Override
@@ -132,13 +135,13 @@ public class PRDualRank implements Engine{
 		
 		PRDualRankGraph Ge = new ExtractionGraphGenerator().generateGraph(topTuples,extractPatterns,documents);
 				
-		InferencePRDualRank search = new InferencePRDualRank(new NumberOfIterationsConvergence(iterations));
+		InferencePRDualRank search = new InferencePRDualRank();
 		
-		search.rank(Gs, seeds);
+		search.rank(Gs, patternRankFunction, tupleRankFunction, new MapBasedQuestCalculator(seeds,new NumberOfIterationsConvergence(iterations)));
 		
-		InferencePRDualRank extract = new InferencePRDualRank(new NumberOfIterationsConvergence(iterations));
+		InferencePRDualRank extract = new InferencePRDualRank();
 
-		extract.rank(Ge, seeds);
+		extract.rank(Ge, patternRankFunction, tupleRankFunction, new MapBasedQuestCalculator(seeds,new NumberOfIterationsConvergence(iterations)));
 		
 		return new PRDualRankModel(search.getRankedPatterns(),extract.getRankedPatterns(),search.getRankedTuples(),extract.getRankedTuples());
 		

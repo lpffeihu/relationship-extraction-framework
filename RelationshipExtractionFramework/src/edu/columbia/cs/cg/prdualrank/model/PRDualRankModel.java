@@ -2,6 +2,7 @@ package edu.columbia.cs.cg.prdualrank.model;
 
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.relations.Relationship;
@@ -12,17 +13,17 @@ import edu.columbia.cs.og.structure.OperableStructure;
 
 public class PRDualRankModel extends Model {
 
-	private List<Pattern> sPatterns;
-	private List<Pattern> ePatterns;
-	private List<Relationship> sTuples;
-	private List<Relationship> eTuples;
+	private SortedSet<Pattern> sPatterns;
+	private SortedSet<Pattern> ePatterns;
+	private SortedSet<Relationship> sTuples;
+	private SortedSet<Relationship> eTuples;
 
-	public PRDualRankModel(List<Pattern> sPatterns, List<Pattern> ePatterns, List<Relationship> sTuples, List<Relationship> eTuples) {
+	public PRDualRankModel(SortedSet<Pattern> searchPatterns, SortedSet<Pattern> extractionPatterns, SortedSet<Relationship> searchTuples, SortedSet<Relationship> extractionTuples) {
 		
-		this.sPatterns = sPatterns;
-		this.ePatterns = ePatterns;
-		this.sTuples = sTuples;
-		this.eTuples = eTuples;
+		this.sPatterns = searchPatterns;
+		this.ePatterns = extractionPatterns;
+		this.sTuples = searchTuples;
+		this.eTuples = extractionTuples;
 		
 	}
 
