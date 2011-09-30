@@ -14,6 +14,13 @@ import java.util.TreeMap;
 import edu.columbia.cs.api.PatternBasedRelationshipExtractor;
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.pattern.Pattern;
+import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
+import edu.columbia.cs.cg.prdualrank.graph.generator.ExtractionGraphGenerator;
+import edu.columbia.cs.cg.prdualrank.graph.generator.SearchGraphGenerator;
+import edu.columbia.cs.cg.prdualrank.inference.InferencePRDualRank;
+import edu.columbia.cs.cg.prdualrank.inference.convergence.NumberOfIterationsConvergence;
+import edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction;
+import edu.columbia.cs.cg.prdualrank.model.PRDualRankModel;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.ExtractionPatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.SearchPatternExtractor;
@@ -37,8 +44,10 @@ public class PRDualRank implements Engine{
 	private int searchdepth;
 	private int minsupport;
 	private int k_nolabel;
+	private int iterations;
+	private RankFunction rankFunction;
 
-	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int span, int ngram, int window, int searchdepth, int minsupport, int k_nolabel){
+	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int span, int ngram, int window, int searchdepth, int minsupport, int k_nolabel, int iterations, RankFunction rankFunction){
 		this.se = se;
 		this.qg = qg;
 		this.k_seed = k_seed;
@@ -48,6 +57,8 @@ public class PRDualRank implements Engine{
 		this.searchdepth = searchdepth;
 		this.minsupport = minsupport;
 		this.k_nolabel = k_nolabel;
+		this.iterations = iterations;
+		this.rankFunction = rankFunction;
 	}
 	
 	@Override
@@ -109,15 +120,27 @@ public class PRDualRank implements Engine{
 		
 		Set<Relationship> topTuples = filterTopK(extractedTuples,k_nolabel,initial);
 		
-		List<Document> document = new ArrayList<Document>();
+		Set<Document> documents = new HashSet<Document>();
 		
 		for (Relationship relationship : topTuples) {
 			
-			document.addAll(se.search(qg.generateQuery(relationship), k_seed));
+			documents.addAll(se.search(qg.generateQuery(relationship), k_seed));
 			
 		}
 		
-		return null;
+		PRDualRankGraph Gs = new SearchGraphGenerator().generateGraph(topTuples,searchPatterns,documents);
+		
+		PRDualRankGraph Ge = new ExtractionGraphGenerator().generateGraph(topTuples,extractPatterns,documents);
+				
+		InferencePRDualRank search = new InferencePRDualRank(new NumberOfIterationsConvergence(iterations));
+		
+		search.rank(Gs, seeds);
+		
+		InferencePRDualRank extract = new InferencePRDualRank(new NumberOfIterationsConvergence(iterations));
+
+		extract.rank(Ge, seeds);
+		
+		return new PRDualRankModel(search.getRankedPatterns(),extract.getRankedPatterns(),search.getRankedTuples(),extract.getRankedTuples());
 		
 	}
 
