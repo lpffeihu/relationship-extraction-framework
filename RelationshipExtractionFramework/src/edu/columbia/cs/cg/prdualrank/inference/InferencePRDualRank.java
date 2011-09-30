@@ -16,12 +16,12 @@ public class InferencePRDualRank {
 	private ConvergenceFinder cf;
 	private Set<Relationship> seeds;
 	private Map<Pattern,Pair<Double,Double>> patternTable;
-	private Map<Pattern,Pair<Double,Double>> tupleTable;
+	private Map<Relationship,Pair<Double,Double>> tupleTable;
 
 	public InferencePRDualRank(ConvergenceFinder cf){
 		this.cf = cf;
 		patternTable = new HashMap<Pattern, Pair<Double,Double>>();
-		tupleTable = new HashMap<Pattern, Pair<Double,Double>>();
+		tupleTable = new HashMap<Relationship, Pair<Double,Double>>();
 	}
 	
 	public void rank(PRDualRankGraph gs, Set<Relationship> seeds) {
@@ -29,8 +29,8 @@ public class InferencePRDualRank {
 		this.seeds = seeds;
 		
 		for (Relationship relationship : seeds) {
-			setPrecision(relationship,1.0);
-			setRecall(relationship,1.0/seeds.size());
+			setPrecision(relationship,1.0,tupleTable);
+			setRecall(relationship,1.0/seeds.size(),tupleTable);
 		}
 		
 		runQuestP(gs);
@@ -54,14 +54,14 @@ public class InferencePRDualRank {
 			for (Pattern pattern : gs.getPatterns()) {
 				
 				double precision = calculatePrecision(pattern,gs);
-				setPrecision(pattern,precision);
+				setPrecision(pattern,precision,patternTable);
 				
 			}
 			
 			for (Relationship tuple: gs.getTuples()){
 				
 				double precision = calculatePrecision(tuple,gs);
-				setPrecision(tuple,precision);
+				setPrecision(tuple,precision,tupleTable);
 				
 			}
 			
@@ -87,11 +87,19 @@ public class InferencePRDualRank {
 	}
 
 	private double getPrecision(Pattern pattern) {
-		return patternPrecisionTable.get(pattern);
+		return patternTable.get(pattern).a();
 	}
 
-	private void setPrecision(Pattern pattern, double precision) {
-		patternPrecisionTable.put(pattern,precision);
+	private <T> void setPrecision(T pattern, double precision, Map<T,Pair<Double,Double>> table) {
+		Pair<Double, Double> value = table.get(pattern);
+		
+		double recall = 0.0;
+		
+		if (value != null)
+			recall = value.b();
+			
+		table.put(pattern, new Pair<Double,Double>(precision,recall));
+		
 	}
 
 	private double calculatePrecision(Pattern pattern, PRDualRankGraph gs) {
@@ -113,7 +121,14 @@ public class InferencePRDualRank {
 			return P0(tuple);
 		}
 		
-		return tuplePrecisionTable.get(tuple);
+		return getPrecision(tuple,tupleTable);
+		
+	}
+
+	private <T> double getPrecision(T key,
+			Map<Relationship, Pair<Double, Double>> table) {
+		
+		return table.get(key).a();
 		
 	}
 
@@ -128,14 +143,14 @@ public class InferencePRDualRank {
 			for (Pattern pattern : gs.getPatterns()) {
 				
 				double recall = calculateRecall(pattern, gs);
-				setRecall(pattern,recall);
+				setRecall(pattern,recall,patternTable);
 				
 			}
 			
 			for (Relationship tuple: gs.getTuples()){
 				
 				double recall = calculateRecall(tuple,gs);
-				setRecall(tuple,recall);
+				setRecall(tuple,recall,tupleTable);
 				
 			}
 			
@@ -150,20 +165,27 @@ public class InferencePRDualRank {
 		
 		for (Pattern pattern : gs.getMatchingPatterns(tuple)) {
 			
-			recall += getRecall(pattern)*gs.getMatchingFrequency(tuple, pattern)/gs.getFreqency(pattern);
+			recall += getRecall(pattern,patternTable)*gs.getMatchingFrequency(tuple, pattern)/gs.getFreqency(pattern);
 			
 		}
 		
 		return recall;
 	}
 
-	private int getRecall(Pattern pattern) {
-		return patternRecallTable.get(pattern);
+	private <T> double getRecall(T key, Map<T,Pair<Double,Double>> table) {
+		return table.get(key).b();
 	}
 
-	private void setRecall(Pattern pattern, double recall) {
+	private <T> void setRecall(T key, double recall, Map<T,Pair<Double,Double>> table) {
 		
-		patternRecallTable.put(pattern,recall);
+		Pair<Double,Double> value = table.get(key);
+		
+		double precision = 0.0;
+		
+		if (value != null)	
+			precision = value.a();
+			
+		table.put(key, new Pair<Double,Double>(precision,recall));
 		
 	}
 
@@ -173,7 +195,7 @@ public class InferencePRDualRank {
 		
 		for (Relationship tuple : gs.getMatchingTuples(pattern)) {
 
-			recall += getRecall(tuple)*gs.getMatchingFrequency(pattern, tuple)/gs.getFrequency(tuple);
+			recall += getRecall(tuple,tupleTable)*gs.getMatchingFrequency(pattern, tuple)/gs.getFrequency(tuple);
 			
 		}
 		
@@ -181,23 +203,6 @@ public class InferencePRDualRank {
 		
 	}
 
-	private double getRecall(Relationship tuple) {
-		
-		return tupleRecallTable.get(tuple);
-		
-	}
-
-	private void setRecall(Relationship tuple, double recall) {
-		
-		tupleRecallTable.put(tuple,recall)
-	
-	}
-
-	private void setPrecision(Relationship tuple, double precision) {
-		
-		tuplePrecisionTable.put(tuple,precision);
-		
-	}
 
 	public List<Relationship> getRankedTuples() {
 		// TODO Auto-generated method stub
