@@ -2,6 +2,7 @@ package edu.columbia.cs.cg.prdualrank.inference.quest;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import edu.columbia.cs.cg.pattern.Pattern;
@@ -14,6 +15,11 @@ public class MapBasedQuestCalculator implements QuestCalculator {
 	private Map<Pattern,Pair<Double,Double>> patternTable;
 	private Map<Relationship,Pair<Double,Double>> tupleTable;
 
+	private Map<Pattern,Double> patternPrecision = null;
+	private Map<Pattern,Double> patternRecall = null;
+	private Map<Relationship,Double> tuplePrecision = null;
+	private Map<Relationship,Double> tupleRecall = null;
+	
 	private ConvergenceFinder convergence;
 	private Set<Relationship> seeds;
 
@@ -184,6 +190,74 @@ public class MapBasedQuestCalculator implements QuestCalculator {
 		}
 		
 		return recall;
+		
+	}
+
+	@Override
+	public Map<Pattern, Double> getPatternPrecisionMap() {
+		
+		if (patternPrecision == null){
+			generatePatternMaps();
+		}
+	
+		return patternPrecision;
+	}
+
+	@Override
+	public Map<Relationship, Double> getTuplePrecisionMap() {
+		
+		if (tuplePrecision == null){
+			generateTupleMaps();
+		}
+		return tuplePrecision;
+	}
+
+	private void generateTupleMaps() {
+		
+		tuplePrecision = new HashMap<Relationship, Double>();
+		tupleRecall = new HashMap<Relationship, Double>();
+		
+		loadMap(tupleTable,tuplePrecision,tupleRecall);
+		
+	}
+
+	private <T> void loadMap(Map<T, Pair<Double, Double>> table,
+			Map<T, Double> precision,
+			Map<T, Double> recall) {
+
+		for (Entry<T, Pair<Double, Double>> entry : table.entrySet()) {
+			
+			precision.put(entry.getKey(), entry.getValue().a());
+			recall.put(entry.getKey(), entry.getValue().b());
+			
+		}
+
+		
+	}
+
+	@Override
+	public Map<Pattern, Double> getPatternRecallMap() {
+		if (patternRecall == null){
+			generatePatternMaps();
+		}
+		return patternRecall;
+	}
+
+	private void generatePatternMaps() {
+		
+		patternPrecision = new HashMap<Pattern, Double>();
+		patternRecall = new HashMap<Pattern, Double>();
+		
+		loadMap(patternTable, patternPrecision, patternRecall);
+	}
+
+	@Override
+	public Map<Relationship, Double> getTupleRecallMap() {
+		
+		if (tupleRecall == null){
+			generateTupleMaps();
+		}
+		return tupleRecall;
 		
 	}
 	
