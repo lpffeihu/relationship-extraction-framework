@@ -6,16 +6,17 @@ import java.util.Map;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.pattern.Pattern;
+import edu.columbia.cs.cg.relations.Relationship;
 
 public abstract class PatternExtractor {
 
-	public Map<Pattern,Integer> extractPatterns(List<Document> documents) {
+	public Map<Pattern,Integer> extractPatterns(List<Document> documents, Relationship relationship) {
 		
 		Map<Pattern,Integer> patternsFrequency = new HashMap<Pattern, Integer>();
 		
 		for (Document document : documents) {
 			
-			updatePatternsFrequency(patternsFrequency,extract(document));
+			updatePatternsFrequency(patternsFrequency,extract(document,relationship));
 			
 		}
 		
@@ -41,6 +42,6 @@ public abstract class PatternExtractor {
 		
 	}
 
-	protected abstract Map<Pattern,Integer> extract(Document document);
+	protected abstract Map<Pattern,Integer> extract(Document document, Relationship relationship);
 
 }

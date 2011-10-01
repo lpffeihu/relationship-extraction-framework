@@ -91,9 +91,9 @@ public class PRDualRank implements Engine{
 			
 			List<Document> documents = se.search(qg.generateQuery(relationship), k_seed);
 
-			updateMap(Ps,spe.extractPatterns(documents));
+			updateMap(Ps,spe.extractPatterns(documents,relationship));
 			
-			updateMap(Pe,epe.extractPatterns(documents));
+			updateMap(Pe,epe.extractPatterns(documents,relationship));
 			
 		}
 		

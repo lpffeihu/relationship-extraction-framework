@@ -7,6 +7,7 @@ import java.util.Map;
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
+import edu.columbia.cs.cg.relations.Relationship;
 
 public class ExtractionPatternExtractor extends PatternExtractor {
 
@@ -19,9 +20,10 @@ public class ExtractionPatternExtractor extends PatternExtractor {
 	}
 
 	@Override
-	protected Map<Pattern, Integer> extract(Document document) {
-		// TODO Auto-generated method stub
-		return null;
+	protected Map<Pattern, Integer> extract(Document document, Relationship relationship) {
+		
+		
+		
 	}
 
 }
