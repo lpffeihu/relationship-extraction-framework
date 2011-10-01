@@ -3,7 +3,9 @@ package edu.columbia.cs.cg.relations.entity.matcher.impl;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,19 +30,35 @@ public class DictionaryEntityMatcher implements EntityMatcher {
 		
 		dictionary = new HashMap<String, Set<String>>();
 		
-		BufferedReader br = new BufferedReader(new FileReader(dictionaryFile));
+		try {
 		
-		String line;
-		
-		while ((line=br.readLine()) != null){
+			BufferedReader br = new BufferedReader(new FileReader(dictionaryFile));
 			
-			String[] spl = line.split(separatorValue);
+			String line;
 			
-			
-			
+			while ((line=br.readLine()) != null){
+				
+				String[] spl = line.split(separatorValue);
+				
+				Set<String> aliases = new HashSet<String>();
+				
+				for (int i = 0; i < spl.length; i++) {
+					aliases.add(spl[i]);
+				}
+				
+				for (int i = 0; i < spl.length; i++) {
+					
+					dictionary.put(spl[i], aliases);
+					
+				}
+				
+			}
+				
+			br.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		br.close();
 		
 	}
 

@@ -11,6 +11,8 @@ import edu.columbia.cs.cg.relations.constraints.relations.DummyRelationshipConst
 import edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint;
 import edu.columbia.cs.cg.relations.constraints.roles.NoConstraint;
 import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
+import edu.columbia.cs.cg.relations.entity.matcher.EntityMatcher;
+import edu.columbia.cs.cg.relations.entity.matcher.impl.EqualsEntityMatcher;
 
 public class RelationshipType implements Serializable {
 	public static final String NOT_A_RELATIONSHIP = "";
@@ -20,6 +22,7 @@ public class RelationshipType implements Serializable {
 	private int numberEntities;
 	
 	private RoleConstraint[] roleConstraints;
+	private EntityMatcher[] entityMatchers;
 	private RelationshipConstraint relConstraints;
 	
 	public RelationshipType(String type, String ... roles){
@@ -33,6 +36,7 @@ public class RelationshipType implements Serializable {
 		roleConstraints=new RoleConstraint[rolesSize];
 		for(int i=0;i<rolesSize; i++){
 			roleConstraints[i]=new NoConstraint();
+			entityMatchers[i]=new EqualsEntityMatcher();
 		}
 		relConstraints=new DummyRelationshipConstraint();
 	}
@@ -65,14 +69,22 @@ public class RelationshipType implements Serializable {
 		roleConstraints[indexes.get(role)]=constraint;
 	}
 	
-	public void setConstraints(RelationshipConstraint constraint){
-		relConstraints=constraint;
-	}
-	
 	public RoleConstraint getConstraint(String role){
 		return roleConstraints[indexes.get(role)];
 	}
 	
+	public void setMatchers(EntityMatcher matcher, String role){
+		entityMatchers[indexes.get(role)]=matcher;
+	}
+	
+	public EntityMatcher getMatchers(String role){
+		return entityMatchers[indexes.get(role)];
+	}
+	
+	public void setConstraints(RelationshipConstraint constraint){
+		relConstraints=constraint;
+	}
+		
 	public RelationshipConstraint getRelationshipConstraint(){
 		return relConstraints;
 	}

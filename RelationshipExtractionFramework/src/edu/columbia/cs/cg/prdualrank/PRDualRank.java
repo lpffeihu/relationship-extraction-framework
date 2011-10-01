@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import edu.columbia.cs.api.PatternBasedRelationshipExtractor;
 import edu.columbia.cs.cg.document.Document;
@@ -29,10 +30,13 @@ import edu.columbia.cs.cg.prdualrank.searchengine.QueryGenerator;
 import edu.columbia.cs.cg.prdualrank.searchengine.SearchEngine;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
+import edu.columbia.cs.cg.relations.entity.matcher.EntityMatcher;
 import edu.columbia.cs.engine.Engine;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.og.structure.impl.RelationOperableStructure;
+import edu.columbia.cs.utils.MegaCartesianProduct;
 
 public class PRDualRank implements Engine{
 
@@ -49,11 +53,10 @@ public class PRDualRank implements Engine{
 	private RankFunction<Pattern> patternRankFunction;
 	private RankFunction<Relationship> tupleRankFunction;
 	
-	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int span, int ngram, int window, int searchdepth, int minsupport, int k_nolabel, int iterations, RankFunction<Pattern> patternRankFunction, RankFunction<Relationship> tupleRankFunction){
+	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int ngram, int window, int searchdepth, int minsupport, int k_nolabel, int iterations, RankFunction<Pattern> patternRankFunction, RankFunction<Relationship> tupleRankFunction){
 		this.se = se;
 		this.qg = qg;
 		this.k_seed = k_seed;
-		this.span = span;
 		this.ngram = ngram;
 		this.window = window;
 		this.searchdepth = searchdepth;
@@ -62,6 +65,7 @@ public class PRDualRank implements Engine{
 		this.iterations = iterations;
 		this.patternRankFunction = patternRankFunction;
 		this.tupleRankFunction = tupleRankFunction;
+		//span is for the relationship type. that comes in the List<OperableStructure>
 	}
 	
 	@Override
@@ -69,7 +73,7 @@ public class PRDualRank implements Engine{
 		
 		PatternExtractor spe = new SearchPatternExtractor(window, ngram, searchdepth);
 		
-		PatternExtractor epe = new ExtractionPatternExtractor(span);
+		PatternExtractor epe = new ExtractionPatternExtractor(window);
 		
 		HashMap<Pattern, Integer> Ps = new HashMap<Pattern, Integer>();
 		
@@ -91,6 +95,8 @@ public class PRDualRank implements Engine{
 			
 			List<Document> documents = se.search(qg.generateQuery(relationship), k_seed);
 
+			enrichDocuments(documents,relationship);
+			
 			updateMap(Ps,spe.extractPatterns(documents,relationship));
 			
 			updateMap(Pe,epe.extractPatterns(documents,relationship));
@@ -144,6 +150,79 @@ public class PRDualRank implements Engine{
 		extract.rank(Ge, patternRankFunction, tupleRankFunction, new MapBasedQuestCalculator(seeds,new NumberOfIterationsConvergence(iterations)));
 		
 		return new PRDualRankModel(search.getRankedPatterns(),extract.getRankedPatterns(),search.getRankedTuples(),extract.getRankedTuples());
+		
+	}
+
+	private void enrichDocuments(List<Document> documents,
+			Relationship relationship) {
+		
+		for (Document document : documents) {
+			
+			List<Relationship> mathchingRelationships = getMatchingRelationships(document,relationship);
+			
+			for (Relationship matchingRelationship : mathchingRelationships) {
+				
+				document.addRelationship(matchingRelationship);
+				
+			}
+			
+		}
+	
+	}
+
+	private List<Relationship> getMatchingRelationships(Document document,
+			Relationship relationship) {
+		
+		Set<Entity> entities = new HashSet<Entity>(document.getEntities());
+		
+		Collection<String> roles = relationship.getRoles();
+		
+		Map<String,Set<Entity>> candidateEntitiesForRole = new HashMap<String,Set<Entity>>();
+		
+		for(String role : roles){
+			
+			RoleConstraint roleConstraint = relationship.getRelationshipType().getConstraint(role);
+			
+			Set<Entity> entitiesForRole = roleConstraint.getCompatibleEntities(entities);
+			
+			EntityMatcher entityMatcher = relationship.getRelationshipType().getMatchers(role);
+			
+			Set<Entity> filteredEntitiesForRole = new HashSet<Entity>();
+			
+			for (Entity entity : entitiesForRole) {
+				
+				if (entityMatcher.match(relationship.getRole(role), entity)){
+					filteredEntitiesForRole.add(entity);
+				}
+				
+			}
+			
+			candidateEntitiesForRole.put(role, filteredEntitiesForRole);
+		
+		}
+
+		List<Relationship> matchingTuples = new ArrayList<Relationship>();
+		
+		for(Map<String,Entity> candidate : MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole)){
+			
+			Relationship newRelationship = new Relationship(relationship.getRelationshipType());
+			
+			for(Entry<String,Entity> entry : candidate.entrySet()){
+
+				newRelationship.setRole(entry.getKey(), entry.getValue());
+			
+			}
+
+			if (relationship.getRelationshipType().getRelationshipConstraint().checkConstraint(newRelationship)){
+				
+				matchingTuples.add(newRelationship);
+				
+			}
+			
+		}
+		
+		return matchingTuples;
+
 		
 	}
 
