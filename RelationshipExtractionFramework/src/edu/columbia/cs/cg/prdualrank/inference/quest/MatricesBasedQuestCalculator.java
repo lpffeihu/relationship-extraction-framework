@@ -15,21 +15,23 @@ import cern.colt.matrix.tdouble.algo.decomposition.DenseDoubleEigenvalueDecompos
 import cern.colt.matrix.tdouble.impl.SparseDoubleMatrix1D;
 import cern.colt.matrix.tdouble.impl.SparseRCDoubleMatrix2D;
 
+import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.pattern.Pattern;
+import edu.columbia.cs.cg.pattern.matchable.Matchable;
 import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
 import edu.columbia.cs.cg.prdualrank.inference.convergence.ConvergenceFinder;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.utils.Pair;
 
-public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
-	private Map<Pattern<T>,Integer> patternIds;
+public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document> implements QuestCalculator<T,D> {
+	private Map<Pattern<T,D>,Integer> patternIds;
 	private Map<Relationship,Integer> tupleIds;
-	private Map<Integer,Pattern<T>> patternIdsInverse;
+	private Map<Integer,Pattern<T,D>> patternIdsInverse;
 	private Map<Integer,Relationship> tupleIdsInverse;
 	private Map<Relationship, Double> tuplesPrecisionMap;
 	private Map<Relationship, Double> tuplesRecallMap;
-	private Map<Pattern<T>, Double> patternsPrecisionMap;
-	private Map<Pattern<T>, Double> patternsRecallMap;
+	private Map<Pattern<T,D>, Double> patternsPrecisionMap;
+	private Map<Pattern<T,D>, Double> patternsRecallMap;
 	private Set<Relationship> seeds;
 	private int numberIterations;
 	private boolean keepInitialValueSeeds = true;
@@ -40,14 +42,14 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 	
 	public MatricesBasedQuestCalculator(Set<Relationship> seeds){
 		this.seeds=seeds;
-		patternIds = new HashMap<Pattern<T>, Integer>();
+		patternIds = new HashMap<Pattern<T,D>, Integer>();
 		tupleIds = new HashMap<Relationship, Integer>();
-		patternIdsInverse=new HashMap<Integer,Pattern<T>>();
+		patternIdsInverse=new HashMap<Integer,Pattern<T,D>>();
 		tupleIdsInverse=new HashMap<Integer,Relationship>();
 		tuplesPrecisionMap=new HashMap<Relationship,Double>();
 		tuplesRecallMap=new HashMap<Relationship,Double>();
-		patternsPrecisionMap=new HashMap<Pattern<T>,Double>();
-		patternsRecallMap=new HashMap<Pattern<T>,Double>();
+		patternsPrecisionMap=new HashMap<Pattern<T,D>,Double>();
+		patternsRecallMap=new HashMap<Pattern<T,D>,Double>();
 	}
 
 	public MatricesBasedQuestCalculator(Set<Relationship> seeds, int numberIterations) {
@@ -56,7 +58,7 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 		this.numberIterations=numberIterations;
 	}
 	
-	private SparseDoubleMatrix1D getInitialPrecisionMatrix(PRDualRankGraph<T> gs){
+	private SparseDoubleMatrix1D getInitialPrecisionMatrix(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
 		double[] seedTuples = new double[tuples.size()];
 		
@@ -74,7 +76,7 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 		return new SparseDoubleMatrix1D(seedTuples);
 	}
 	
-	private SparseDoubleMatrix1D getInitialRecallMatrix(PRDualRankGraph<T> gs){
+	private SparseDoubleMatrix1D getInitialRecallMatrix(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
 		double[] seedTuples = new double[tuples.size()];
 		
@@ -92,9 +94,9 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 		return new SparseDoubleMatrix1D(seedTuples);
 	}
 	
-	private SparseRCDoubleMatrix2D getLeftMatrixForPrecision(PRDualRankGraph<T> gs){
+	private SparseRCDoubleMatrix2D getLeftMatrixForPrecision(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
-		Set<Pattern<T>> patterns = gs.getPatterns();
+		Set<Pattern<T,D>> patterns = gs.getPatterns();
 		
 		double[][] matrix = new double[patterns.size()][tuples.size()];
 		
@@ -106,7 +108,7 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 				tupleIdsInverse.put(tupleId, tuple);
 			}
 			
-			for(Pattern<T> pattern : gs.getMatchingPatterns(tuple)){
+			for(Pattern<T,D> pattern : gs.getMatchingPatterns(tuple)){
 				Integer patternId = patternIds.get(pattern);
 				if(patternId==null){
 					patternId=patternIds.size();
@@ -125,9 +127,9 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 		return new SparseRCDoubleMatrix2D(matrix);
 	}
 	
-	private SparseRCDoubleMatrix2D getLeftMatrixForRecall(PRDualRankGraph<T> gs){
+	private SparseRCDoubleMatrix2D getLeftMatrixForRecall(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
-		Set<Pattern<T>> patterns = gs.getPatterns();
+		Set<Pattern<T,D>> patterns = gs.getPatterns();
 		
 		double[][] matrix = new double[patterns.size()][tuples.size()];
 		
@@ -139,7 +141,7 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 				tupleIdsInverse.put(tupleId, tuple);
 			}
 			
-			for(Pattern<T> pattern : gs.getMatchingPatterns(tuple)){
+			for(Pattern<T,D> pattern : gs.getMatchingPatterns(tuple)){
 				Integer patternId = patternIds.get(pattern);
 				if(patternId==null){
 					patternId=patternIds.size();
@@ -158,9 +160,9 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 		return new SparseRCDoubleMatrix2D(matrix);
 	}
 	
-	private SparseRCDoubleMatrix2D getRightMatrixForPrecision(PRDualRankGraph<T> gs){
+	private SparseRCDoubleMatrix2D getRightMatrixForPrecision(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
-		Set<Pattern<T>> patterns = gs.getPatterns();
+		Set<Pattern<T,D>> patterns = gs.getPatterns();
 		
 		double[][] matrix = new double[tuples.size()][patterns.size()];
 		
@@ -172,7 +174,7 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 				tupleIdsInverse.put(tupleId, tuple);
 			}
 			
-			for(Pattern<T> pattern : gs.getMatchingPatterns(tuple)){
+			for(Pattern<T,D> pattern : gs.getMatchingPatterns(tuple)){
 				Integer patternId = patternIds.get(pattern);
 				if(patternId==null){
 					patternId=patternIds.size();
@@ -191,9 +193,9 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 		return new SparseRCDoubleMatrix2D(matrix);
 	}
 	
-	private SparseRCDoubleMatrix2D getRightMatrixForRecall(PRDualRankGraph<T> gs){
+	private SparseRCDoubleMatrix2D getRightMatrixForRecall(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
-		Set<Pattern<T>> patterns = gs.getPatterns();
+		Set<Pattern<T,D>> patterns = gs.getPatterns();
 		
 		double[][] matrix = new double[tuples.size()][patterns.size()];
 		
@@ -205,7 +207,7 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 				tupleIdsInverse.put(tupleId, tuple);
 			}
 			
-			for(Pattern<T> pattern : gs.getMatchingPatterns(tuple)){
+			for(Pattern<T,D> pattern : gs.getMatchingPatterns(tuple)){
 				Integer patternId = patternIds.get(pattern);
 				if(patternId==null){
 					patternId=patternIds.size();
@@ -225,7 +227,7 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 	}
 
 	@Override
-	public void runQuestP(PRDualRankGraph<T> gs) {
+	public void runQuestP(PRDualRankGraph<T,D> gs) {
 		SparseRCDoubleMatrix2D Mt = getLeftMatrixForPrecision(gs);
 		SparseRCDoubleMatrix2D Mp = getRightMatrixForPrecision(gs);
 		SparseDoubleMatrix1D p0t = getInitialPrecisionMatrix(gs);
@@ -304,13 +306,13 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 		
 		int numPatterns = (int) patternsPrecision.size();
 		for(int i=0; i<numPatterns; i++){
-			Pattern<T> pattern = patternIdsInverse.get(i);
+			Pattern<T,D> pattern = patternIdsInverse.get(i);
 			patternsPrecisionMap.put(pattern, patternsPrecision.get(i));
 		}
 	}
 
 	@Override
-	public void runQuestR(PRDualRankGraph<T> gs) {
+	public void runQuestR(PRDualRankGraph<T,D> gs) {
 		SparseRCDoubleMatrix2D Mt = getLeftMatrixForRecall(gs);
 		SparseRCDoubleMatrix2D Mp = getRightMatrixForRecall(gs);
 		SparseDoubleMatrix1D r0t = getInitialRecallMatrix(gs);
@@ -360,7 +362,7 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 		
 		int numPatterns = (int) patternsRecall.size();
 		for(int i=0; i<numPatterns; i++){
-			Pattern<T> pattern = patternIdsInverse.get(i);
+			Pattern<T,D> pattern = patternIdsInverse.get(i);
 			patternsRecallMap.put(pattern, patternsRecall.get(i));
 		}
 	}
@@ -377,12 +379,12 @@ public class MatricesBasedQuestCalculator<T> implements QuestCalculator<T> {
 	}
 
 	@Override
-	public Map<Pattern<T>, Double> getPatternPrecisionMap() {
+	public Map<Pattern<T,D>, Double> getPatternPrecisionMap() {
 		return patternsPrecisionMap;
 	}
 
 	@Override
-	public Map<Pattern<T>, Double> getPatternRecallMap() {
+	public Map<Pattern<T,D>, Double> getPatternRecallMap() {
 		return patternsRecallMap;
 	}
 }
