@@ -29,8 +29,8 @@ public class CandidatesSentenceReader {
 	/**
 	 * Method to read a set of candidate sentences from a file. The path to the file is given as input
 	 * 
-	 * @param input
-	 * @return
+	 * @param input path to the file that contains the candidate sentences
+	 * @return the set of candidate sentences present in the file
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */

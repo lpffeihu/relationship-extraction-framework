@@ -11,10 +11,9 @@ public class CandidatesSentenceWriter {
 	/**
 	 * Method to write a set of candidate sentences to a file. The path to the file is given as input
 	 * 
-	 * @param candidates the set of candidate 
-	 * @return
+	 * @param candidates the set of candidate sentences to be written
+	 * @param output the path to the file where the candidate sentences will be written
 	 * @throws IOException
-	 * @throws ClassNotFoundException
 	 */
 	public static void writeCandidateSentences(Set<CandidateSentence> candidates, String output) throws IOException{
 		ObjectOutput out = new ObjectOutputStream(new FileOutputStream(output));
