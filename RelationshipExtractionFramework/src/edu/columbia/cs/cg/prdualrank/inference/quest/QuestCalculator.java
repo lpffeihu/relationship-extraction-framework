@@ -6,17 +6,17 @@ import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
 import edu.columbia.cs.cg.relations.Relationship;
 
-public interface QuestCalculator {
+public interface QuestCalculator<T> {
 
-	void runQuestP(PRDualRankGraph gs);
+	void runQuestP(PRDualRankGraph<T> gs);
 
-	void runQuestR(PRDualRankGraph gs);
+	void runQuestR(PRDualRankGraph<T> gs);
 
-	Map<Pattern,Double> getPatternPrecisionMap();
+	Map<Pattern<T>,Double> getPatternPrecisionMap();
 
 	Map<Relationship,Double> getTuplePrecisionMap();
 
-	Map<Pattern,Double> getPatternRecallMap();
+	Map<Pattern<T>,Double> getPatternRecallMap();
 
 	Map<Relationship,Double> getTupleRecallMap();
 

@@ -28,7 +28,7 @@ import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 import edu.columbia.cs.utils.Pair;
 
-public class WindowedSearchPatternExtractor implements PatternExtractor {
+public class WindowedSearchPatternExtractor<T extends Document> implements PatternExtractor<Document> {
 
 	private int window;
 	private int ngram;
@@ -75,7 +75,7 @@ public class WindowedSearchPatternExtractor implements PatternExtractor {
 
 	
 	@Override
-	public Map<Pattern, Integer> extractPatterns(Document document,
+	public Map<Pattern<Document>, Integer> extractPatterns(Document document,
 			Relationship relationship, List<Relationship> matchingRelationships) {
 		
 		//find the first index, find the last one and make a window around it.
@@ -139,7 +139,7 @@ public class WindowedSearchPatternExtractor implements PatternExtractor {
 		
 	}
 
-	private Map<Pattern, Integer> generateSearchPatterns(
+	private Map<Pattern<Document>, Integer> generateSearchPatterns(
 			List<TupleContext> contexts, int ngram, int numberOfPhrases) {
 		
 		Set<String[]> ngrams = new HashSet<String[]>();
@@ -150,7 +150,7 @@ public class WindowedSearchPatternExtractor implements PatternExtractor {
 			
 		}
 		
-		Map<Pattern,Integer> searchPatterns = new HashMap<Pattern, Integer>();
+		Map<Pattern<Document>,Integer> searchPatterns = new HashMap<Pattern<Document>, Integer>();
 		
 		Map<Integer,Set<String[]>> ngramsMap = new HashMap<Integer, Set<String[]>>();
 		
@@ -162,7 +162,7 @@ public class WindowedSearchPatternExtractor implements PatternExtractor {
 			
 			for (Map<Integer, String[]> patternsWord : patternwords) {
 				
-				SearchPattern sp = new SearchPattern(patternsWord.values()); 
+				SearchPattern<Document> sp = new SearchPattern<Document>(patternsWord.values()); 
 				
 				if (sp.isValid()){
 					
@@ -178,8 +178,8 @@ public class WindowedSearchPatternExtractor implements PatternExtractor {
 		
 	}
 
-	private void updateMap(Map<Pattern, Integer> searchPatterns,
-			SearchPattern sp) {
+	private void updateMap(Map<Pattern<Document>, Integer> searchPatterns,
+			SearchPattern<Document> sp) {
 		
 		Integer freq = searchPatterns.get(sp);
 		

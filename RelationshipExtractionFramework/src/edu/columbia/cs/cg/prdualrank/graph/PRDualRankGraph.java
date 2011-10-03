@@ -7,22 +7,22 @@ import java.util.Set;
 import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.relations.Relationship;
 
-public class PRDualRankGraph {
+public class PRDualRankGraph<T> {
 
-	Map<Pattern,Integer> patternFrequency;
+	Map<Pattern<T>,Integer> patternFrequency;
 	Map<Relationship, Integer> tupleFrequency;
-	Map<Pattern,Map<Relationship,Integer>> patternTupleFrequency;
-	Map<Relationship,Map<Pattern, Integer>> tuplePatternFrequency;
+	Map<Pattern<T>,Map<Relationship,Integer>> patternTupleFrequency;
+	Map<Relationship,Map<Pattern<T>, Integer>> tuplePatternFrequency;
 	
 	public PRDualRankGraph(){
-		patternFrequency = new HashMap<Pattern, Integer>();
+		patternFrequency = new HashMap<Pattern<T>, Integer>();
 		tupleFrequency = new HashMap<Relationship, Integer>();
-		patternTupleFrequency = new HashMap<Pattern, Map<Relationship,Integer>>();
-		tuplePatternFrequency = new HashMap<Relationship, Map<Pattern,Integer>>();
+		patternTupleFrequency = new HashMap<Pattern<T>, Map<Relationship,Integer>>();
+		tuplePatternFrequency = new HashMap<Relationship, Map<Pattern<T>,Integer>>();
 	}
 	
 	
-	public void addContext(Pattern pattern, Relationship tuple, int frequency) {
+	public void addContext(Pattern<T> pattern, Relationship tuple, int frequency) {
 		
 		updateFrequency(patternFrequency,pattern,frequency);
 		updateFrequency(tupleFrequency,tuple,frequency);
@@ -48,8 +48,8 @@ public class PRDualRankGraph {
 	}
 
 
-	private <T> void updateFrequency(Map<T, Integer> freqTable,
-			T element, int frequency) {
+	private <F> void updateFrequency(Map<F, Integer> freqTable,
+			F element, int frequency) {
 		
 		Integer freq = freqTable.get(element);
 		
@@ -61,7 +61,7 @@ public class PRDualRankGraph {
 	}
 
 
-	public Set<Pattern> getPatterns() {
+	public Set<Pattern<T>> getPatterns() {
 		return patternFrequency.keySet();
 	}
 
@@ -70,19 +70,19 @@ public class PRDualRankGraph {
 	}
 
 
-	public int getMatchingFrequency(Pattern pattern, Relationship tuple) {
+	public int getMatchingFrequency(Pattern<T> pattern, Relationship tuple) {
 		
 		return patternTupleFrequency.get(pattern).get(tuple);
 		
 	}
 
 
-	public Set<Relationship> getMatchingTuples(Pattern pattern) {
+	public Set<Relationship> getMatchingTuples(Pattern<T> pattern) {
 		return patternTupleFrequency.get(pattern).keySet();
 	}
 
 
-	public double getFreqency(Pattern pattern) {
+	public double getFreqency(Pattern<T> pattern) {
 		return patternFrequency.get(pattern);
 	}
 
@@ -92,12 +92,12 @@ public class PRDualRankGraph {
 	}
 
 
-	public int getMatchingFrequency(Relationship tuple, Pattern pattern) {
+	public int getMatchingFrequency(Relationship tuple, Pattern<T> pattern) {
 		return tuplePatternFrequency.get(tuple).get(pattern);
 	}
 
 
-	public Set<Pattern> getMatchingPatterns(Relationship tuple) {
+	public Set<Pattern<T>> getMatchingPatterns(Relationship tuple) {
 		
 		return tuplePatternFrequency.get(tuple).keySet();
 		

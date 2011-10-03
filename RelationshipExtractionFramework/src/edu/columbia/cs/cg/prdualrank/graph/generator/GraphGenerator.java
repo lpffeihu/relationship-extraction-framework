@@ -11,16 +11,16 @@ import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
 import edu.columbia.cs.cg.relations.Relationship;
 
-public abstract class GraphGenerator {
+public abstract class GraphGenerator<T> {
 
-	public PRDualRankGraph generateGraph(Set<Relationship> topTuples,
-			Set<Pattern> patterns, Set<Document> documents) {
+	public PRDualRankGraph<T> generateGraph(Set<Relationship> topTuples,
+			Set<Pattern<T>> patterns, Set<Document> documents) {
 		
-		PRDualRankGraph ret = new PRDualRankGraph();
+		PRDualRankGraph<T> ret = new PRDualRankGraph<T>();
 		
 		for (Document document : documents) {
 			
-			for (Pattern pattern : patterns) {
+			for (Pattern<T> pattern : patterns) {
 				
 				Hashtable<Relationship, Integer> tuples = findTuples(document,pattern);
 				
@@ -39,7 +39,7 @@ public abstract class GraphGenerator {
 	}
 
 	protected abstract Hashtable<Relationship, Integer> findTuples(Document document,
-			Pattern pattern);
+			Pattern<T> pattern);
 
 	
 }

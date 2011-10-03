@@ -8,15 +8,15 @@ import edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator;
 import edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction;
 import edu.columbia.cs.cg.relations.Relationship;
 
-public class InferencePRDualRank {
+public class InferencePRDualRank<T> {
 
 	private SortedSet<Relationship> rankedTuples;
-	private SortedSet<Pattern> rankedPatterns;
+	private SortedSet<Pattern<T>> rankedPatterns;
 
 	public InferencePRDualRank(){
 	}
 	
-	public void rank(PRDualRankGraph gs, RankFunction<Pattern> patternRankFunction, RankFunction<Relationship> tupleRankFunction, QuestCalculator questCalculator) {
+	public void rank(PRDualRankGraph<T> gs, RankFunction<Pattern<T>> patternRankFunction, RankFunction<Relationship> tupleRankFunction, QuestCalculator<T> questCalculator) {
 	
 		if (patternRankFunction.requiresPrecision() || tupleRankFunction.requiresPrecision()){
 			questCalculator.runQuestP(gs);
@@ -48,7 +48,7 @@ public class InferencePRDualRank {
 		return rankedTuples;
 	}
 
-	public SortedSet<Pattern> getRankedPatterns() {
+	public SortedSet<Pattern<T>> getRankedPatterns() {
 		return rankedPatterns;
 	}
 

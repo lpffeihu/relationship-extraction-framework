@@ -23,7 +23,7 @@ import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 
-public class ExtractionPatternExtractor implements PatternExtractor {
+public class ExtractionPatternExtractor<T extends Relationship> implements PatternExtractor<Relationship> {
 
 	private int span;
 
@@ -70,14 +70,14 @@ public class ExtractionPatternExtractor implements PatternExtractor {
 	}
 	
 	@Override
-	public Map<Pattern, Integer> extractPatterns(Document document,
+	public Map<Pattern<Relationship>, Integer> extractPatterns(Document document,
 			Relationship relationship, List<Relationship> matchingRelationships) {
 		// TODO Auto-generated method stub
 		
 		//I receive only the relationships that are interesting for me.
 		//they were also loaded in such
 		
-		Map<Pattern,Integer> patterns = new HashMap<Pattern, Integer>();
+		Map<Pattern<Relationship>,Integer> patterns = new HashMap<Pattern<Relationship>, Integer>();
 		
 		String text = document.getPlainText().get(0).getValue();
 		
@@ -97,10 +97,10 @@ public class ExtractionPatternExtractor implements PatternExtractor {
 		
 	}
 
-	private void updateMap(Map<Pattern, Integer> patterns,
-			List<Pattern> extractedPatterns) {
+	private void updateMap(Map<Pattern<Relationship>, Integer> patterns,
+			List<Pattern<Relationship>> extractedPatterns) {
 		
-		for (Pattern pattern : extractedPatterns) {
+		for (Pattern<Relationship> pattern : extractedPatterns) {
 			
 			Integer freq = patterns.get(pattern);
 			

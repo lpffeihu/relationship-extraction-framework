@@ -50,12 +50,13 @@ public class PRDualRank implements Engine{
 	private int minsupport;
 	private int k_nolabel;
 	private int iterations;
-	private RankFunction<Pattern> patternRankFunction;
+	private RankFunction<Pattern<Document>> searchpatternRankFunction;
+	private RankFunction<Pattern<Relationship>> extractpatternRankFunction;
 	private RankFunction<Relationship> tupleRankFunction;
 	private int numberOfPhrases;
 	private int extractionPatternLenght;
 	
-	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int ngram, int window, int searchdepth, int minsupport, int k_nolabel, int iterations, int numberOfPhrases, int extractionPatternLenght, RankFunction<Pattern> patternRankFunction, RankFunction<Relationship> tupleRankFunction){
+	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int ngram, int window, int searchdepth, int minsupport, int k_nolabel, int iterations, int numberOfPhrases, int extractionPatternLenght, RankFunction<Pattern<Document>> searchpatternRankFunction, RankFunction<Pattern<Relationship>> extractpatternRankFunction, RankFunction<Relationship> tupleRankFunction){
 		this.se = se;
 		this.qg = qg;
 		this.k_seed = k_seed;
@@ -65,7 +66,8 @@ public class PRDualRank implements Engine{
 		this.minsupport = minsupport;
 		this.k_nolabel = k_nolabel;
 		this.iterations = iterations;
-		this.patternRankFunction = patternRankFunction;
+		this.searchpatternRankFunction = searchpatternRankFunction;
+		this.extractpatternRankFunction = extractpatternRankFunction;
 		this.tupleRankFunction = tupleRankFunction;
 		this.numberOfPhrases = numberOfPhrases;
 		this.extractionPatternLenght = extractionPatternLenght;
@@ -75,13 +77,13 @@ public class PRDualRank implements Engine{
 	@Override
 	public Model train(List<OperableStructure> list) {
 		
-		PatternExtractor spe = new WindowedSearchPatternExtractor(window, ngram, numberOfPhrases);
+		PatternExtractor<Document> spe = new WindowedSearchPatternExtractor<Document>(window, ngram, numberOfPhrases);
 		
-		PatternExtractor epe = new ExtractionPatternExtractor(window,extractionPatternLenght);
+		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(window,extractionPatternLenght);
 		
-		HashMap<Pattern, Integer> Ps = new HashMap<Pattern, Integer>();
+		HashMap<Pattern<Document>, Integer> Ps = new HashMap<Pattern<Document>, Integer>();
 		
-		HashMap<Pattern, Integer> Pe = new HashMap<Pattern, Integer>();
+		HashMap<Pattern<Relationship>, Integer> Pe = new HashMap<Pattern<Relationship>, Integer>();
 		
 		Set<Relationship> seeds = new HashSet<Relationship>();
 		
@@ -113,11 +115,11 @@ public class PRDualRank implements Engine{
 			
 		}
 		
-		Set<Pattern> searchPatterns = filter(Ps,minsupport);
+		Set<Pattern<Document>> searchPatterns = filter(Ps,minsupport);
 		
-		Set<Pattern> extractPatterns = filter(Pe,minsupport);
+		Set<Pattern<Relationship>> extractPatterns = filter(Pe,minsupport);
 		
-		PatternBasedRelationshipExtractor pbre = new PatternBasedRelationshipExtractor(extractPatterns);
+		PatternBasedRelationshipExtractor<Relationship> pbre = new PatternBasedRelationshipExtractor<Relationship>(extractPatterns);
 		
 		HashMap<Relationship,Integer> extractedTuples = new HashMap<Relationship,Integer>();
 		
@@ -147,19 +149,19 @@ public class PRDualRank implements Engine{
 			
 		}
 		
-		PRDualRankGraph Gs = new SearchGraphGenerator().generateGraph(topTuples,searchPatterns,documents);
+		PRDualRankGraph<Document> Gs = new SearchGraphGenerator<Document>().generateGraph(topTuples,searchPatterns,documents);
 		
-		PRDualRankGraph Ge = new ExtractionGraphGenerator().generateGraph(topTuples,extractPatterns,documents);
+		PRDualRankGraph<Relationship> Ge = new ExtractionGraphGenerator<Relationship>().generateGraph(topTuples,extractPatterns,documents);
 				
-		InferencePRDualRank search = new InferencePRDualRank();
+		InferencePRDualRank<Document> search = new InferencePRDualRank<Document>();
 		
-		search.rank(Gs, patternRankFunction, tupleRankFunction, new MapBasedQuestCalculator(seeds,new NumberOfIterationsConvergence(iterations)));
+		search.rank(Gs, searchpatternRankFunction, tupleRankFunction, new MapBasedQuestCalculator<Document>(seeds,new NumberOfIterationsConvergence(iterations)));
 		
-		InferencePRDualRank extract = new InferencePRDualRank();
+		InferencePRDualRank<Relationship> extract = new InferencePRDualRank<Relationship>();
 
-		extract.rank(Ge, patternRankFunction, tupleRankFunction, new MapBasedQuestCalculator(seeds,new NumberOfIterationsConvergence(iterations)));
+		extract.rank(Ge, extractpatternRankFunction, tupleRankFunction, new MapBasedQuestCalculator<Relationship>(seeds,new NumberOfIterationsConvergence(iterations)));
 		
-		return new PRDualRankModel(search.getRankedPatterns(),extract.getRankedPatterns(),search.getRankedTuples(),extract.getRankedTuples());
+		return new PRDualRankModel<Document,Relationship>(search.getRankedPatterns(),extract.getRankedPatterns(),search.getRankedTuples(),extract.getRankedTuples());
 		
 	}
 

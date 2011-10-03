@@ -11,14 +11,14 @@ import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.configuration.StructureConfiguration;
 import edu.columbia.cs.og.structure.OperableStructure;
 
-public class PRDualRankModel extends Model {
+public class PRDualRankModel<S,E> extends Model {
 
-	private SortedSet<Pattern> sPatterns;
-	private SortedSet<Pattern> ePatterns;
+	private SortedSet<Pattern<S>> sPatterns;
+	private SortedSet<Pattern<E>> ePatterns;
 	private SortedSet<Relationship> sTuples;
 	private SortedSet<Relationship> eTuples;
 
-	public PRDualRankModel(SortedSet<Pattern> searchPatterns, SortedSet<Pattern> extractionPatterns, SortedSet<Relationship> searchTuples, SortedSet<Relationship> extractionTuples) {
+	public PRDualRankModel(SortedSet<Pattern<S>> searchPatterns, SortedSet<Pattern<E>> extractionPatterns, SortedSet<Relationship> searchTuples, SortedSet<Relationship> extractionTuples) {
 		
 		this.sPatterns = searchPatterns;
 		this.ePatterns = extractionPatterns;

@@ -1,11 +1,12 @@
 package edu.columbia.cs.cg.prdualrank.pattern.impl;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.pattern.Pattern;
 
-public class SearchPattern extends Pattern {
+public class SearchPattern<T extends Document> extends Pattern<Document> {
 
 	private Collection<String[]> phrases;
 
@@ -79,6 +80,12 @@ public class SearchPattern extends Pattern {
 		
 		return ret;
 		
+	}
+
+	@Override
+	public List<Document> findMatch(Document d) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -12,6 +12,7 @@ import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.prdualrank.pattern.impl.ExtractionPattern;
 import edu.columbia.cs.cg.prdualrank.pattern.impl.SimpleAttributeExtractionPattern;
 import edu.columbia.cs.cg.relations.Entity;
+import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 
 public class AttributeContext {
@@ -41,7 +42,7 @@ public class AttributeContext {
 		
 	}
 
-	public List<Pattern> generateExtractionPatterns(int size) {
+	public List<Pattern<Relationship>> generateExtractionPatterns(int size) {
 		
 		Map<String,Set<SimpleAttributeExtractionPattern>> patterns = new HashMap<String, Set<SimpleAttributeExtractionPattern>>();
 		
@@ -53,11 +54,11 @@ public class AttributeContext {
 		
 		List<Map<String, SimpleAttributeExtractionPattern>> combinations = MegaCartesianProduct.generateAllPossibilities(patterns);
 		
-		List<Pattern> extractionPatterns = new ArrayList<Pattern>();
+		List<Pattern<Relationship>> extractionPatterns = new ArrayList<Pattern<Relationship>>();
 		
 		for (Map<String, SimpleAttributeExtractionPattern> map : combinations) {
 			
-			extractionPatterns.add(new ExtractionPattern(roles,map));
+			extractionPatterns.add(new ExtractionPattern<Relationship>(roles,map));
 			
 		}
 		
