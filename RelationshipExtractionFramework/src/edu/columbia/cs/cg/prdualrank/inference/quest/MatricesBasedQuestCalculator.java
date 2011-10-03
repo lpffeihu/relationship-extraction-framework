@@ -60,7 +60,7 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 	
 	private SparseDoubleMatrix1D getInitialPrecisionMatrix(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
-		double[] seedTuples = new double[tuples.size()];
+		SparseDoubleMatrix1D seedTuples = new SparseDoubleMatrix1D(tuples.size());
 		
 		for(Relationship tuple : seeds){
 			Integer tupleId = tupleIds.get(tuple);
@@ -70,15 +70,15 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 				tupleIdsInverse.put(tupleId, tuple);
 			}
 			
-			seedTuples[tupleId]=1.0;
+			seedTuples.set(tupleId,1.0);
 		}
 		
-		return new SparseDoubleMatrix1D(seedTuples);
+		return seedTuples;
 	}
 	
 	private SparseDoubleMatrix1D getInitialRecallMatrix(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
-		double[] seedTuples = new double[tuples.size()];
+		SparseDoubleMatrix1D seedTuples = new SparseDoubleMatrix1D(tuples.size());
 		
 		for(Relationship tuple : seeds){
 			Integer tupleId = tupleIds.get(tuple);
@@ -88,17 +88,17 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 				tupleIdsInverse.put(tupleId, tuple);
 			}
 			
-			seedTuples[tupleId]=1.0/seeds.size();
+			seedTuples.set(tupleId,1.0/seeds.size());
 		}
 		
-		return new SparseDoubleMatrix1D(seedTuples);
+		return seedTuples;
 	}
 	
 	private SparseRCDoubleMatrix2D getLeftMatrixForPrecision(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
 		Set<Pattern<T,D>> patterns = gs.getPatterns();
 		
-		double[][] matrix = new double[patterns.size()][tuples.size()];
+		SparseRCDoubleMatrix2D matrix = new SparseRCDoubleMatrix2D(patterns.size(),tuples.size());
 		
 		for(Relationship tuple : tuples){
 			Integer tupleId = tupleIds.get(tuple);
@@ -120,18 +120,18 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 				double freqPattern= gs.getFreqency(pattern);
 				double entryMatrix = freqTransition/freqPattern;
 				
-				matrix[patternId][tupleId]=entryMatrix;
+				matrix.set(patternId,tupleId,entryMatrix);
 			}
 		}
 		
-		return new SparseRCDoubleMatrix2D(matrix);
+		return matrix;
 	}
 	
 	private SparseRCDoubleMatrix2D getLeftMatrixForRecall(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
 		Set<Pattern<T,D>> patterns = gs.getPatterns();
 		
-		double[][] matrix = new double[patterns.size()][tuples.size()];
+		SparseRCDoubleMatrix2D matrix = new SparseRCDoubleMatrix2D(patterns.size(),tuples.size());
 		
 		for(Relationship tuple : tuples){
 			Integer tupleId = tupleIds.get(tuple);
@@ -153,18 +153,18 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 				double freqTuple= gs.getFrequency(tuple);
 				double entryMatrix = freqTransition/freqTuple;
 				
-				matrix[patternId][tupleId]=entryMatrix;
+				matrix.set(patternId,tupleId,entryMatrix);
 			}
 		}
 		
-		return new SparseRCDoubleMatrix2D(matrix);
+		return matrix;
 	}
 	
 	private SparseRCDoubleMatrix2D getRightMatrixForPrecision(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
 		Set<Pattern<T,D>> patterns = gs.getPatterns();
 		
-		double[][] matrix = new double[tuples.size()][patterns.size()];
+		SparseRCDoubleMatrix2D matrix = new SparseRCDoubleMatrix2D(tuples.size(),patterns.size());
 		
 		for(Relationship tuple : tuples){
 			Integer tupleId = tupleIds.get(tuple);
@@ -186,18 +186,18 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 				double freqTuple= gs.getFrequency(tuple);
 				double entryMatrix = freqTransition/freqTuple;
 				
-				matrix[tupleId][patternId]=entryMatrix;
+				matrix.set(tupleId,patternId,entryMatrix);
 			}
 		}
 		
-		return new SparseRCDoubleMatrix2D(matrix);
+		return matrix;
 	}
 	
 	private SparseRCDoubleMatrix2D getRightMatrixForRecall(PRDualRankGraph<T,D> gs){
 		Set<Relationship> tuples = gs.getTuples();
 		Set<Pattern<T,D>> patterns = gs.getPatterns();
 		
-		double[][] matrix = new double[tuples.size()][patterns.size()];
+		SparseRCDoubleMatrix2D matrix = new SparseRCDoubleMatrix2D(tuples.size(),patterns.size());
 		
 		for(Relationship tuple : tuples){
 			Integer tupleId = tupleIds.get(tuple);
@@ -219,11 +219,11 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 				double freqPattern= gs.getFreqency(pattern);
 				double entryMatrix = freqTransition/freqPattern;
 				
-				matrix[tupleId][patternId]=entryMatrix;
+				matrix.set(tupleId,patternId,entryMatrix);
 			}
 		}
 		
-		return new SparseRCDoubleMatrix2D(matrix);
+		return matrix;
 	}
 
 	@Override
@@ -232,16 +232,15 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 		SparseRCDoubleMatrix2D Mp = getRightMatrixForPrecision(gs);
 		SparseDoubleMatrix1D p0t = getInitialPrecisionMatrix(gs);
 		if(keepInitialValueSeeds){
+			SparseRCDoubleMatrix2D transposeMt = new SparseRCDoubleMatrix2D(Mt.columns(),Mt.rows());
+			for(int j=0; j<Mt.rows(); j++){
+				for(int k=0; k<Mt.columns(); k++){
+					transposeMt.set(k, j, Mt.get(j, k));
+				}
+			}
 			int p0tSize=(int) p0t.size();
 			for(int i=0; i<p0tSize; i++){
 				if(p0t.get(i)!=0){
-					SparseRCDoubleMatrix2D transposeMt = new SparseRCDoubleMatrix2D(Mt.columns(),Mt.rows());
-					for(int j=0; j<Mt.rows(); j++){
-						for(int k=0; k<Mt.columns(); k++){
-							transposeMt.set(k, j, Mt.get(j, k));
-						}
-					}
-					
 					SparseDoubleMatrix1D ei = new SparseDoubleMatrix1D(p0tSize);
 					ei.set(i, 1);
 					
@@ -255,8 +254,6 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 					for(int j=0; j<size;j++){
 						Mp.set(i,j, x.get(j)/sum);
 					}
-					
-					
 				}
 			}
 		}
