@@ -25,7 +25,7 @@ import edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction;
 import edu.columbia.cs.cg.prdualrank.model.PRDualRankModel;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.ExtractionPatternExtractor;
-import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.SearchPatternExtractor;
+import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.WindowedSearchPatternExtractor;
 import edu.columbia.cs.cg.prdualrank.searchengine.QueryGenerator;
 import edu.columbia.cs.cg.prdualrank.searchengine.SearchEngine;
 import edu.columbia.cs.cg.relations.Entity;
@@ -52,8 +52,10 @@ public class PRDualRank implements Engine{
 	private int iterations;
 	private RankFunction<Pattern> patternRankFunction;
 	private RankFunction<Relationship> tupleRankFunction;
+	private int numberOfPhrases;
+	private int extractionPatternLenght;
 	
-	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int ngram, int window, int searchdepth, int minsupport, int k_nolabel, int iterations, RankFunction<Pattern> patternRankFunction, RankFunction<Relationship> tupleRankFunction){
+	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int ngram, int window, int searchdepth, int minsupport, int k_nolabel, int iterations, int numberOfPhrases, int extractionPatternLenght, RankFunction<Pattern> patternRankFunction, RankFunction<Relationship> tupleRankFunction){
 		this.se = se;
 		this.qg = qg;
 		this.k_seed = k_seed;
@@ -65,15 +67,17 @@ public class PRDualRank implements Engine{
 		this.iterations = iterations;
 		this.patternRankFunction = patternRankFunction;
 		this.tupleRankFunction = tupleRankFunction;
+		this.numberOfPhrases = numberOfPhrases;
+		this.extractionPatternLenght = extractionPatternLenght;
 		//span is for the relationship type. that comes in the List<OperableStructure>
 	}
 	
 	@Override
 	public Model train(List<OperableStructure> list) {
 		
-		PatternExtractor spe = new SearchPatternExtractor(window, ngram, searchdepth);
+		PatternExtractor spe = new WindowedSearchPatternExtractor(window, ngram, numberOfPhrases);
 		
-		PatternExtractor epe = new ExtractionPatternExtractor(window);
+		PatternExtractor epe = new ExtractionPatternExtractor(window,extractionPatternLenght);
 		
 		HashMap<Pattern, Integer> Ps = new HashMap<Pattern, Integer>();
 		
@@ -95,11 +99,17 @@ public class PRDualRank implements Engine{
 			
 			List<Document> documents = se.search(qg.generateQuery(relationship), k_seed);
 
-			enrichDocuments(documents,relationship);
+			for (Document document : documents) {
+				
+				List<Relationship> mathchingRelationships = getMatchingRelationships(document,relationship);
+				
+				updateMap(Ps,spe.extractPatterns(document,relationship,mathchingRelationships));
+				
+				updateMap(Pe,epe.extractPatterns(document,relationship,mathchingRelationships));
+				
+			}
 			
-			updateMap(Ps,spe.extractPatterns(documents,relationship));
-			
-			updateMap(Pe,epe.extractPatterns(documents,relationship));
+
 			
 		}
 		
@@ -151,23 +161,6 @@ public class PRDualRank implements Engine{
 		
 		return new PRDualRankModel(search.getRankedPatterns(),extract.getRankedPatterns(),search.getRankedTuples(),extract.getRankedTuples());
 		
-	}
-
-	private void enrichDocuments(List<Document> documents,
-			Relationship relationship) {
-		
-		for (Document document : documents) {
-			
-			List<Relationship> mathchingRelationships = getMatchingRelationships(document,relationship);
-			
-			for (Relationship matchingRelationship : mathchingRelationships) {
-				
-				document.addRelationship(matchingRelationship);
-				
-			}
-			
-		}
-	
 	}
 
 	private List<Relationship> getMatchingRelationships(Document document,
