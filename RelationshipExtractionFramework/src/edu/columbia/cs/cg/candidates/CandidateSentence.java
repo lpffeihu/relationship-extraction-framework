@@ -15,6 +15,22 @@ import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.og.features.FeaturableObject;
 
+/**
+ * A representation of a candidate sentence. A candidate sentence is the basic structure
+ * that contains the information that is used for most of the classifier based methods.
+ * 
+ * <br>
+ * <br>
+ * 
+ * A candidate sentence is composed by a Sentence from a given document, a list of entities
+ * that are present in the sentence and the corresponding relationships between entities
+ * of the text that are present in the sentence.
+ * 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class CandidateSentence extends FeaturableObject implements Serializable {
 	/**
 	 * 
