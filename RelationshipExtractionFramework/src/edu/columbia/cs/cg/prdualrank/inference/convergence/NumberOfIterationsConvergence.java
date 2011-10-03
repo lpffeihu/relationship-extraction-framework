@@ -19,7 +19,6 @@ public class NumberOfIterationsConvergence implements ConvergenceFinder {
 
 	@Override
 	public boolean converged() {
-		
 		if (currentIteration >= iterations){
 			return true;
 		}
