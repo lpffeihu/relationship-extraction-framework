@@ -56,6 +56,8 @@ public class CandidatesGenerator {
 				if(sentenceSpan.intersects(entitySpan) && !sentenceSpan.contains(entitySpan)){
 					throw new UnsupportedOperationException();
 				}
+				
+				entityIndex++;
 			}
 		}
 		

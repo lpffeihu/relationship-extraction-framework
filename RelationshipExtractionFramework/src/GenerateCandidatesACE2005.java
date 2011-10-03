@@ -35,6 +35,7 @@ public class GenerateCandidatesACE2005 {
 		String outputFolder = "/home/goncalo/ACEProcessedFlat/";
 		
 		for(Document d : ace2005){
+			System.out.println("Processing " + d.getPath()+d.getFilename());
 			Set<CandidateSentence> candidates = generator.generateCandidates(d, relationshipTypes);	
 			CandidatesSentenceWriter.writeCandidateSentences(candidates, outputFolder+d.getFilename());
 		}
