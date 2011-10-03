@@ -20,7 +20,7 @@ import edu.columbia.cs.cg.relations.Relationship;
  * @version     0.1
  * @since       2011-09-27
  */
-public interface RelationshipExtractor {
+public interface RelationshipExtractor<D> {
 
 	/**
 	 * Given an input document d this method is responsible for extracting all the relationships
@@ -29,6 +29,6 @@ public interface RelationshipExtractor {
 	 * @param d the document that contains the information to be extracted
 	 * @return a list of relationships between entities present in the document d
 	 */
-	public List<Relationship> extractTuples(Document d);
+	public List<Relationship> extractTuples(D d);
 	
 }

@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.cg.pattern.matchable.Matchable;
 
-public class Entity implements Comparable<Entity>, Serializable {
+public class Entity implements Comparable<Entity>, Serializable, Matchable {
 	public static final Entity NULL_ENTITY = new Entity("NULL","NULL",0,0,"NULL",null);
 	
 	private String id;

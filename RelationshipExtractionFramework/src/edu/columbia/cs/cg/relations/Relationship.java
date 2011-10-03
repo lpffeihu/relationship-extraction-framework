@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class Relationship implements Serializable {
+import edu.columbia.cs.cg.pattern.matchable.Matchable;
+
+public class Relationship implements Serializable,Matchable {
 	
 	private String id=null;
 	private RelationshipType type;

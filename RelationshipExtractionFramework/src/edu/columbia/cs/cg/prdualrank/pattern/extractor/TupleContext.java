@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import opennlp.tools.util.Span;
+import edu.columbia.cs.utils.Span;
 
 public class TupleContext {
 

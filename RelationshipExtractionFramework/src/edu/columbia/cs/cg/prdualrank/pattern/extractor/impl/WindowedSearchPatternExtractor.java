@@ -1,9 +1,5 @@
 package edu.columbia.cs.cg.prdualrank.pattern.extractor.impl;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,12 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import opennlp.tools.tokenize.TokenizerME;
-import opennlp.tools.tokenize.TokenizerModel;
-import opennlp.tools.util.InvalidFormatException;
-import opennlp.tools.util.Span;
-
 import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.TupleContext;
@@ -26,13 +18,12 @@ import edu.columbia.cs.cg.prdualrank.pattern.impl.SearchPattern;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.utils.MegaCartesianProduct;
-import edu.columbia.cs.utils.Pair;
+import edu.columbia.cs.utils.Span;
 
 public class WindowedSearchPatternExtractor<T extends Document> implements PatternExtractor<Document> {
 
 	private int window;
 	private int ngram;
-	private TokenizerME tokenizer;
 	private int numberOfPhrases;
 
 	public WindowedSearchPatternExtractor(int window, int ngram, int numberOfPhrases) {
@@ -41,50 +32,11 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 		this.numberOfPhrases = numberOfPhrases;
 	}
 
-	private TokenizerME getTokenizer() {
-		
-		if (tokenizer == null){
-			
-			InputStream modelIn;
-			
-			try {
-				
-				modelIn = new FileInputStream("en-token.bin");
-				
-				TokenizerModel tokModel = new TokenizerModel(modelIn);
-				
-				modelIn.close();
-				
-				tokenizer = new TokenizerME(tokModel);
-			
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-						
-		}
-
-		return tokenizer;
-	}
-
-	
 	@Override
-	public Map<Pattern<Document>, Integer> extractPatterns(Document document,
+	public Map<Pattern<Document,TokenizedDocument>, Integer> extractPatterns(TokenizedDocument document,
 			Relationship relationship, List<Relationship> matchingRelationships) {
 		
 		//find the first index, find the last one and make a window around it.
-		
-		String text = document.getPlainText().get(0).getValue();
-		
-		Span[] spans = getTokenizer().tokenizePos(text);
-		
-		String[] tokenizedText = getTokenizer().tokenize(text);
 		
 		List<TupleContext> contexts = new ArrayList<TupleContext>();
 		
@@ -99,7 +51,7 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 				if (entity != Entity.NULL_ENTITY){
 					//update indexes.
 					
-					Span auxSpan = getEntitySpan(entity,spans);
+					Span auxSpan = document.getEntitySpan(entity);
 					
 					tupleSpans.add(auxSpan); //return the indexes whitin the array
 					
@@ -116,19 +68,19 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 			
 			TupleContext tc = new TupleContext(realSpans,window);
 			
-			String[] first = Arrays.copyOfRange(tokenizedText, Math.max(0, realSpans.get(0).getStart() - window), realSpans.get(0).getStart());
+			String[] first = Arrays.copyOfRange(document.getTokenizedString(), Math.max(0, realSpans.get(0).getStart() - window), realSpans.get(0).getStart());
 			
 			tc.addWords(first);
 			
 			for (int i = 0; i < realSpans.size() - 1; i++) {
 				
-				String[] middle = Arrays.copyOfRange(tokenizedText, realSpans.get(i).getEnd()+1, Math.max(realSpans.get(i).getEnd()+1, realSpans.get(i+1).getStart()));
+				String[] middle = Arrays.copyOfRange(document.getTokenizedString(), realSpans.get(i).getEnd()+1, Math.max(realSpans.get(i).getEnd()+1, realSpans.get(i+1).getStart()));
 			
 				tc.addWords(middle);
 				
 			}
 			
-			String[] last = Arrays.copyOfRange(tokenizedText, Math.min(realSpans.get(realSpans.size()-1).getEnd()+1, tokenizedText.length-1), Math.min(realSpans.get(realSpans.size()-1).getEnd()+window, tokenizedText.length));
+			String[] last = Arrays.copyOfRange(document.getTokenizedString(), Math.min(realSpans.get(realSpans.size()-1).getEnd()+1, document.getTokenizedString().length-1), Math.min(realSpans.get(realSpans.size()-1).getEnd()+window, document.getTokenizedString().length));
 			
 			tc.addWords(last);
 			
@@ -139,7 +91,7 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 		
 	}
 
-	private Map<Pattern<Document>, Integer> generateSearchPatterns(
+	private Map<Pattern<Document,TokenizedDocument>, Integer> generateSearchPatterns(
 			List<TupleContext> contexts, int ngram, int numberOfPhrases) {
 		
 		Set<String[]> ngrams = new HashSet<String[]>();
@@ -150,7 +102,7 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 			
 		}
 		
-		Map<Pattern<Document>,Integer> searchPatterns = new HashMap<Pattern<Document>, Integer>();
+		Map<Pattern<Document,TokenizedDocument>,Integer> searchPatterns = new HashMap<Pattern<Document,TokenizedDocument>, Integer>();
 		
 		Map<Integer,Set<String[]>> ngramsMap = new HashMap<Integer, Set<String[]>>();
 		
@@ -162,7 +114,7 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 			
 			for (Map<Integer, String[]> patternsWord : patternwords) {
 				
-				SearchPattern<Document> sp = new SearchPattern<Document>(patternsWord.values()); 
+				SearchPattern<Document,TokenizedDocument> sp = new SearchPattern<Document,TokenizedDocument>(patternsWord.values()); 
 				
 				if (sp.isValid()){
 					
@@ -178,8 +130,8 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 		
 	}
 
-	private void updateMap(Map<Pattern<Document>, Integer> searchPatterns,
-			SearchPattern<Document> sp) {
+	private void updateMap(Map<Pattern<Document,TokenizedDocument>, Integer> searchPatterns,
+			SearchPattern<Document,TokenizedDocument> sp) {
 		
 		Integer freq = searchPatterns.get(sp);
 		
@@ -266,30 +218,4 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 		
 	}
 
-	private Span getEntitySpan(Entity entity, Span[] spans) {
-		
-		int firstIndex = binarySearch(spans,entity.getOffset(),0,spans.length-1);
-		
-		int endIndex = binarySearch(spans,entity.getOffset() + entity.getLength(), firstIndex,spans.length-1);
-		
-		return new Span(firstIndex,endIndex);
-		
-	}
-
-	
-	private int binarySearch(Span[] spans,int offset,int low, int high){
-		
-		//Though this never happens, it's good to have it (real binary search)
-		if (high < low)
-			return -1; // not found
-		int mid = low + (high - low) / 2;
-		if (spans[mid].getStart() > offset)
-			return binarySearch(spans, offset, low, mid-1);
-		else if (spans[mid].getEnd() < offset)
-			return binarySearch(spans, offset, mid+1, high);
-		else
-			return mid; // found
-	}
-
-	
 }

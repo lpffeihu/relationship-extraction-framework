@@ -2,7 +2,7 @@ package edu.columbia.cs.utils;
 
 import java.io.Serializable;
 
-public class Span implements Serializable {
+public class Span implements Serializable,Comparable<Span> {
 	private int start;
 	private int end;
 	
@@ -22,5 +22,38 @@ public class Span implements Serializable {
 
 	public int getEnd() {
 		return end;
+	}
+
+	@Override
+	public int compareTo(Span s) {
+		
+		if (getStart() < s.getStart()){
+			return -1;
+		} else if (getStart() == s.getStart()){
+			
+			if (getEnd() > s.getEnd()){
+				return -1;
+			} else if (getEnd() < s.getEnd()){
+				return 1;
+			} else {
+				return 0;
+			}
+			
+		} else {
+			return 1;
+		}
+		
+	}
+	
+	public boolean intersects(Span s){
+		int sstart = s.getStart();
+		
+		return this.contains(s) || s.contains(this)
+				|| getStart() <= sstart && sstart<getEnd() 
+				|| sstart <= getStart() && getStart() < s.getEnd();
+	}
+
+	private boolean contains(Span s) {
+		return start <= s.getStart() && s.getEnd() <= end;
 	}
 }

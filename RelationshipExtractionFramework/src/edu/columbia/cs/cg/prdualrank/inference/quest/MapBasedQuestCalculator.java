@@ -5,18 +5,20 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.pattern.Pattern;
+import edu.columbia.cs.cg.pattern.matchable.Matchable;
 import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
 import edu.columbia.cs.cg.prdualrank.inference.convergence.ConvergenceFinder;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.utils.Pair;
 
-public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
-	private Map<Pattern<T>,Pair<Double,Double>> patternTable;
+public class MapBasedQuestCalculator<T extends Matchable,D extends Document> implements QuestCalculator<T,D> {
+	private Map<Pattern<T,D>,Pair<Double,Double>> patternTable;
 	private Map<Relationship,Pair<Double,Double>> tupleTable;
 
-	private Map<Pattern<T>,Double> patternPrecision = null;
-	private Map<Pattern<T>,Double> patternRecall = null;
+	private Map<Pattern<T,D>,Double> patternPrecision = null;
+	private Map<Pattern<T,D>,Double> patternRecall = null;
 	private Map<Relationship,Double> tuplePrecision = null;
 	private Map<Relationship,Double> tupleRecall = null;
 	
@@ -27,18 +29,18 @@ public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
 		
 		this.convergence = convergence;
 		this.seeds = seeds;
-		patternTable = new HashMap<Pattern<T>, Pair<Double,Double>>();
+		patternTable = new HashMap<Pattern<T,D>, Pair<Double,Double>>();
 		tupleTable = new HashMap<Relationship, Pair<Double,Double>>();
 
 	}
 
 	@Override
-	public void runQuestP(PRDualRankGraph<T> gs) {
+	public void runQuestP(PRDualRankGraph<T,D> gs) {
 		convergence.reset();
 		
 		while(!convergence.converged()){
 			
-			for (Pattern<T> pattern : gs.getPatterns()) {
+			for (Pattern<T,D> pattern : gs.getPatterns()) {
 				
 				double precision = calculatePrecision(pattern,gs);
 				setPrecision(pattern,precision,patternTable);
@@ -58,12 +60,12 @@ public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
 	}
 
 	@Override
-	public void runQuestR(PRDualRankGraph<T> gs) {
+	public void runQuestR(PRDualRankGraph<T,D> gs) {
 		convergence.reset();
 		
 		while(convergence.converged()){
 			
-			for (Pattern<T> pattern : gs.getPatterns()) {
+			for (Pattern<T,D> pattern : gs.getPatterns()) {
 				
 				double recall = calculateRecall(pattern, gs);
 				setRecall(pattern,recall,patternTable);
@@ -82,14 +84,14 @@ public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
 		
 	}
 
-	private double calculatePrecision(Relationship tuple,PRDualRankGraph<T> gs) {
+	private double calculatePrecision(Relationship tuple,PRDualRankGraph<T,D> gs) {
 		
 		if (seeds.contains(tuple))
 			return getPrecision(tuple);
 		
 		double precision = 0.0;
 		
-		for (Pattern<T> pattern : gs.getMatchingPatterns(tuple)) {
+		for (Pattern<T,D> pattern : gs.getMatchingPatterns(tuple)) {
 			
 			precision += getPrecision(pattern)*gs.getMatchingFrequency(tuple, pattern)/gs.getFrequency(tuple);
 			
@@ -99,7 +101,7 @@ public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
 		
 	}
 
-	private double getPrecision(Pattern<T> pattern) {
+	private double getPrecision(Pattern<T,D> pattern) {
 		return patternTable.get(pattern).a();
 	}
 
@@ -115,7 +117,7 @@ public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
 		
 	}
 
-	private double calculatePrecision(Pattern<T> pattern, PRDualRankGraph<T> gs) {
+	private double calculatePrecision(Pattern<T,D> pattern, PRDualRankGraph<T,D> gs) {
 		
 		double precision = 0.0;
 		
@@ -149,11 +151,11 @@ public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
 		
 	}
 
-	private double calculateRecall(Relationship tuple,PRDualRankGraph<T> gs) {
+	private double calculateRecall(Relationship tuple,PRDualRankGraph<T,D> gs) {
 		
 		double recall = 0.0;
 		
-		for (Pattern<T> pattern : gs.getMatchingPatterns(tuple)) {
+		for (Pattern<T,D> pattern : gs.getMatchingPatterns(tuple)) {
 			
 			recall += getRecall(pattern,patternTable)*gs.getMatchingFrequency(tuple, pattern)/gs.getFreqency(pattern);
 			
@@ -179,7 +181,7 @@ public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
 		
 	}
 
-	private double calculateRecall(Pattern<T> pattern, PRDualRankGraph<T> gs) {
+	private double calculateRecall(Pattern<T,D> pattern, PRDualRankGraph<T,D> gs) {
 		
 		double recall = 0.0;
 		
@@ -194,7 +196,7 @@ public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
 	}
 
 	@Override
-	public Map<Pattern<T>, Double> getPatternPrecisionMap() {
+	public Map<Pattern<T,D>, Double> getPatternPrecisionMap() {
 		
 		if (patternPrecision == null){
 			generatePatternMaps();
@@ -236,7 +238,7 @@ public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
 	}
 
 	@Override
-	public Map<Pattern<T>, Double> getPatternRecallMap() {
+	public Map<Pattern<T,D>, Double> getPatternRecallMap() {
 		if (patternRecall == null){
 			generatePatternMaps();
 		}
@@ -245,8 +247,8 @@ public class MapBasedQuestCalculator<T> implements QuestCalculator<T> {
 
 	private void generatePatternMaps() {
 		
-		patternPrecision = new HashMap<Pattern<T>, Double>();
-		patternRecall = new HashMap<Pattern<T>, Double>();
+		patternPrecision = new HashMap<Pattern<T,D>, Double>();
+		patternRecall = new HashMap<Pattern<T,D>, Double>();
 		
 		loadMap(patternTable, patternPrecision, patternRecall);
 	}

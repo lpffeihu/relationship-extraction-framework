@@ -25,7 +25,7 @@ public class FScoreBasedRankFunction<T> extends RankFunction<T> {
 				double recall2 = recallMap.get(o2);
 				
 				double fMeasure1 = calculateFMeasure(precision1,recall1,betasq);
-				double fMeasure2 = calculateFMeasure(precision1,recall1,betasq);
+				double fMeasure2 = calculateFMeasure(precision2,recall2,betasq);
 				
 				return Double.compare(fMeasure2, fMeasure1);
 				

@@ -4,21 +4,23 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
+import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.pattern.Pattern;
+import edu.columbia.cs.cg.pattern.matchable.Matchable;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.configuration.StructureConfiguration;
 import edu.columbia.cs.og.structure.OperableStructure;
 
-public class PRDualRankModel<S,E> extends Model {
+public class PRDualRankModel<S extends Matchable,E extends Matchable, D extends Document> extends Model {
 
-	private SortedSet<Pattern<S>> sPatterns;
-	private SortedSet<Pattern<E>> ePatterns;
+	private SortedSet<Pattern<S,D>> sPatterns;
+	private SortedSet<Pattern<E,D>> ePatterns;
 	private SortedSet<Relationship> sTuples;
 	private SortedSet<Relationship> eTuples;
 
-	public PRDualRankModel(SortedSet<Pattern<S>> searchPatterns, SortedSet<Pattern<E>> extractionPatterns, SortedSet<Relationship> searchTuples, SortedSet<Relationship> extractionTuples) {
+	public PRDualRankModel(SortedSet<Pattern<S,D>> searchPatterns, SortedSet<Pattern<E,D>> extractionPatterns, SortedSet<Relationship> searchTuples, SortedSet<Relationship> extractionTuples) {
 		
 		this.sPatterns = searchPatterns;
 		this.ePatterns = extractionPatterns;

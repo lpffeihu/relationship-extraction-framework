@@ -1,26 +1,24 @@
 package edu.columbia.cs.cg.prdualrank.graph.generator;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Map;
 import java.util.Set;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.pattern.Pattern;
+import edu.columbia.cs.cg.pattern.matchable.Matchable;
 import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
 import edu.columbia.cs.cg.relations.Relationship;
 
-public abstract class GraphGenerator<T> {
+public abstract class GraphGenerator<T extends Matchable,D extends Document> {
 
-	public PRDualRankGraph<T> generateGraph(Set<Relationship> topTuples,
-			Set<Pattern<T>> patterns, Set<Document> documents) {
+	public PRDualRankGraph<T,D> generateGraph(Set<Relationship> topTuples,
+			Set<Pattern<T,D>> patterns, Set<Document> documents) {
 		
-		PRDualRankGraph<T> ret = new PRDualRankGraph<T>();
+		PRDualRankGraph<T,D> ret = new PRDualRankGraph<T,D>();
 		
 		for (Document document : documents) {
 			
-			for (Pattern<T> pattern : patterns) {
+			for (Pattern<T,D> pattern : patterns) {
 				
 				Hashtable<Relationship, Integer> tuples = findTuples(document,pattern);
 				
@@ -39,7 +37,7 @@ public abstract class GraphGenerator<T> {
 	}
 
 	protected abstract Hashtable<Relationship, Integer> findTuples(Document document,
-			Pattern<T> pattern);
+			Pattern<T,D> pattern);
 
 	
 }

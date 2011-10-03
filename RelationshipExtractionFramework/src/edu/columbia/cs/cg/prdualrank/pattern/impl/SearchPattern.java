@@ -4,9 +4,10 @@ import java.util.Collection;
 import java.util.List;
 
 import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.pattern.Pattern;
 
-public class SearchPattern<T extends Document> extends Pattern<Document> {
+public class SearchPattern<T extends Document, D extends TokenizedDocument> extends Pattern<Document,TokenizedDocument> {
 
 	private Collection<String[]> phrases;
 
@@ -83,7 +84,7 @@ public class SearchPattern<T extends Document> extends Pattern<Document> {
 	}
 
 	@Override
-	public List<Document> findMatch(Document d) {
+	public List<Document> findMatch(TokenizedDocument d) {
 		// TODO Auto-generated method stub
 		return null;
 	}

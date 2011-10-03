@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.prdualrank.pattern.impl.ExtractionPattern;
 import edu.columbia.cs.cg.prdualrank.pattern.impl.SimpleAttributeExtractionPattern;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 
 public class AttributeContext {
@@ -21,9 +24,11 @@ public class AttributeContext {
 	private List<String> roles;
 	private HashMap<String, String[]> previousWords;
 	private HashMap<String, String[]> postWords;
+	private RelationshipType rType;
 
-	public AttributeContext(){
+	public AttributeContext(RelationshipType relationshipType){
 
+		this.rType = relationshipType;
 		entities = new HashMap<String,Entity>();
 		roles = new ArrayList<String>();
 		previousWords = new HashMap<String,String[]>();
@@ -42,9 +47,9 @@ public class AttributeContext {
 		
 	}
 
-	public List<Pattern<Relationship>> generateExtractionPatterns(int size) {
+	public List<Pattern<Relationship,TokenizedDocument>> generateExtractionPatterns(int size) {
 		
-		Map<String,Set<SimpleAttributeExtractionPattern>> patterns = new HashMap<String, Set<SimpleAttributeExtractionPattern>>();
+		Map<String,Set<SimpleAttributeExtractionPattern<Entity, TokenizedDocument>>> patterns = new HashMap<String, Set<SimpleAttributeExtractionPattern<Entity, TokenizedDocument>>>();
 		
 		for (String role : roles) {
 			
@@ -52,13 +57,13 @@ public class AttributeContext {
 			
 		}
 		
-		List<Map<String, SimpleAttributeExtractionPattern>> combinations = MegaCartesianProduct.generateAllPossibilities(patterns);
+		List<Map<String, SimpleAttributeExtractionPattern<Entity, TokenizedDocument>>> combinations = MegaCartesianProduct.generateAllPossibilities(patterns);
 		
-		List<Pattern<Relationship>> extractionPatterns = new ArrayList<Pattern<Relationship>>();
+		List<Pattern<Relationship,TokenizedDocument>> extractionPatterns = new ArrayList<Pattern<Relationship,TokenizedDocument>>();
 		
-		for (Map<String, SimpleAttributeExtractionPattern> map : combinations) {
+		for (Map<String, SimpleAttributeExtractionPattern<Entity, TokenizedDocument>> map : combinations) {
 			
-			extractionPatterns.add(new ExtractionPattern<Relationship>(roles,map));
+			extractionPatterns.add(new ExtractionPattern<Relationship,TokenizedDocument>(roles,map,rType));
 			
 		}
 		
@@ -66,10 +71,10 @@ public class AttributeContext {
 		
 	}
 
-	private Set<SimpleAttributeExtractionPattern> generateCombinations(String role, int size,
+	private Set<SimpleAttributeExtractionPattern<Entity, TokenizedDocument>> generateCombinations(String role, int size,
 			String[] wordsBefore, String[] wordsAfter) {
 		
-		Set<SimpleAttributeExtractionPattern> patterns = new HashSet<SimpleAttributeExtractionPattern>();
+		Set<SimpleAttributeExtractionPattern<Entity, TokenizedDocument>> patterns = new HashSet<SimpleAttributeExtractionPattern<Entity,TokenizedDocument>>();
 
 		for (int beforeSize = 0; beforeSize <= wordsBefore.length; beforeSize++) {
 			for (int afterSize = 0; afterSize <= wordsAfter.length; afterSize++) {
@@ -92,7 +97,7 @@ public class AttributeContext {
 					after = Arrays.copyOfRange(wordsAfter, 0, afterSize);
 				}
 				
-				patterns.add(new SimpleAttributeExtractionPattern(role,before,after));
+				patterns.add(new SimpleAttributeExtractionPattern<Entity,TokenizedDocument>(role,before,after));
 				
 			}
 		}

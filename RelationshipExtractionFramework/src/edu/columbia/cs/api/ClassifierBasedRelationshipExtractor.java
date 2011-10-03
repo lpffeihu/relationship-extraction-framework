@@ -17,7 +17,7 @@ import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.configuration.StructureConfiguration;
 import edu.columbia.cs.og.structure.OperableStructure;
 
-public class ClassifierBasedRelationshipExtractor implements RelationshipExtractor{
+public class ClassifierBasedRelationshipExtractor<D extends Document> implements RelationshipExtractor<Document>{
 	private Model m;
 	private CandidatesGenerator generator;
 	private StructureConfiguration structGenerator;

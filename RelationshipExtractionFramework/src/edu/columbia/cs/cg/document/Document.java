@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.columbia.cs.cg.pattern.matchable.Matchable;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.data.Writable;
@@ -25,7 +26,7 @@ import edu.columbia.cs.data.Writable;
  * @version     0.1
  * @since       2011-09-27
  */
-public class Document implements Serializable, Writable {
+public class Document implements Serializable, Writable, Matchable {
 	/**
 	 * 
 	 */
@@ -35,6 +36,20 @@ public class Document implements Serializable, Writable {
 	private List<Segment> text;
 	private Map<String,Entity> entities;
 	private Map<String,Relationship> relationships;
+	
+	/**
+	 * protected constructor of the Document
+	 */
+	
+	protected Document(Document d){
+		
+		this.path = d.path;
+		this.fileName = d.fileName;
+		this.text = d.text;
+		this.entities = d.entities;
+		this.relationships = d.relationships;
+		
+	}
 	
 	/**
 	 * Constructor of the Document

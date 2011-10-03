@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
@@ -17,14 +18,14 @@ import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 
-public class ExtractionPattern<T extends Relationship> extends Pattern<Relationship> {
+public class ExtractionPattern<T extends Relationship, D extends TokenizedDocument> extends Pattern<Relationship,TokenizedDocument> {
 
 	private List<String> roles;
-	private Map<String, SimpleAttributeExtractionPattern<Entity>> simpleAttributeMap;
+	private Map<String, SimpleAttributeExtractionPattern<Entity,TokenizedDocument>> simpleAttributeMap;
 	private RelationshipType rType;
 	private RelationshipConstraint rConstraint;
 
-	public ExtractionPattern(List<String> roles, Map<String, SimpleAttributeExtractionPattern<Entity>> simpleAttributeMap, RelationshipType rType) {
+	public ExtractionPattern(List<String> roles, Map<String, SimpleAttributeExtractionPattern<Entity,TokenizedDocument>> simpleAttributeMap, RelationshipType rType) {
 		
 		this.roles = roles;
 		this.simpleAttributeMap = simpleAttributeMap;
@@ -33,7 +34,7 @@ public class ExtractionPattern<T extends Relationship> extends Pattern<Relations
 	}
 
 	@Override
-	public List<Relationship> findMatch(Document d) {
+	public List<Relationship> findMatch(TokenizedDocument d) {
 		
 		Map<String,Set<Entity>> combinationsMap = new HashMap<String, Set<Entity>>();
 		
