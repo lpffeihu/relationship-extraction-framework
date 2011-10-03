@@ -20,13 +20,63 @@ import edu.columbia.cs.cg.sentence.SentenceSplitter;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 import edu.columbia.cs.utils.Span;
 
+/**
+ * The candidate generator is responsible for generating all the candidate sentences from a given
+ * document for a given set of relationship types.
+ * 
+ * <br>
+ * <br>
+ * 
+ * A candidate generator contains a splitter that will split sentences accordingly. It is important to know
+ * that even though the behavihor of the candidate generator is mainly driven by the sentence segmentation
+ * there is one major exception: if the sentence segmentation tries to split a sentence in the middle
+ * of an entity, this decision will be ignored and the two resulting sentences will become only one.
+ * 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class CandidatesGenerator {
 	private SentenceSplitter splitter;
 
+	/**
+	 * The constructor of the candidate generator. It receives a splitter that will be used to generate
+	 * the sentences.
+	 * 
+	 * @param splitter model that generates the sentence splits
+	 */
 	public CandidatesGenerator(SentenceSplitter splitter){
 		this.splitter=splitter;
 	}
 
+	/**
+	 * This is the method that is responsible for the generation of the candidates for a given
+	 * document. The generation is divided into three steps:
+	 * 
+	 * <br>
+	 * <br>
+	 * 
+	 * 1) Sentence splitting: using the splitter passed in the constructor
+	 * 
+	 * <br>
+	 * <br>
+	 * 
+	 * 2) Boundaries correction: in case the splitter breaks a sentence in the middle of an
+	 * entity (e.g. "(...) the l.a. times (...)" may be broken as "(...) the l.a." and
+	 * "time (...)"), the two resulting sentences are merged again
+	 * 
+	 * <br>
+	 * <br>
+	 * 
+	 * 3) Particular candidate generation: for each sentence, the entities that are belong to
+	 * it are assigned to each possible role in the relationship types in order to generate
+	 * particular candidates
+	 * 
+	 * @param doc document from which we are trying to extract the candidates
+	 * @param relationshipTypes the relationship types that we are trying to find
+	 * @return the set of candidate sentences that can be generated from a document
+	 */
 	public Set<CandidateSentence> generateCandidates(Document doc, Set<RelationshipType> relationshipTypes){
 		List<Entity> entities = new ArrayList<Entity>(doc.getEntities());
 		Collections.sort(entities);
@@ -38,10 +88,6 @@ public class CandidatesGenerator {
 		List<Relationship> relationships = new ArrayList<Relationship>(doc.getRelationships());
 
 		Sentence[] sents = splitter.split(doc);
-
-		//TODO: Think about problems with the sentence splitter separating
-		//entities
-		
 
 		for(int sentId=0; sentId<sents.length; sentId++){
 			Sentence sent = sents[sentId];
