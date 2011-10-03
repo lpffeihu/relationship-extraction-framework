@@ -90,7 +90,7 @@ public class TrainingStepACE2005 {
 		//String pathProc = rootDir+"ACEGraphsFlat/ORG-AFF/";
 		//String pathProc = rootDir+"ACEBoNGramsFlat/";
 		//String pathProc = rootDir+"ACESubseqFlat/";
-		String pathProc = rootDir+"ACEWekaFlat/";
+		String pathProc = rootDir+"ACESubseqFlat/";
 		
 		StructureConfiguration conf = (StructureConfiguration) SerializationHelper.read(pathProc+"Configuration.bin");
 		
@@ -102,7 +102,8 @@ public class TrainingStepACE2005 {
 			System.out.println("processing [" + s + "]");
 			trainingFiles.addAll(getOperableStructure(pathProc,s));
 		}
-		Engine classificationEngine = new WekaClassifierEngine(new Logistic(),new ReVerbFeatures().getFeatureSet(),conf,relationshipTypes);
+		//Engine classificationEngine = new WekaClassifierEngine(new Logistic(),new ReVerbFeatures().getFeatureSet(),conf,relationshipTypes);
+		Engine classificationEngine = new JLibSVMBinaryEngine(conf, relationshipTypes);
 		Model svmModel = classificationEngine.train(trainingFiles);
 		edu.columbia.cs.selialization.SerializationHelper.write("/home/goncalo/Desktop/ORG-AFFModel.svm", svmModel);
 		svmModel=null;

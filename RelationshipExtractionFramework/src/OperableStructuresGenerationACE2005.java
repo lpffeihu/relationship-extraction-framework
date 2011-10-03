@@ -9,6 +9,7 @@ import edu.columbia.cs.og.configuration.StructureConfiguration;
 import edu.columbia.cs.og.core.CoreWriter;
 import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
 import edu.columbia.cs.og.core.impl.OpenInformationExtractionCore;
+import edu.columbia.cs.og.core.impl.SubsequencesKernel;
 import edu.columbia.cs.og.features.FeatureGenerator;
 import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.features.impl.EntityBasedChunkingFG;
@@ -24,7 +25,7 @@ import edu.columbia.cs.utils.Span;
 public class OperableStructuresGenerationACE2005 {
 
 	public static void main(String[] args) throws Exception {
-		StructureConfiguration conf = new StructureConfiguration(new OpenInformationExtractionCore());
+		StructureConfiguration conf = new StructureConfiguration(new SubsequencesKernel());
 				
 		/*FeatureGenerator<SequenceFS<Span>> tokenizer = new OpenNLPTokenizationFG("en-token.bin");
 		FeatureGenerator<SequenceFS<Span>> fgChunk = new EntityBasedChunkingFG(tokenizer);
@@ -37,7 +38,7 @@ public class OperableStructuresGenerationACE2005 {
 		String inputFolder = "/home/goncalo/ACEProcessedFlat/";
 		File ACEDir = new File(inputFolder);
 		File[] files = ACEDir.listFiles();
-		String outputFolder = "/home/goncalo/ACEWekaFlat/";
+		String outputFolder = "/home/goncalo/ACESubseqFlat/";
 		for(int i=0; i<files.length; i++){
 			File f = files[i];
 			

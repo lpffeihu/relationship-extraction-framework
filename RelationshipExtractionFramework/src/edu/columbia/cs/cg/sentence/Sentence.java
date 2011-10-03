@@ -41,4 +41,12 @@ public class Sentence extends FeaturableObject implements Serializable {
 	public String toString(){
 		return d.getSubstring(getOffset(), getLength());
 	}
+	
+	public Sentence merge(Sentence nextSentence){
+		if(d!=nextSentence.d){
+			throw new UnsupportedOperationException();
+		}
+		
+		return new Sentence(d, offset, nextSentence.offset+nextSentence.length-offset);
+	}
 }

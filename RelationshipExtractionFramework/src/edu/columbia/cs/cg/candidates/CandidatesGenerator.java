@@ -54,7 +54,16 @@ public class CandidatesGenerator {
 				Span entitySpan = new Span(startEntity,endEntity);
 				
 				if(sentenceSpan.intersects(entitySpan) && !sentenceSpan.contains(entitySpan)){
-					throw new UnsupportedOperationException();
+					Sentence newSentence = sents[sentId].merge(sents[sentId+1]);
+					Sentence[] newSentences = new Sentence[sents.length-1];
+					for(int i=0; i<sentId; i++){
+						newSentences[i]=sents[i];
+					}
+					newSentences[sentId]=newSentence;
+					for(int i=sentId+1;i<sents.length-1; i++){
+						newSentences[i]=sents[i+1];
+					}
+					sents=newSentences;
 				}
 				
 				entityIndex++;
@@ -64,7 +73,7 @@ public class CandidatesGenerator {
 		currentEntity=0;
 		for(int sentId=0; sentId<sents.length; sentId++){
 			Sentence sent = sents[sentId];
-			//System.out.println(sent);
+			Span sentenceSpan = new Span(sent.getOffset(),sent.getOffset()+sent.getLength());
 			Map<String,Entity> sentenceEntities = new HashMap<String,Entity>();
 			Set<Relationship> sentenceRelationships = new HashSet<Relationship>();
 
@@ -73,9 +82,11 @@ public class CandidatesGenerator {
 				Entity entity=entities.get(entityIndex);
 				int startEntity = entity.getOffset();
 				int endEntity = entity.getOffset()+entity.getLength();
-				if(startEntity>=sent.getOffset() && startEntity<sent.getOffset()+sent.getLength()&&
-						endEntity>=sent.getOffset() && endEntity<sent.getOffset()+sent.getLength()){
+				Span entitySpan = new Span(startEntity,endEntity);
+				if(sentenceSpan.contains(entitySpan)){
 					sentenceEntities.put(entity.getId(),entity);
+				}else if(sentenceSpan.intersects(entitySpan)){
+					throw new UnsupportedOperationException();
 				}
 
 				if(startEntity>=sent.getOffset()+sent.getLength()){
