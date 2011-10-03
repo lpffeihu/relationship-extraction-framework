@@ -1,4 +1,4 @@
-package edu.columbia.cs.cg.prdualrank.pattern.impl;
+package edu.columbia.cs.cg.pattern.prdualrank;
 
 import java.util.ArrayList;
 import java.util.Collection;
