@@ -1,7 +1,5 @@
 package edu.columbia.cs.cg.prdualrank.graph.generator;
 
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,7 +24,8 @@ public abstract class GraphGenerator<T extends Matchable,D extends Document> {
 				
 				for (Relationship tuple : tuples.keySet()) {
 					
-					ret.addContext(pattern,tuple,tuples.get(tuple));
+					if (topTuples.contains(tuple))
+						ret.addContext(pattern,tuple,tuples.get(tuple));
 					
 				}
 				

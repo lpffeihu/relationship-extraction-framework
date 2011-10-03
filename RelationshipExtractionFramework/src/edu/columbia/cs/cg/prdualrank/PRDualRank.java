@@ -32,6 +32,7 @@ import edu.columbia.cs.cg.prdualrank.searchengine.QueryGenerator;
 import edu.columbia.cs.cg.prdualrank.searchengine.SearchEngine;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
 import edu.columbia.cs.cg.relations.entity.matcher.EntityMatcher;
 import edu.columbia.cs.engine.Engine;
@@ -58,11 +59,12 @@ public class PRDualRank implements Engine{
 	private int numberOfPhrases;
 	private int extractionPatternLenght;
 	private Tokenizer tokenizer;
+	private RelationshipType rType;
 	
 	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int ngram, int window, int searchdepth, int minsupport,
 			int k_nolabel, int iterations, int numberOfPhrases, int extractionPatternLenght, RankFunction<Pattern<Document,TokenizedDocument>> searchpatternRankFunction,
 			RankFunction<Pattern<Relationship,TokenizedDocument>> extractpatternRankFunction, RankFunction<Relationship> tupleRankFunction, 
-			Tokenizer tokenizer){
+			Tokenizer tokenizer, RelationshipType rType){
 		this.se = se;
 		this.qg = qg;
 		this.k_seed = k_seed;
@@ -78,6 +80,7 @@ public class PRDualRank implements Engine{
 		this.numberOfPhrases = numberOfPhrases;
 		this.extractionPatternLenght = extractionPatternLenght;
 		this.tokenizer = tokenizer;
+		this.rType = rType;
 		//span is for the relationship type. that comes in the List<OperableStructure>
 	}
 	
@@ -120,8 +123,6 @@ public class PRDualRank implements Engine{
 				
 			}
 			
-
-			
 		}
 		
 		Set<Pattern<Document,TokenizedDocument>> searchPatterns = filter(Ps,minsupport);
@@ -152,15 +153,23 @@ public class PRDualRank implements Engine{
 		
 		Set<Relationship> topTuples = filterTopK(extractedTuples,k_nolabel,initial);
 		
-		Set<Document> documents = new HashSet<Document>();
+		Set<TokenizedDocument> documents = new HashSet<TokenizedDocument>();
 		
 		for (Relationship relationship : topTuples) {
 			
-			documents.addAll(se.search(qg.generateQuery(relationship), k_seed));
+			List<Document> searchResults = se.search(qg.generateQuery(relationship), k_seed);
+			
+			for (Document document : searchResults) {
+				
+				TokenizedDocument tokenizedDocument = new TokenizedDocument(document, tokenizer);
+				
+				documents.add(tokenizedDocument);
+				
+			}
 			
 		}
 		
-		PRDualRankGraph<Document,TokenizedDocument> Gs = new SearchGraphGenerator<Document,TokenizedDocument>().generateGraph(topTuples,searchPatterns,documents);
+		PRDualRankGraph<Document,TokenizedDocument> Gs = new SearchGraphGenerator<Document,TokenizedDocument>(rType).generateGraph(topTuples,searchPatterns,documents);
 		
 		PRDualRankGraph<Relationship,TokenizedDocument> Ge = new ExtractionGraphGenerator<Relationship,TokenizedDocument>().generateGraph(topTuples,extractPatterns,documents);
 				

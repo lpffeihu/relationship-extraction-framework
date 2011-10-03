@@ -22,17 +22,17 @@ import edu.columbia.cs.cg.prdualrank.pattern.extractor.AttributeContext;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.utils.Span;
 
 public class ExtractionPatternExtractor<T extends Relationship> implements PatternExtractor<Relationship> {
 
-	private int span;
-
 	private int individualPatternSize;
+	private RelationshipType rType;
 	
-	public ExtractionPatternExtractor(int span, int individualPatternSize) {
+	public ExtractionPatternExtractor(int individualPatternSize, RelationshipType rType) {
 		
-		this.span = span;
+		this.rType = rType;
 		this.individualPatternSize = individualPatternSize;
 	}
 
@@ -49,7 +49,7 @@ public class ExtractionPatternExtractor<T extends Relationship> implements Patte
 		
 		for (Relationship tuple : matchingRelationships) {
 			
-			AttributeContext context = generateAttributeContexts(tuple,document,span);			
+			AttributeContext context = generateAttributeContexts(tuple,document);			
 			
 			updateMap(patterns,context.generateExtractionPatterns(individualPatternSize));
 			
@@ -79,9 +79,9 @@ public class ExtractionPatternExtractor<T extends Relationship> implements Patte
 	}
 
 	private AttributeContext generateAttributeContexts(Relationship tuple,
-			TokenizedDocument document, int span) {
+			TokenizedDocument document) {
 		
-		AttributeContext ac = new AttributeContext(tuple.getRelationshipType());
+		AttributeContext ac = new AttributeContext(rType);
 		
 		for (String role : tuple.getRoles()) {
 			
