@@ -18,6 +18,7 @@ import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.cg.sentence.SentenceSplitter;
 import edu.columbia.cs.utils.MegaCartesianProduct;
+import edu.columbia.cs.utils.Span;
 
 public class CandidatesGenerator {
 	private SentenceSplitter splitter;
@@ -40,6 +41,25 @@ public class CandidatesGenerator {
 
 		//TODO: Think about problems with the sentence splitter separating
 		//entities
+		
+
+		for(int sentId=0; sentId<sents.length; sentId++){
+			Sentence sent = sents[sentId];
+			Span sentenceSpan = new Span(sent.getOffset(),sent.getOffset()+sent.getLength());
+			int entityIndex=currentEntity;
+			while(entityIndex<numEntities){
+				Entity entity=entities.get(entityIndex);
+				int startEntity = entity.getOffset();
+				int endEntity = entity.getOffset()+entity.getLength();
+				Span entitySpan = new Span(startEntity,endEntity);
+				
+				if(sentenceSpan.intersects(entitySpan) && !sentenceSpan.contains(entitySpan)){
+					throw new UnsupportedOperationException();
+				}
+			}
+		}
+		
+		currentEntity=0;
 		for(int sentId=0; sentId<sents.length; sentId++){
 			Sentence sent = sents[sentId];
 			//System.out.println(sent);

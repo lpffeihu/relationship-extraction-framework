@@ -53,7 +53,7 @@ public class Span implements Serializable,Comparable<Span> {
 				|| sstart <= getStart() && getStart() < s.getEnd();
 	}
 
-	private boolean contains(Span s) {
+	public boolean contains(Span s) {
 		return start <= s.getStart() && s.getEnd() <= end;
 	}
 }

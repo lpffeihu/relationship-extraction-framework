@@ -34,6 +34,7 @@ public class RelationshipType implements Serializable {
 		setType(type);
 		numberEntities=roles.length;
 		roleConstraints=new RoleConstraint[rolesSize];
+		entityMatchers=new EntityMatcher[rolesSize];
 		for(int i=0;i<rolesSize; i++){
 			roleConstraints[i]=new NoConstraint();
 			entityMatchers[i]=new EqualsEntityMatcher();
