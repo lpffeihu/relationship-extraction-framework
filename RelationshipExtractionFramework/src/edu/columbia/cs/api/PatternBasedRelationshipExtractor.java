@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.relations.Relationship;
@@ -18,9 +19,9 @@ import edu.columbia.cs.cg.relations.Relationship;
  * @version     0.1
  * @since       2011-09-27
  */
-public class PatternBasedRelationshipExtractor<T extends Relationship, D extends TokenizedDocument> implements RelationshipExtractor<TokenizedDocument> {
+public class PatternBasedRelationshipExtractor<T extends Relationship, D extends Document> implements RelationshipExtractor<D> {
 
-	private Set<Pattern<Relationship,TokenizedDocument>> patterns;
+	private Set<Pattern<T,D>> patterns;
 
 	/**
 	 * Constructor of the pattern based relationship extractor. It receives as input a set of
@@ -28,7 +29,7 @@ public class PatternBasedRelationshipExtractor<T extends Relationship, D extends
 	 * 
 	 * @param patterns a set of patterns to extract relationships from tokenized documents
 	 */
-	public PatternBasedRelationshipExtractor(Set<Pattern<Relationship,TokenizedDocument>> patterns){
+	public PatternBasedRelationshipExtractor(Set<Pattern<T,D>> patterns){
 		this.patterns = patterns;
 		
 	}
@@ -42,11 +43,11 @@ public class PatternBasedRelationshipExtractor<T extends Relationship, D extends
 	 * @return list of relationships between entities of the input document
 	 */
 	@Override
-	public List<Relationship> extractTuples(TokenizedDocument d) {
+	public List<Relationship> extractTuples(D d) {
 		
 		List<Relationship> rel = new ArrayList<Relationship>();
 
-		for (Pattern<Relationship,TokenizedDocument> pattern : patterns) {
+		for (Pattern<T,D> pattern : patterns) {
 			
 			rel.addAll(pattern.findMatch(d));
 			

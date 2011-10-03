@@ -89,7 +89,7 @@ public class PRDualRank implements Engine{
 		
 		PatternExtractor<Document> spe = new WindowedSearchPatternExtractor<Document>(window, ngram, numberOfPhrases);
 		
-		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(window,extractionPatternLenght);
+		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(extractionPatternLenght,rType);
 		
 		HashMap<Pattern<Document,TokenizedDocument>, Integer> Ps = new HashMap<Pattern<Document,TokenizedDocument>, Integer>();
 		
