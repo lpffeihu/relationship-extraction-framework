@@ -95,7 +95,7 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 		
 		for (String alias : aliases) {
 			
-			sb.append("|" + alias);
+			sb.append("|" +Pattern.quote(alias));
 			
 		}
 		
