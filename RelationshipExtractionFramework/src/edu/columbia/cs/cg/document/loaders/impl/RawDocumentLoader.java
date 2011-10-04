@@ -16,7 +16,7 @@ import edu.columbia.cs.cg.document.segmentator.DocumentSegmentator;
 import edu.columbia.cs.cg.document.tagger.Tagger;
 import edu.columbia.cs.cg.relations.RelationshipType;
 
-public abstract class RawDocumentLoader extends DocumentLoader{
+public class RawDocumentLoader extends DocumentLoader{
 
 	private Preprocessor preprocessor;
 	private Tagger[] taggers;

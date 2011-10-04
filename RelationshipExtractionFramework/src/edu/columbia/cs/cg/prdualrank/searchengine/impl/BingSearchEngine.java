@@ -2,7 +2,6 @@ package edu.columbia.cs.cg.prdualrank.searchengine.impl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 import com.google.code.bing.search.client.BingSearchClient;
 import com.google.code.bing.search.client.BingSearchServiceClientFactory;
@@ -14,10 +13,7 @@ import com.google.code.bing.search.schema.SourceType;
 import com.google.code.bing.search.schema.web.WebResult;
 import com.google.code.bing.search.schema.web.WebSearchOption;
 
-import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.loaders.impl.RawDocumentLoader;
-import edu.columbia.cs.cg.document.preprocessing.Preprocessor;
-import edu.columbia.cs.cg.prdualrank.searchengine.SearchEngine;
 import edu.columbia.cs.cg.prdualrank.searchengine.WebBasedSearchEngine;
 
 public class BingSearchEngine extends WebBasedSearchEngine {
