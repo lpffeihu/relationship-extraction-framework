@@ -13,11 +13,9 @@ import edu.columbia.cs.cg.document.preprocessing.Preprocessor;
 public abstract class WebBasedSearchEngine implements SearchEngine {
 
 	private RawDocumentLoader loader;
-	private Preprocessor preprocessor;
 
-	public WebBasedSearchEngine(RawDocumentLoader loader, Preprocessor preprocessor){
+	public WebBasedSearchEngine(RawDocumentLoader loader){
 		this.loader = loader;
-		this.preprocessor = preprocessor;
 	}
 	
 	@Override
@@ -80,7 +78,7 @@ public abstract class WebBasedSearchEngine implements SearchEngine {
 		for (String document : documentsContent) {
 			
 			if (document != null)
-				ret.add(loader.load(preprocessor.process(document)));
+				ret.add(loader.load(document));
 			
 		}
 		

@@ -15,10 +15,16 @@ import com.google.code.bing.search.schema.web.WebResult;
 import com.google.code.bing.search.schema.web.WebSearchOption;
 
 import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.cg.document.loaders.impl.RawDocumentLoader;
+import edu.columbia.cs.cg.document.preprocessing.Preprocessor;
 import edu.columbia.cs.cg.prdualrank.searchengine.SearchEngine;
 import edu.columbia.cs.cg.prdualrank.searchengine.WebBasedSearchEngine;
 
 public class BingSearchEngine extends WebBasedSearchEngine {
+
+	public BingSearchEngine(RawDocumentLoader loader) {
+		super(loader);
+	}
 
 	private final String API_KEY = "B47E474EC2280B209E026F084E6D8F3E520968FC";
 	
