@@ -13,6 +13,11 @@ import edu.columbia.cs.utils.Span;
 public class OpenNLPTokenizer implements Tokenizer {
 
 	private TokenizerME tokenizer = null;	
+	private String pathToTokenizer;
+	
+	public OpenNLPTokenizer(String path){
+		pathToTokenizer=path;
+	}
 	
 	@Override
 	public Span[] tokenize(String text) {
@@ -43,7 +48,7 @@ public class OpenNLPTokenizer implements Tokenizer {
 			
 			try {
 				
-				modelIn = new FileInputStream("en-token.bin");
+				modelIn = new FileInputStream(pathToTokenizer);
 				
 				TokenizerModel tokModel = new TokenizerModel(modelIn);
 				

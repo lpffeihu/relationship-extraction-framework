@@ -9,6 +9,8 @@ import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.loaders.impl.RawDocumentLoader;
 import edu.columbia.cs.cg.document.preprocessing.impl.HTMLContentKeeper;
 import edu.columbia.cs.cg.document.segmentator.impl.SimpleSegmentDocumentSegmentator;
+import edu.columbia.cs.cg.document.tokenized.tokenizer.OpenNLPTokenizer;
+import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.cg.sentence.SentenceSplitter;
 import edu.columbia.cs.cg.sentence.impl.OpenNLPMESplitter;
@@ -33,7 +35,7 @@ public class TestsOpenIE {
 		Document doc = loader.load(sentStr);
 		
 		SentenceSplitter splitter = new OpenNLPMESplitter("en-sent.bin");
-		OpenNLPTokenizationFG tokenizer = new OpenNLPTokenizationFG("en-token.bin");
+		Tokenizer tokenizer = new OpenNLPTokenizer("en-token.bin");
 		
 		
 		Sentence[] sents = splitter.split(doc);
