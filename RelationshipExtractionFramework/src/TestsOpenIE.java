@@ -1,7 +1,10 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import opennlp.tools.util.InvalidFormatException;
 
@@ -13,6 +16,9 @@ import edu.columbia.cs.cg.document.preprocessing.impl.HTMLContentKeeper;
 import edu.columbia.cs.cg.document.segmentator.impl.SimpleSegmentDocumentSegmentator;
 import edu.columbia.cs.cg.document.tokenized.tokenizer.OpenNLPTokenizer;
 import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
+import edu.columbia.cs.cg.relations.Entity;
+import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.cg.sentence.Sentence;
 import edu.columbia.cs.cg.sentence.SentenceSplitter;
 import edu.columbia.cs.cg.sentence.impl.OpenNLPMESplitter;
@@ -69,13 +75,33 @@ public class TestsOpenIE {
 		
 		ReVerbExtractor reverb = new ReVerbExtractor();
         ReVerbConfFunction confFunc = new ReVerbConfFunction();
+        
+        Map<Span,Integer> entityIds = new TreeMap<Span,Integer>();
 		for(ChunkedSentence sent : chunkedSents){
 			for (ChunkedBinaryExtraction extr : reverb.extract(sent)) {
-	            double conf = confFunc.getConf(extr);
-	            System.out.println("Arg1=" + extr.getArgument1());
-	            System.out.println("Rel=" + extr.getRelation());
-	            System.out.println("Arg2=" + extr.getArgument2());
-	            System.out.println("Conf=" + conf);
+				RelationshipType t = new RelationshipType(extr.getRelation().toString(), new String[]{"Arg-1", "Arg-2"});
+				double conf = confFunc.getConf(extr);
+				Relationship rel = new Relationship(t);
+				Span ent1 = new Span(extr.getArgument1().getStart(), extr.getArgument1().getStart()+extr.getArgument1().getLength());
+				Integer id1 = entityIds.get(ent1);
+				if(id1==null){
+					
+				}
+				Entity arg1 = new Entity("EntityId","UnknownType",extr.getArgument1().getStart(),
+						extr.getArgument1().getLength(),extr.getArgument1().toString(),doc);
+				
+				Span ent2 = new Span(extr.getArgument2().getStart(), extr.getArgument2().getStart()+extr.getArgument2().getLength());
+				Entity arg2 = new Entity("EntityId","UnknownType",extr.getArgument2().getStart(),
+						extr.getArgument2().getLength(),extr.getArgument2().toString(),doc);
+				
+				doc.addEntity(arg1);
+				doc.addEntity(arg2);
+				
+				rel.setRole("Arg-1", arg1);
+				rel.setRole("Arg-2", arg2);
+				rel.setLabel(t.getType());
+	            
+				System.out.println(rel);
 	        }
 		}
 		
