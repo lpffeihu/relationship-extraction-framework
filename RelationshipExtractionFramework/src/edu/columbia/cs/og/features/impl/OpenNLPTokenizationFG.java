@@ -24,6 +24,7 @@ import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.utils.Span;
 
+//TODO: This should call the tokenizer that is in the other package
 public class OpenNLPTokenizationFG extends SentenceFeatureGenerator<SequenceFS<Span>> implements Serializable {
 
 	private transient Tokenizer tokenizer;

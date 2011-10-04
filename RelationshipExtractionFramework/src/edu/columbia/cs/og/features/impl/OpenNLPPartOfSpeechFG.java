@@ -27,6 +27,7 @@ import edu.columbia.cs.og.features.featureset.SequenceFS;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.utils.Span;
 
+//TODO: Should use the POS Tagger from the utils package
 public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<SequenceFS<String>> {
 
 	private transient POSTaggerME tagger;
