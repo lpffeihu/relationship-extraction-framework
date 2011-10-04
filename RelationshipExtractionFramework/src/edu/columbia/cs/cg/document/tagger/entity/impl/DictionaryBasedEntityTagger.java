@@ -1,6 +1,10 @@
 package edu.columbia.cs.cg.document.tagger.entity.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,22 +13,56 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.aliasi.chunk.Chunk;
+import com.aliasi.chunk.Chunking;
+import com.aliasi.dict.DictionaryEntry;
+import com.aliasi.dict.ExactDictionaryChunker;
+import com.aliasi.dict.MapDictionary;
+import com.aliasi.tokenizer.TokenizerFactory;
+
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.Segment;
 import edu.columbia.cs.cg.document.tagger.entity.EntityTagger;
+import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
 import edu.columbia.cs.utils.Dictionary;
 
 public class DictionaryBasedEntityTagger extends EntityTagger {
 
-	private Dictionary dictionary;
+	private static final double CHUNK_SCORE = 1.0;
 	private Map<String,String> regExTable;
 	private int processedDocuments;
+	private MapDictionary<String> dictionary;
+	private ExactDictionaryChunker matcher;
+	private Tokenizer tokenizer;
 
-	public DictionaryBasedEntityTagger(String tag, Dictionary dictionary){
+	public DictionaryBasedEntityTagger(String tag, Dictionary dictionary, Tokenizer tokenizer){
 		super(tag);
-		this.dictionary = dictionary;
+		createMatchingDictionary(dictionary);
 		regExTable = new HashMap<String, String>();
 		processedDocuments = 0;
+		this.tokenizer = tokenizer;
+	}
+
+	private void createMatchingDictionary(Dictionary dict) {
+		
+		dictionary = new MapDictionary<String>();
+		
+		Set<String> entries = dict.getEntries();
+
+		for (String entry : entries) {
+			
+			dictionary.addEntry(new DictionaryEntry<String>(entry,getTag(),CHUNK_SCORE));
+			
+		}
+	
+		matcher = new ExactDictionaryChunker(dictionary,getTokenizerFactory(),
+                                     true,true);
+	}
+
+	private TokenizerFactory getTokenizerFactory() {
+		
+		return InstanceBasedTokenizedFactory.getInstance(tokenizer);
+		
 	}
 
 	@Override
@@ -36,7 +74,7 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 		
 		List<EntitySpan> entitySpans = new ArrayList<EntitySpan>();
 		
-		Set<String> keys = dictionary.getKeys();
+		int matches = 0;
 		
 		for (Segment segment : d.getPlainText()) {
 			
@@ -44,62 +82,33 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 			
 			int offset = segment.getOffset();
 			
-			int entityKeyIndex = 1;
-			
-			for (String key : keys) {
+			Chunking chunking = matcher.chunk(content);
+	        
+			for (Chunk chunk : chunking.chunkSet()) {
+	            
+				matches++;
 				
-				Pattern pattern = Pattern.compile("(\\W|^)" + "(" + getRegularExpression(key,dictionary.getAliases(key)) + ")" + "(\\W|$)");
-				
-				Matcher matcher = pattern.matcher(content);
-				
-				int occurrence = 0;
-				
-				while (matcher.find()) {
-					
-					occurrence++;
-					
-					int entityOffset = offset + matcher.start(2);
-					
-					String value = matcher.group(2);
-					
-					entitySpans.add(new EntitySpan(createId(docId,entityKeyIndex,occurrence), value, entityOffset, matcher.group(2).length()));
-					
-				}
-				
+	        	int start = chunk.start();
+	            
+	        	int end = chunk.end();
+	            
+	        	String value = content.substring(start,end);
+	            
+	            entitySpans.add(new EntitySpan(createId(processedDocuments,matches,chunk.type()), value, offset + start, value.length()));
+	        
 			}
-			
+					
 		}
 		
 		return entitySpans;
 		
 	}
 
-	private String createId(int docId, int entityKeyIndex, int occurrence) {
-		return docId + "-" + entityKeyIndex + "-" + occurrence;
+	private String createId(int processedDocument, int matches, String type) {
+		
+		return processedDocument + "-" + matches + "-" + type;
+		
 	}
 
-	private String getRegularExpression(String key,Set<String> aliases) {
-		
-		String regEx = regExTable.get(key);
-		
-		if (regEx == null){
-			regEx = createEitherRegularExpression(aliases);
-			regExTable.put(key,regEx);
-		}
-		return regEx;
-	}
-
-	private String createEitherRegularExpression(Set<String> aliases) {
-		
-		StringBuilder sb = new StringBuilder();
-		
-		for (String alias : aliases) {
-			
-			sb.append("|" +Pattern.quote(alias));
-			
-		}
-		
-		return sb.substring(1);
-	}
 
 }

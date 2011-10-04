@@ -16,8 +16,23 @@ public class OpenNLPTokenizer implements Tokenizer {
 	
 	@Override
 	public Span[] tokenize(String text) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Span[] ret = convert(getTokenizer().tokenizePos(text));
+		
+		return ret;
+	}
+
+	private Span[] convert(opennlp.tools.util.Span[] tokenizePos) {
+		
+		Span[] ret = new Span[tokenizePos.length];
+		
+		for (int i = 0; i < ret.length; i++) {
+			
+			ret[i] = new Span(tokenizePos[i]);
+			
+		}
+		
+		return ret;
 	}
 
 	private TokenizerME getTokenizer() {
