@@ -29,9 +29,10 @@ public class ExtractionPatternExtractor<T extends Relationship> implements Patte
 
 	private int individualPatternSize;
 	private RelationshipType rType;
+	private int span;
 	
-	public ExtractionPatternExtractor(int individualPatternSize, RelationshipType rType) {
-		
+	public ExtractionPatternExtractor(int span, int individualPatternSize, RelationshipType rType) {
+		this.span = span;
 		this.rType = rType;
 		this.individualPatternSize = individualPatternSize;
 	}

@@ -61,7 +61,7 @@ public class PRDualRank implements Engine{
 	private Tokenizer tokenizer;
 	private RelationshipType rType;
 	
-	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int ngram, int window, int searchdepth, int minsupport,
+	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int ngram, int window, int minsupport,
 			int k_nolabel, int iterations, int numberOfPhrases, int extractionPatternLenght, RankFunction<Pattern<Document,TokenizedDocument>> searchpatternRankFunction,
 			RankFunction<Pattern<Relationship,TokenizedDocument>> extractpatternRankFunction, RankFunction<Relationship> tupleRankFunction, 
 			Tokenizer tokenizer, RelationshipType rType){
@@ -70,7 +70,6 @@ public class PRDualRank implements Engine{
 		this.k_seed = k_seed;
 		this.ngram = ngram;
 		this.window = window;
-		this.searchdepth = searchdepth;
 		this.minsupport = minsupport;
 		this.k_nolabel = k_nolabel;
 		this.iterations = iterations;
@@ -89,7 +88,7 @@ public class PRDualRank implements Engine{
 		
 		PatternExtractor<Document> spe = new WindowedSearchPatternExtractor<Document>(window, ngram, numberOfPhrases);
 		
-		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(extractionPatternLenght,rType);
+		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(span,extractionPatternLenght,rType);
 		
 		HashMap<Pattern<Document,TokenizedDocument>, Integer> Ps = new HashMap<Pattern<Document,TokenizedDocument>, Integer>();
 		

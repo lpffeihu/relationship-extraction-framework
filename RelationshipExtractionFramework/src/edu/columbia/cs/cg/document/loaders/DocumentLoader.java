@@ -37,4 +37,5 @@ public abstract class DocumentLoader extends Loader<Document> {
 	 * @return a set of Documents representing the documents of a collection
 	 */
 	public abstract Set<Document> load(File file);
+	
 }
