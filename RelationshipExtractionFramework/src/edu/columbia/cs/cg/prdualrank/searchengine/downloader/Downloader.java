@@ -34,6 +34,13 @@ public class Downloader implements Runnable {
 		
 		while (attempt < ATTEMPTS){
 		
+			try {
+				Thread.sleep(attempt*TIME_INTERVAL);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 			BufferedReader br = null;
 			
 			try {

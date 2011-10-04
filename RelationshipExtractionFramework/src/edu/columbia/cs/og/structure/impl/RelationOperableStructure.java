@@ -12,8 +12,8 @@ public class RelationOperableStructure extends OperableStructure {
 	private static final long serialVersionUID = 1L;
 	private Relationship relation;
 
-	public RelationOperableStructure(CandidateSentence c, Relationship relation) {
-		super(c);
+	public RelationOperableStructure(Relationship relation) {
+		super(null);
 		this.relation = relation;
 	}
 

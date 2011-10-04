@@ -37,10 +37,11 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 
 	public DictionaryBasedEntityTagger(String tag, Dictionary dictionary, Tokenizer tokenizer){
 		super(tag);
-		createMatchingDictionary(dictionary);
 		regExTable = new HashMap<String, String>();
 		processedDocuments = 0;
 		this.tokenizer = tokenizer;
+		createMatchingDictionary(dictionary);
+
 	}
 
 	private void createMatchingDictionary(Dictionary dict) {
