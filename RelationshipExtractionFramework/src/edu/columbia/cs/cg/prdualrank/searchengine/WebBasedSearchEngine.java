@@ -9,6 +9,7 @@ import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.loaders.DocumentLoader;
 import edu.columbia.cs.cg.document.loaders.impl.RawDocumentLoader;
 import edu.columbia.cs.cg.document.preprocessing.Preprocessor;
+import edu.columbia.cs.cg.prdualrank.searchengine.downloader.Downloader;
 
 public abstract class WebBasedSearchEngine implements SearchEngine {
 

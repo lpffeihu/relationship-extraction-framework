@@ -1,11 +1,12 @@
-package edu.columbia.cs.cg.prdualrank.searchengine;
+package edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl;
 
 import java.util.Collection;
 
+import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 
-public class QueryGenerator {
+public class ConcatQueryGenerator extends QueryGenerator {
 
 	public String generateQuery(Relationship relationship) {
 		
@@ -29,5 +30,5 @@ public class QueryGenerator {
 	public String generateQuery(Entity role) {
 		return role.getValue();
 	}
-
+	
 }

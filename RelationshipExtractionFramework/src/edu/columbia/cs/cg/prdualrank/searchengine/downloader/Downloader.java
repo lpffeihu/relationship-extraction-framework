@@ -1,4 +1,4 @@
-package edu.columbia.cs.cg.prdualrank.searchengine;
+package edu.columbia.cs.cg.prdualrank.searchengine.downloader;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

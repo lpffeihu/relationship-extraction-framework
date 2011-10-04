@@ -28,8 +28,8 @@ import edu.columbia.cs.cg.prdualrank.model.PRDualRankModel;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.ExtractionPatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.WindowedSearchPatternExtractor;
-import edu.columbia.cs.cg.prdualrank.searchengine.QueryGenerator;
 import edu.columbia.cs.cg.prdualrank.searchengine.SearchEngine;
+import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.cg.relations.RelationshipType;
@@ -49,7 +49,6 @@ public class PRDualRank implements Engine{
 	private int span;
 	private int ngram;
 	private int window;
-	private int searchdepth;
 	private int minsupport;
 	private int k_nolabel;
 	private int iterations;
