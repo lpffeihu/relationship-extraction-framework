@@ -8,11 +8,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Dictionary {
 
 	private Map<String, Set<String>> dictionary;
 	private String separatorRegEx;
+	private SortedSet<String> keys;
 
 	public Dictionary(File dictionary, String separatorRegEx){
 		
@@ -23,6 +26,8 @@ public class Dictionary {
 	}
 	
 	private void loadDictionary(File dictionaryFile) {
+		
+		keys = new TreeSet<String>();
 		
 		dictionary = new HashMap<String, Set<String>>();
 		
@@ -37,6 +42,8 @@ public class Dictionary {
 				String[] spl = line.split(separatorRegEx);
 				
 				Set<String> aliases = new HashSet<String>();
+				
+				keys.add(spl[0]);
 				
 				for (int i = 0; i < spl.length; i++) {
 					aliases.add(spl[i]);
@@ -64,5 +71,9 @@ public class Dictionary {
 	
 	public Set<String> getAliases(String key){
 		return dictionary.get(key);
+	}
+
+	public SortedSet<String> getKeys() {
+		return keys;
 	}
 }
