@@ -7,15 +7,15 @@ import java.util.List;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.loaders.DocumentLoader;
-import edu.columbia.cs.cg.document.loaders.impl.IndividualDocumentLoader;
+import edu.columbia.cs.cg.document.loaders.impl.RawDocumentLoader;
 import edu.columbia.cs.cg.document.preprocessing.Preprocessor;
 
 public abstract class WebBasedSearchEngine implements SearchEngine {
 
-	private IndividualDocumentLoader loader;
+	private RawDocumentLoader loader;
 	private Preprocessor preprocessor;
 
-	public WebBasedSearchEngine(IndividualDocumentLoader loader, Preprocessor preprocessor){
+	public WebBasedSearchEngine(RawDocumentLoader loader, Preprocessor preprocessor){
 		this.loader = loader;
 		this.preprocessor = preprocessor;
 	}

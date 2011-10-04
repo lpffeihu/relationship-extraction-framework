@@ -11,13 +11,22 @@ import java.util.Set;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.loaders.DocumentLoader;
+import edu.columbia.cs.cg.document.preprocessing.Preprocessor;
+import edu.columbia.cs.cg.document.segmentator.DocumentSegmentator;
 import edu.columbia.cs.cg.document.tagger.Tagger;
 import edu.columbia.cs.cg.relations.RelationshipType;
 
-public abstract class IndividualDocumentLoader extends DocumentLoader{
+public abstract class RawDocumentLoader extends DocumentLoader{
 
-	public IndividualDocumentLoader(Set<RelationshipType> relationshipTypes) {
+	private Preprocessor preprocessor;
+	private Tagger[] taggers;
+	private DocumentSegmentator docSegmentator;
+
+	public RawDocumentLoader(Set<RelationshipType> relationshipTypes, Preprocessor preprocessor, DocumentSegmentator docSegmentator, Tagger...taggers) {
 		super(relationshipTypes);
+		this.preprocessor = preprocessor;
+		this.taggers = taggers;
+		this.docSegmentator = docSegmentator;
 	}
 
 	@Override
@@ -59,6 +68,19 @@ public abstract class IndividualDocumentLoader extends DocumentLoader{
 		
 	}
 
-	public abstract Document load(String content);
+	public Document load(String content){
+		
+		String preprocessedContent = preprocessor.process(content);
+		
+		Document d = new Document(docSegmentator.segmentate(preprocessedContent));
+		
+		for (Tagger tagger : taggers) {
+			
+			tagger.enrich(d);
+			
+		}
+		
+		return d;
+	}
 
 }

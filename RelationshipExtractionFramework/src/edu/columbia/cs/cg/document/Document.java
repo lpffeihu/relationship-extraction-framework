@@ -1,6 +1,7 @@
 package edu.columbia.cs.cg.document;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,10 @@ public class Document implements Serializable, Writable, Matchable {
 	private Map<String,Relationship> relationships;
 	
 	/**
-	 * protected constructor of the Document
+	 * protected constructor of the Document that keeps the internal state.
+	 * Useful for the creation of subclasses.
+	 * 
+	 * @param d the document to be copied
 	 */
 	
 	protected Document(Document d){
@@ -49,6 +53,16 @@ public class Document implements Serializable, Writable, Matchable {
 		this.entities = d.entities;
 		this.relationships = d.relationships;
 		
+	}
+	
+	/**
+	 * From text constructor for documents that are not stored in disk
+	 */
+	
+	public Document(List<Segment> text){
+				
+		this(null,null,text);
+
 	}
 	
 	/**
