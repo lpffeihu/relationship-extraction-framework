@@ -1,5 +1,6 @@
 package edu.columbia.cs.cg.pattern.prdualrank;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -87,6 +88,23 @@ public class SearchPattern<T extends Document, D extends TokenizedDocument> exte
 	public List<Document> findMatch(TokenizedDocument d) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	protected int generateHashCode() {
+		
+		int hashCode = 1;
+		
+		for (String[] phrase : phrases) {
+			hashCode = 31*hashCode + Arrays.hashCode(phrase);
+		}
+		
+		return hashCode;
+		
+	}
+	
+	public String toString() {
+		return phrases.toString();
 	}
 
 }

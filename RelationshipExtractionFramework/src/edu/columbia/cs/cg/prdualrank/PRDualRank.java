@@ -209,14 +209,16 @@ public class PRDualRank implements Engine{
 				}
 				
 			}
-			
+
 			candidateEntitiesForRole.put(role, filteredEntitiesForRole);
 		
 		}
 
 		List<Relationship> matchingTuples = new ArrayList<Relationship>();
 		
-		for(Map<String,Entity> candidate : MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole)){
+		List<Map<String, Entity>> possibilities = MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole);
+		
+		for(Map<String,Entity> candidate : possibilities){
 			
 			Relationship newRelationship = new Relationship(relationship.getRelationshipType());
 			

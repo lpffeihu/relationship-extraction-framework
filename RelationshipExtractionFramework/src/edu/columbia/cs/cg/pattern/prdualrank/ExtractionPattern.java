@@ -1,6 +1,7 @@
 package edu.columbia.cs.cg.pattern.prdualrank;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +25,7 @@ public class ExtractionPattern<T extends Relationship, D extends TokenizedDocume
 	private Map<String, SimpleAttributeExtractionPattern<Entity,TokenizedDocument>> simpleAttributeMap;
 	private RelationshipType rType;
 	private RelationshipConstraint rConstraint;
+	private int hashCode;
 
 	public ExtractionPattern(List<String> roles, Map<String, SimpleAttributeExtractionPattern<Entity,TokenizedDocument>> simpleAttributeMap, RelationshipType rType) {
 		
@@ -31,6 +33,7 @@ public class ExtractionPattern<T extends Relationship, D extends TokenizedDocume
 		this.simpleAttributeMap = simpleAttributeMap;
 		this.rType = rType;
 		this.rConstraint = rType.getRelationshipConstraint();
+		hashCode = -1;
 	}
 
 	@Override
@@ -100,4 +103,21 @@ public class ExtractionPattern<T extends Relationship, D extends TokenizedDocume
 		
 	}
 
+	protected int generateHashCode() {
+		
+		int hashCode = 1;
+		
+		hashCode = 31*hashCode + simpleAttributeMap.hashCode();
+
+		hashCode = 31*hashCode + rType.hashCode();
+		
+		hashCode = 31*hashCode + rConstraint.hashCode();
+		
+		return hashCode;
+		
+	}
+
+	public String toString(){
+		return simpleAttributeMap.toString();
+	}
 }

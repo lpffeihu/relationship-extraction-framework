@@ -15,13 +15,20 @@ public class Dictionary {
 
 	private Map<String, Set<String>> dictionary;
 	private String separatorRegEx;
+	private String name;
 
-	public Dictionary(File dictionary, String separatorRegEx){
+	public Dictionary(File dictionary, String separatorRegEx, String name){
 		
 		this.separatorRegEx = separatorRegEx;
 		
+		this.name = name;
+		
 		loadDictionary(dictionary);
 		
+	}
+	
+	public String getName(){
+		return name;
 	}
 	
 	private void loadDictionary(File dictionaryFile) {

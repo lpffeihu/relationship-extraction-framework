@@ -48,20 +48,20 @@ public class PRDualRankTest {
 		int extractionPatternLenght = 10;
 		int numberOfPhrases = 2;
 		int iterations = 3;
-		int window = 20;
+		int window = 5;
 		int minsupport = 5;
 		int k_nolabel = 50;
-		int k_seed = 500;
-		int ngram = 5;
+		int k_seed = 1;
+		int ngram = 3;
 		int span = 10;
 
 		//countries Dictionary
 		String countriesFile = "data/country.txt";
-		Dictionary countriessdictionary = new Dictionary(new File(countriesFile), ";");
+		Dictionary countriessdictionary = new Dictionary(new File(countriesFile), ";","country");
 
 		//capitals Dictionary
 		String capitalsFile = "data/capital.txt";
-		Dictionary capitalsdictionary = new Dictionary(new File(capitalsFile), ";");
+		Dictionary capitalsdictionary = new Dictionary(new File(capitalsFile), ";","capital");
 		
 		//Tokenizer used for the tokenization. Ideally the same.
 		Tokenizer tokenizer = new OpenNLPTokenizer("en-token.bin");
@@ -79,7 +79,7 @@ public class PRDualRankTest {
 		EntityTypeConstraint capitalConstraint = new EntityTypeConstraint(locationType);
 		rType.setConstraints(capitalConstraint, capitalRole);
 		
-		RelationshipConstraint constraint = new WordDistanceBetweenEntities(tokenizer, span);
+		RelationshipConstraint constraint = new WordDistanceBetweenEntities(tokenizer, span,true);
 		
 		rType.setConstraints(constraint);
 		

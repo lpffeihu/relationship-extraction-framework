@@ -19,7 +19,7 @@ public class ConcatQueryGenerator extends QueryGenerator {
 		
 		for (String role : roles) {
 			
-			ret = " " + relationship.getRole(role).getValue(); 
+			ret = ret + " " + relationship.getRole(role).getValue(); 
 			
 		}
 		

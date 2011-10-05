@@ -29,7 +29,6 @@ import edu.columbia.cs.utils.Dictionary;
 public class DictionaryBasedEntityTagger extends EntityTagger {
 
 	private static final double CHUNK_SCORE = 1.0;
-	private Map<String,String> regExTable;
 	private int processedDocuments;
 	private MapDictionary<String> dictionary;
 	private ExactDictionaryChunker matcher;
@@ -37,7 +36,6 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 
 	public DictionaryBasedEntityTagger(String tag, Dictionary dictionary, Tokenizer tokenizer){
 		super(tag);
-		regExTable = new HashMap<String, String>();
 		processedDocuments = 0;
 		this.tokenizer = tokenizer;
 		createMatchingDictionary(dictionary);
@@ -52,7 +50,7 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 
 		for (String entry : entries) {
 			
-			dictionary.addEntry(new DictionaryEntry<String>(entry,getTag(),CHUNK_SCORE));
+			dictionary.addEntry(new DictionaryEntry<String>(entry,dict.getName(),CHUNK_SCORE));
 			
 		}
 	
@@ -70,8 +68,6 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 	protected List<EntitySpan> findSpans(Document d) {
 		
 		processedDocuments++;
-		
-		int docId = processedDocuments;
 		
 		List<EntitySpan> entitySpans = new ArrayList<EntitySpan>();
 		
@@ -95,7 +91,7 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 	            
 	        	String value = content.substring(start,end);
 	            
-	            entitySpans.add(new EntitySpan(createId(processedDocuments,matches,chunk.type()), value, offset + start, value.length()));
+	            entitySpans.add(new EntitySpan(createId(processedDocuments,matches,chunk.type(),getTag()), value, offset + start, value.length()));
 	        
 			}
 					
@@ -105,9 +101,9 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 		
 	}
 
-	private String createId(int processedDocument, int matches, String type) {
+	private String createId(int processedDocument, int matches, String type, String tag) {
 		
-		return processedDocument + "-" + matches + "-" + type;
+		return processedDocument + "-" + matches + "-" + type + "-" + tag;
 		
 	}
 

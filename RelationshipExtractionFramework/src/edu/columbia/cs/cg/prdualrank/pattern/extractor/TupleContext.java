@@ -56,4 +56,15 @@ public class TupleContext {
 		return ngrams;
 	}
 
+	public String toString(){
+		
+		String ret = "";
+		
+		for (String[] word : words) {
+			ret = ret + " " + Arrays.toString(word);
+		}
+		
+		return ret;
+	}
+	
 }

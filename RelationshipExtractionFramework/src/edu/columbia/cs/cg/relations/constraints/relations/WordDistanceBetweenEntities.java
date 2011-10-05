@@ -2,7 +2,9 @@ package edu.columbia.cs.cg.relations.constraints.relations;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
@@ -14,10 +16,15 @@ public class WordDistanceBetweenEntities implements RelationshipConstraint {
 
 	private Tokenizer tokenizer;
 	private int Maxdistance;
+	private Map<Document, Map<Integer, Integer>> cached;
+	private boolean activateCache;
 
-	public WordDistanceBetweenEntities(Tokenizer tokenizer, int Maxdistance){
+	public WordDistanceBetweenEntities(Tokenizer tokenizer, int Maxdistance, boolean activateCache){
 		this.tokenizer = tokenizer;
 		this.Maxdistance = Maxdistance;
+		this.activateCache = activateCache;
+		if (activateCache)
+			cached = new HashMap<Document,Map<Integer,Integer>>();
 	}
 	
 	@Override
@@ -51,21 +58,65 @@ public class WordDistanceBetweenEntities implements RelationshipConstraint {
 			int firstEnd = entities.get(i).getOffset() + entities.get(i).getLength();
 			
 			int secondStart = entities.get(i+1).getOffset();
-			
+			Integer minNotAccepted = null;
+			if (activateCache){
+				minNotAccepted = getCatched(document,firstEnd);
+				
+				if (minNotAccepted != null){
+					if (secondStart > minNotAccepted)
+						return false;
+				}
+			}
+				
 			if (firstEnd < secondStart){
 				
 				String betweenText = document.getSubstring(firstEnd, secondStart - firstEnd);
 				
 				Span[] spans = tokenizer.tokenize(betweenText);
 				
-				if (spans.length > Maxdistance)
+				if (spans.length > Maxdistance){
+					
+					if (activateCache){
+						if (minNotAccepted == null){
+							minNotAccepted = secondStart;
+						}else{
+							if (minNotAccepted>secondStart){
+								minNotAccepted = secondStart;
+							}
+						}
+						
+						save(document,firstEnd,minNotAccepted);
+					}
+					
 					return false;
-				
+				}
 			}
 					
 		}
 		
 		return true;
+	}
+
+	private void save(Document document, int firstEnd, Integer minNotAccepted) {
+		
+		Map<Integer,Integer> map = cached.get(document);
+		
+		map.put(firstEnd, minNotAccepted);
+		
+	}
+
+	private Integer getCatched(Document document, int firstEnd) {
+		
+		Map<Integer,Integer> map = cached.get(document);
+		
+		if (map == null){
+			map = new HashMap<Integer, Integer>();
+			cached.put(document, map);
+			return null;
+		}
+		
+		return map.get(firstEnd);
+		
 	}
 
 }

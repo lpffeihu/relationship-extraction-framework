@@ -126,6 +126,8 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 						
 		}
 		
+		System.out.println(searchPatterns.toString());
+		
 		return searchPatterns;
 		
 	}

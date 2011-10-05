@@ -1,9 +1,17 @@
 package edu.columbia.cs.cg.prdualrank.searchengine;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import com.davidsoergel.conja.Function;
+import com.davidsoergel.conja.Parallel;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.loaders.DocumentLoader;
@@ -13,6 +21,8 @@ import edu.columbia.cs.cg.prdualrank.searchengine.downloader.Downloader;
 
 public abstract class WebBasedSearchEngine implements SearchEngine {
 
+	protected static final int ATTEMPTS = 3;
+
 	private RawDocumentLoader loader;
 
 	public WebBasedSearchEngine(RawDocumentLoader loader){
@@ -21,6 +31,8 @@ public abstract class WebBasedSearchEngine implements SearchEngine {
 	
 	@Override
 	public List<Document> search(String query, int k_seed) {
+		
+		System.out.println("searching: " + query);
 		
 		int start = 0;
 		
@@ -32,7 +44,7 @@ public abstract class WebBasedSearchEngine implements SearchEngine {
 			
 			int count = getNumberOfResultsPerThread();
 			
-			executeQuery(threadPool,getRunnableQueryExecutor(query,start,count,documentResults));
+			executeQuery(threadPool,getRunnableQueryExecutor(query,start,Math.min(count, k_seed),documentResults));
 			
 			start += count;
 		
@@ -49,41 +61,89 @@ public abstract class WebBasedSearchEngine implements SearchEngine {
 			
 		}
 		
-		String[] documentsContent = new String[k_seed];
-		
-		List<Thread> downloadersPool = new ArrayList<Thread>();
+		List<URL> urls = new ArrayList<URL>();
 		
 		for (int i = 0; i < documentResults.length; i++) {
 			
-			Thread t = new Thread(new Downloader(documentResults[i],i,documentsContent));
-			
-			t.start();
-			
-			downloadersPool.add(t);
+			if (documentResults[i] != null)
+				urls.add(documentResults[i]);
 			
 		}
 		
-		for (Thread thread : downloadersPool) {
+		System.out.println(urls.size());
+		
+		Map<URL,String> urlContentMap = Parallel.map(urls, new Function<URL, String>() {
+
+			@Override
+			public String apply(URL url) {
+				
+				System.out.print(".");
+				
+				int attempt = 0;
+				
+				while (attempt < ATTEMPTS){
+				
+					BufferedReader br = null;
+					
+					try {
+						
+						br = new BufferedReader(new InputStreamReader(url.openStream()));
+								
+						StringBuilder sb = new StringBuilder();
+							
+						String fileLine = br.readLine();
+						
+						if (fileLine != null)
+							sb.append(fileLine);
+						
+						while ((fileLine = br.readLine())!=null){
+							
+							sb.append("\n" + fileLine);
+							
+						}
+
+						return sb.toString();
+						
+					} catch (MalformedURLException e) {
+						
+						//not do anything
+						
+					} catch (IOException e) {
 			
-			try {
-				thread.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+						//not do anything
+						
+					}
+					
+					attempt++;
+				}
+
+				return "";
+
 			}
-			
-		}
+
+		});
 		
 		List<Document> ret = new ArrayList<Document>();
 		
-		for (String document : documentsContent) {
+		System.out.print("\nLoading");
+		
+		for (URL url : urls) {
 			
-			if (document != null)
-				ret.add(loader.load(document));
+			String document = urlContentMap.get(url);
 			
+			System.out.print(".");
+			
+			if (!document.isEmpty()){
+				
+				Document d = loader.load(document);
+				d.setPath(url.getPath());
+				ret.add(d);
+			}
 		}
 		
+		System.out.println("");
 		return ret;
+
 	}
 
 	private void executeQuery(List<Thread> threadPool,Runnable runnableQueryExecutor) {

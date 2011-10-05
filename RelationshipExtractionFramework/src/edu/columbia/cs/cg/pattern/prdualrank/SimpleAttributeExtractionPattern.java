@@ -1,6 +1,7 @@
 package edu.columbia.cs.cg.pattern.prdualrank;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -81,4 +82,25 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 		return true;
 	}
 
+	@Override
+	protected int generateHashCode() {
+		
+		int hashCode = 1;
+		
+		hashCode = 31*hashCode + entityType.hashCode();
+	
+		hashCode = 31*hashCode + Arrays.hashCode(wordsBefore);
+		
+		hashCode = 31*hashCode + Arrays.hashCode(wordsAfter);
+		
+		return hashCode;
+	}
+
+	@Override
+	public String toString() {
+		
+		return Arrays.toString(wordsBefore) + entityType + Arrays.toString(wordsAfter);
+		
+		
+	}
 }

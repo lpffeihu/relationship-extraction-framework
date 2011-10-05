@@ -39,6 +39,9 @@ public abstract class EntityTagger extends Tagger {
 			return id;
 		}
 
+		public String toString(){
+			return value + "-" + offset;
+		}
 	}
 	
 	public EntityTagger(String tag) {

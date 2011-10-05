@@ -12,12 +12,16 @@ public class InstanceBasedTokenizedFactory implements TokenizerFactory{
 		private String str;
 		private Span[] spans;
 		private int currentIndex;
+		private int lastokenstart;
+		private int lasttokenend;
 
 		public SpanBasedTokenizer(String str, Span[] spans) {
 			
 			this.str = str;
 			this.spans = spans;
 			this.currentIndex = 0;
+			this.lastokenstart = -1;
+			this.lasttokenend = -1;
 		}
 
 		@Override
@@ -25,7 +29,10 @@ public class InstanceBasedTokenizedFactory implements TokenizerFactory{
 			
 			if (currentIndex < spans.length){
 			
-				String ret = str.substring(spans[currentIndex].getStart(), spans[currentIndex].getEnd());
+				lastokenstart = spans[currentIndex].getStart();
+				lasttokenend = spans[currentIndex].getEnd();
+				
+				String ret = str.substring(lastokenstart, lasttokenend);
 				currentIndex++;
 				return ret;
 				
@@ -34,6 +41,14 @@ public class InstanceBasedTokenizedFactory implements TokenizerFactory{
 			return null;
 			
 		}
+		
+	    public int lastTokenStartPosition() {
+	        return lastokenstart;
+	    }
+
+	    public int lastTokenEndPosition() {
+	        return lasttokenend;
+	    }
 		
 	}
 	
