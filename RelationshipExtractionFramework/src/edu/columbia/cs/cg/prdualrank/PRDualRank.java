@@ -129,7 +129,7 @@ public class PRDualRank implements Engine{
 
 				TokenizedDocument tokenizedDocument = new TokenizedDocument(document, tokenizer);
 				
-				List<Relationship> mathchingRelationships = getMatchingRelationships(document,relationship);
+				List<Relationship> mathchingRelationships = getMatchingRelationships(tokenizedDocument,relationship);
 				
 				updateMap(Ps,spe.extractPatterns(tokenizedDocument,relationship,mathchingRelationships));
 				
@@ -205,7 +205,7 @@ public class PRDualRank implements Engine{
 		
 	}
 
-	private List<Relationship> getMatchingRelationships(Document document,
+	private List<Relationship> getMatchingRelationships(TokenizedDocument document,
 			Relationship relationship) {
 		
 		Set<Entity> entities = new HashSet<Entity>(document.getEntities());
@@ -250,6 +250,8 @@ public class PRDualRank implements Engine{
 			
 			}
 
+			System.out.println("PRDUALRANK: checking constraint" );
+			
 			if (relationship.getRelationshipType().getRelationshipConstraint().checkConstraint(newRelationship)){
 				
 				matchingTuples.add(newRelationship);

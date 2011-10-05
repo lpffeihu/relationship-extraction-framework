@@ -84,7 +84,7 @@ public class PRDualRankTest {
 		EntityTypeConstraint capitalConstraint = new EntityTypeConstraint(locationType);
 		rType.setConstraints(capitalConstraint, capitalRole);
 		
-		RelationshipConstraint constraint = new WordDistanceBetweenEntities(tokenizer, span,true);
+		RelationshipConstraint constraint = new WordDistanceBetweenEntities(tokenizer, span);
 		
 		rType.setConstraints(constraint);
 		
@@ -114,7 +114,7 @@ public class PRDualRankTest {
 		RawDocumentLoader loader = new RawDocumentLoader(relationshipTypes, preprocessor , docSegmentator, countryDictionaryTagger, capitalDictionaryTagger);
 		
 		//Generation of queries based on Concatenation
-		QueryGenerator qg = new ConcatQueryGenerator();
+		QueryGenerator<String> qg = new ConcatQueryGenerator();
 
 		//Bing Search Engine
 		SearchEngine se = new BingSearchEngine(loader);

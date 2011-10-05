@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
@@ -16,21 +17,17 @@ public class WordDistanceBetweenEntities implements RelationshipConstraint {
 
 	private Tokenizer tokenizer;
 	private int Maxdistance;
-	private Map<Document, Map<Integer, Integer>> cached;
 	private boolean activateCache;
 
-	public WordDistanceBetweenEntities(Tokenizer tokenizer, int Maxdistance, boolean activateCache){
+	public WordDistanceBetweenEntities(Tokenizer tokenizer, int Maxdistance){
 		this.tokenizer = tokenizer;
 		this.Maxdistance = Maxdistance;
-		this.activateCache = activateCache;
-		if (activateCache)
-			cached = new HashMap<Document,Map<Integer,Integer>>();
 	}
 	
 	@Override
 	public boolean checkConstraint(Relationship rel) {
 		
-		Document document = null;
+		TokenizedDocument document = null;
 		
 		List<Entity> entities = new ArrayList<Entity>();
 		
@@ -42,7 +39,9 @@ public class WordDistanceBetweenEntities implements RelationshipConstraint {
 				
 				if (document == null || document.equals(e.getDocument())){
 					entities.add(e);
-					document = e.getDocument();
+					
+					//TODO avoid the cast
+					document = (TokenizedDocument)e.getDocument();
 				}else{
 					return false;
 				}
@@ -55,38 +54,17 @@ public class WordDistanceBetweenEntities implements RelationshipConstraint {
 		
 		for (int i = 0; i < entities.size()-1; i++) {
 			
-			int firstEnd = entities.get(i).getOffset() + entities.get(i).getLength();
+			Entity e1 = entities.get(i);
 			
-			int secondStart = entities.get(i+1).getOffset();
-			Integer minNotAccepted = null;
-			if (activateCache){
-				minNotAccepted = getCatched(document,firstEnd);
+			Entity e2 = entities.get(i+1);
+			
+			Span se1 = document.getEntitySpan(e1);
+			
+			Span se2 = document.getEntitySpan(e2);
+			
+			if (se1.getEnd() < se2.getStart()){
 				
-				if (minNotAccepted != null){
-					if (secondStart > minNotAccepted)
-						return false;
-				}
-			}
-				
-			if (firstEnd < secondStart){
-				
-				String betweenText = document.getSubstring(firstEnd, secondStart - firstEnd);
-				
-				Span[] spans = tokenizer.tokenize(betweenText);
-				
-				if (spans.length > Maxdistance){
-					
-					if (activateCache){
-						if (minNotAccepted == null){
-							minNotAccepted = secondStart;
-						}else{
-							if (minNotAccepted>secondStart){
-								minNotAccepted = secondStart;
-							}
-						}
-						
-						save(document,firstEnd,minNotAccepted);
-					}
+				if (se2.getStart() - se1.getEnd() - 1 > Maxdistance){
 					
 					return false;
 				}
@@ -95,28 +73,6 @@ public class WordDistanceBetweenEntities implements RelationshipConstraint {
 		}
 		
 		return true;
-	}
-
-	private void save(Document document, int firstEnd, Integer minNotAccepted) {
-		
-		Map<Integer,Integer> map = cached.get(document);
-		
-		map.put(firstEnd, minNotAccepted);
-		
-	}
-
-	private Integer getCatched(Document document, int firstEnd) {
-		
-		Map<Integer,Integer> map = cached.get(document);
-		
-		if (map == null){
-			map = new HashMap<Integer, Integer>();
-			cached.put(document, map);
-			return null;
-		}
-		
-		return map.get(firstEnd);
-		
 	}
 
 }

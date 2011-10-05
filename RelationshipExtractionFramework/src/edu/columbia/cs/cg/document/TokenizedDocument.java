@@ -1,7 +1,9 @@
 package edu.columbia.cs.cg.document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
 import edu.columbia.cs.cg.relations.Entity;
@@ -12,6 +14,8 @@ public class TokenizedDocument extends Document {
 	private Span[] detectedSpans;
 	
 	private String[] detectedString;
+
+	private Map<Entity, Span> entitySpanTable;
 	
 	public TokenizedDocument(Document d, Tokenizer tokenizer) {
 		
@@ -23,6 +27,15 @@ public class TokenizedDocument extends Document {
 		
 		detectedString = generateTokenStrings(detectedSpans,text);
 		
+		entitySpanTable = new HashMap<Entity, Span>();
+		
+		//TODO I don't like this...
+		
+		for (Entity entity : d.getEntities()) {
+			
+			entity.setDocument(this);
+			
+		}
 	}
 
 	private String getString(List<Segment> plainText) {
@@ -52,13 +65,28 @@ public class TokenizedDocument extends Document {
 		return tokenStrings;
 	}
 
+	/**
+	 * Returns the indexes in the tokenization.
+	 * @param entity
+	 * @return
+	 */
+	
 	public Span getEntitySpan(Entity entity) {
+		
+		Span ret = entitySpanTable.get(entity);
+		
+		if (ret!=null)
+			return ret;
 		
 		int firstIndex = binarySearch(detectedSpans,entity.getOffset(),0,detectedSpans.length-1);
 		
 		int endIndex = binarySearch(detectedSpans,entity.getOffset() + entity.getLength(), firstIndex,detectedSpans.length-1);
 		
-		return new Span(firstIndex,endIndex);
+		ret = new Span(firstIndex,endIndex);
+		
+		entitySpanTable.put(entity,ret);
+		
+		return ret;
 		
 	}
 
