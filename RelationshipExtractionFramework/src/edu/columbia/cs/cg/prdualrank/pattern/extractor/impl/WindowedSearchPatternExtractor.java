@@ -1,5 +1,6 @@
 package edu.columbia.cs.cg.prdualrank.pattern.extractor.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +20,7 @@ import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 import edu.columbia.cs.utils.Span;
+import edu.columbia.cs.utils.Words;
 
 public class WindowedSearchPatternExtractor<T extends Document> implements PatternExtractor<Document> {
 
@@ -97,8 +99,15 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 		Set<String[]> ngrams = new HashSet<String[]>();
 		
 		for (TupleContext tupleContext : contexts) {
+						
+			Set<String[]> nGrams = tupleContext.generateNgrams(ngram);
 			
-			ngrams.addAll(tupleContext.generateNgrams(ngram));
+			for (String[] nGram : nGrams) {
+				
+				if (SearchPattern.isPatternizable(nGram))
+					ngrams.add(nGram);
+				
+			}
 			
 		}
 		
@@ -114,9 +123,13 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 			
 			for (Map<Integer, String[]> patternsWord : patternwords) {
 				
-				SearchPattern<Document,TokenizedDocument> sp = new SearchPattern<Document,TokenizedDocument>(patternsWord.values()); 
+				List<String[]> words = new ArrayList<String[]>(patternsWord.values());
+				
+				SearchPattern<Document,TokenizedDocument> sp = new SearchPattern<Document,TokenizedDocument>(words); 
 				
 				if (sp.isValid()){
+					
+					System.out.println("WSPE: " + sp.toString());
 					
 					updateMap(searchPatterns,sp);
 					
@@ -125,8 +138,6 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 			}
 						
 		}
-		
-		System.out.println(searchPatterns.toString());
 		
 		return searchPatterns;
 		
@@ -220,4 +231,23 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 		
 	}
 
+	public static void main(String[] args) {
+		
+		Words.initialize(null, null);
+		
+		String[] str1 = new String[]{"Chinese", "Basketball", "Association"};
+		String[] str2 = new String[]{"Chinese", "Basketball", "Association"};
+						
+		List<String[]> phrases = new ArrayList<String[]>();
+		
+		phrases.add(str1);
+		phrases.add(str2);
+		
+		SearchPattern<Document, TokenizedDocument> sp1 = new SearchPattern<Document, TokenizedDocument>(phrases);
+		
+		System.out.println(sp1.isValid());
+		
+		System.out.println(sp1.toString());
+	}
+	
 }

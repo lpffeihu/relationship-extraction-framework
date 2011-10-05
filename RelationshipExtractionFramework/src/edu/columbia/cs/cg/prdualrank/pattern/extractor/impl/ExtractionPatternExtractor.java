@@ -56,8 +56,6 @@ public class ExtractionPatternExtractor<T extends Relationship> implements Patte
 			
 		}
 		
-		System.out.println(patterns.toString());
-		
 		return patterns;
 		
 	}

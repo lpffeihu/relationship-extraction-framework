@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.search.Query;
+
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.document.loaders.impl.RawDocumentLoader;
@@ -23,6 +26,7 @@ import edu.columbia.cs.cg.prdualrank.searchengine.SearchEngine;
 import edu.columbia.cs.cg.prdualrank.searchengine.impl.BingSearchEngine;
 import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator;
 import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl.ConcatQueryGenerator;
+import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl.LuceneQueryGenerator;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.cg.relations.RelationshipType;
@@ -35,6 +39,7 @@ import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.og.structure.impl.RelationOperableStructure;
 import edu.columbia.cs.utils.Dictionary;
+import edu.columbia.cs.utils.Words;
 
 
 public class PRDualRankTest {
@@ -122,8 +127,18 @@ public class PRDualRankTest {
 		double betasearch = 1.0;
 		RankFunction<Pattern<Document, TokenizedDocument>> searchpatternRankFunction = new FScoreBasedRankFunction<Pattern<Document,TokenizedDocument>>(betasearch);
 				
+		Words.initialize(new File("data/stopWords.txt"), null);
+		
+		//Index And Search.
+		
+		Set<String> stopW = Words.getStopWords();
+		
+		Analyzer myAnalyzer = new TokenizerBasedAnalyzer(tokenizer,stopW);
+		
+		QueryGenerator<Query> forIndexQueryGenerator = new LuceneQueryGenerator();
+		
 		PRDualRank prDualRank = new PRDualRank(se, qg, k_seed, ngram, window, minsupport, k_nolabel, iterations, numberOfPhrases, 
-				extractionPatternLenght, searchpatternRankFunction, extractpatternRankFunction, tupleRankFunction, tokenizer, rType);
+				extractionPatternLenght, searchpatternRankFunction, extractpatternRankFunction, tupleRankFunction, tokenizer, rType, myAnalyzer,forIndexQueryGenerator);
 	
 		List<OperableStructure> seeds = new ArrayList<OperableStructure>();
 	

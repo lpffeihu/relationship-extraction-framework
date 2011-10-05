@@ -1,5 +1,6 @@
 package edu.columbia.cs.cg.prdualrank;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -12,6 +13,15 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.store.LockObtainFailedException;
+import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.Version;
+
 import edu.columbia.cs.api.PatternBasedRelationshipExtractor;
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.TokenizedDocument;
@@ -20,6 +30,7 @@ import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
 import edu.columbia.cs.cg.prdualrank.graph.generator.ExtractionGraphGenerator;
 import edu.columbia.cs.cg.prdualrank.graph.generator.SearchGraphGenerator;
+import edu.columbia.cs.cg.prdualrank.index.Index;
 import edu.columbia.cs.cg.prdualrank.inference.InferencePRDualRank;
 import edu.columbia.cs.cg.prdualrank.inference.convergence.NumberOfIterationsConvergence;
 import edu.columbia.cs.cg.prdualrank.inference.quest.MapBasedQuestCalculator;
@@ -40,11 +51,12 @@ import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.og.structure.impl.RelationOperableStructure;
 import edu.columbia.cs.utils.MegaCartesianProduct;
+import edu.columbia.cs.utils.Words;
 
 public class PRDualRank implements Engine{
 
 	private SearchEngine se;
-	private QueryGenerator qg;
+	private QueryGenerator<String> qg;
 	private int k_seed;
 	private int span;
 	private int ngram;
@@ -59,11 +71,13 @@ public class PRDualRank implements Engine{
 	private int extractionPatternLenght;
 	private Tokenizer tokenizer;
 	private RelationshipType rType;
+	private Analyzer myAnalyzer;
+	private QueryGenerator<Query> forIndexQueryGenerator;
 	
-	public PRDualRank(SearchEngine se, QueryGenerator qg, int k_seed, int ngram, int window, int minsupport,
+	public PRDualRank(SearchEngine se, QueryGenerator<String> qg, int k_seed, int ngram, int window, int minsupport,
 			int k_nolabel, int iterations, int numberOfPhrases, int extractionPatternLenght, RankFunction<Pattern<Document,TokenizedDocument>> searchpatternRankFunction,
 			RankFunction<Pattern<Relationship,TokenizedDocument>> extractpatternRankFunction, RankFunction<Relationship> tupleRankFunction, 
-			Tokenizer tokenizer, RelationshipType rType){
+			Tokenizer tokenizer, RelationshipType rType, Analyzer myAnalyzer, QueryGenerator<Query> forIndexQueryGenerator){
 		this.se = se;
 		this.qg = qg;
 		this.k_seed = k_seed;
@@ -79,6 +93,8 @@ public class PRDualRank implements Engine{
 		this.extractionPatternLenght = extractionPatternLenght;
 		this.tokenizer = tokenizer;
 		this.rType = rType;
+		this.myAnalyzer = myAnalyzer;
+		this.forIndexQueryGenerator = forIndexQueryGenerator;
 		//span is for the relationship type. that comes in the List<OperableStructure>
 	}
 	
@@ -153,6 +169,8 @@ public class PRDualRank implements Engine{
 		
 		Set<TokenizedDocument> documents = new HashSet<TokenizedDocument>();
 		
+		Index index = new Index(myAnalyzer,true,Words.getStopWords());
+				
 		for (Relationship relationship : topTuples) {
 			
 			List<Document> searchResults = se.search(qg.generateQuery(relationship), k_seed);
@@ -162,12 +180,16 @@ public class PRDualRank implements Engine{
 				TokenizedDocument tokenizedDocument = new TokenizedDocument(document, tokenizer);
 				
 				documents.add(tokenizedDocument);
+	
+				index.addDocument(tokenizedDocument);
 				
 			}
 			
 		}
 		
-		PRDualRankGraph<Document,TokenizedDocument> Gs = new SearchGraphGenerator<Document,TokenizedDocument>(rType).generateGraph(topTuples,searchPatterns,documents);
+		index.close();
+		
+		PRDualRankGraph<Document,TokenizedDocument> Gs = new SearchGraphGenerator<Document,TokenizedDocument>(rType,index,forIndexQueryGenerator).generateGraph(topTuples,searchPatterns,documents);
 		
 		PRDualRankGraph<Relationship,TokenizedDocument> Ge = new ExtractionGraphGenerator<Relationship,TokenizedDocument>().generateGraph(topTuples,extractPatterns,documents);
 				

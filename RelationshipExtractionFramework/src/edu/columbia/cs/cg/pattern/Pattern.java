@@ -5,6 +5,7 @@ import java.util.List;
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.pattern.matchable.Matchable;
+import edu.columbia.cs.cg.pattern.prdualrank.SearchPattern;
 
 public abstract class Pattern<T extends Matchable,D extends Document> {
 
@@ -22,4 +23,10 @@ public abstract class Pattern<T extends Matchable,D extends Document> {
 	}
 
 	protected abstract int generateHashCode();
+	
+	public boolean equals(Object obj) {
+		Pattern<T, D> other = (Pattern<T, D>) obj;
+		return this.hashCode() == other.hashCode();
+	}
+
 }

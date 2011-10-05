@@ -236,4 +236,14 @@ public class Document implements Serializable, Writable, Matchable {
 	public String getWritableValue() {
 		return fileName;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj instanceof Document){
+			Document other = (Document)obj;
+			return path.equals(other.path) && fileName.equals(other.fileName);
+		}
+		return false;
+	}
 }

@@ -16,18 +16,14 @@ public abstract class GraphGenerator<T extends Matchable,D extends Document> {
 		
 		PRDualRankGraph<T,D> ret = new PRDualRankGraph<T,D>();
 		
-		for (D document : documents) {
+		for (Pattern<T,D> pattern : patterns) {
 			
-			for (Pattern<T,D> pattern : patterns) {
+			Map<Relationship, Integer> tuples = findTuples(documents,pattern);
+			
+			for (Relationship tuple : tuples.keySet()) {
 				
-				Map<Relationship, Integer> tuples = findTuples(document,pattern);
-				
-				for (Relationship tuple : tuples.keySet()) {
-					
-					if (topTuples.contains(tuple))
-						ret.addContext(pattern,tuple,tuples.get(tuple));
-					
-				}
+				if (topTuples.contains(tuple))
+					ret.addContext(pattern,tuple,tuples.get(tuple));
 				
 			}
 			
@@ -37,7 +33,7 @@ public abstract class GraphGenerator<T extends Matchable,D extends Document> {
 		
 	}
 
-	protected abstract Map<Relationship, Integer> findTuples(D document,
+	protected abstract Map<Relationship, Integer> findTuples(Set<D> documents,
 			Pattern<T,D> pattern);
 	
 }

@@ -8,9 +8,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.lucene.search.Query;
+
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.pattern.Pattern;
+import edu.columbia.cs.cg.pattern.prdualrank.SearchPattern;
+import edu.columbia.cs.cg.prdualrank.index.Index;
+import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.cg.relations.RelationshipType;
@@ -20,20 +25,28 @@ import edu.columbia.cs.utils.MegaCartesianProduct;
 public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument> extends GraphGenerator<Document,TokenizedDocument> {
 
 	private RelationshipType rType;
+	private Index index;
+	private QueryGenerator<Query> queryGenerator;
 	
-	public SearchGraphGenerator(RelationshipType rType){
+	public SearchGraphGenerator(RelationshipType rType, Index index, QueryGenerator<Query> queryGenerator){
 		this.rType = rType;
+		this.index = index;
+		this.queryGenerator = queryGenerator;
 	}
 	@Override
-	protected Map<Relationship, Integer> findTuples(TokenizedDocument document,
-			Pattern<Document,TokenizedDocument> pattern) {
+	protected Map<Relationship, Integer> findTuples(Set<TokenizedDocument> documents,
+			Pattern<Document,TokenizedDocument> pattern){
 	
-		List<Document> matchedDocs = pattern.findMatch(document);
+		System.out.println(pattern.toString());
+		
+		List<TokenizedDocument> matchedDocs = index.search(queryGenerator.generateQuery((SearchPattern<Document, TokenizedDocument>)pattern),documents.size());
 	
+		//matchedDocs are part of documents
+		
 		Map<Relationship,Integer> tupleMap = new HashMap<Relationship, Integer>();
 		
-		if (!matchedDocs.isEmpty()){
-			
+		for (TokenizedDocument document : matchedDocs) {
+
 			List<Relationship> tuples = retrievePotentialTuples(document,rType);
 			
 			for (Relationship relationship : tuples) {

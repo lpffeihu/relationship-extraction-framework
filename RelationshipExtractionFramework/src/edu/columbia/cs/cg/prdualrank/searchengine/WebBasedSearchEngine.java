@@ -137,8 +137,10 @@ public abstract class WebBasedSearchEngine implements SearchEngine {
 				
 				Document d = loader.load(document);
 				d.setPath(url.getPath());
+				d.setFilename(url.getFile());
 				ret.add(d);
 			}
+			
 		}
 		
 		System.out.println("");

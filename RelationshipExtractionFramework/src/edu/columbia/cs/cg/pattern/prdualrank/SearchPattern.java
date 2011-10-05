@@ -7,36 +7,40 @@ import java.util.List;
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.pattern.Pattern;
+import edu.columbia.cs.utils.Words;
 
 public class SearchPattern<T extends Document, D extends TokenizedDocument> extends Pattern<Document,TokenizedDocument> {
 
-	private Collection<String[]> phrases;
+	private List<String[]> phrases;
 
-	public SearchPattern(Collection<String[]> phrases) {
+	public SearchPattern(List<String[]> phrases) {
 		this.phrases = phrases;
 		
 	}
 
 	public boolean isValid() {
 		
-		for (String[] phrase1 : phrases) {
+		for (String[] phrase : phrases) {
 		
-			if (!isSearchable(phrase1))
+			if (!isSearchable(phrase))
 				return false;
 			
-			String stringPhrase1 = getString(phrase1);
-			
-			for (String[] phrase2 : phrases) {
-				
-				if (phrase1 != phrase2){
-					
-					String stringPhrase2 = getString(phrase2);
+		}
+		
+		for (int i = 0;i < phrases.size()-1;i++) {
+		
+			String stringPhrase1 = getString(phrases.get(i));
 
-					if (stringPhrase1.contains(stringPhrase2))
-						return false;
-					
-				}
+			for (int j=i+1; j<phrases.size();j++) {
 				
+				if (Arrays.equals(phrases.get(i), phrases.get(j)))
+					return false;
+					
+				String stringPhrase2 = getString(phrases.get(j));
+
+				if (stringPhrase1.contains(stringPhrase2) || stringPhrase2.contains(stringPhrase1))
+					return false;
+					
 			}
 			
 		}
@@ -45,7 +49,7 @@ public class SearchPattern<T extends Document, D extends TokenizedDocument> exte
 		return true;
 	}
 
-	private boolean isSearchable(String[] phrase) {
+	private static boolean isSearchable(String[] phrase) {
 		
 		for (int i = 0; i < phrase.length; i++) {
 			
@@ -54,14 +58,19 @@ public class SearchPattern<T extends Document, D extends TokenizedDocument> exte
 			
 		}
 		
+		for (int i = 0; i < phrase.length-1; i++) {
+			for (int j = i+1; j < phrase.length; j++) {
+				if (phrase[i].equals(phrase[j]))
+					return false;
+			}
+		}
+		
 		return true;
 		
 	}
 
-	private boolean isSearchable(String word) {
-		// TODO see if a word is searchable or not. Word at this time, can be any symbol or word.
-		// Makes sense to ask for NO stopwords;
-		return false;
+	private static boolean isSearchable(String word) {
+		return Words.isSearchable(word);
 	}
 
 	private String getString(String[] phrase) {
@@ -80,7 +89,7 @@ public class SearchPattern<T extends Document, D extends TokenizedDocument> exte
 			
 		}
 		
-		return ret;
+		return ret.toLowerCase();
 		
 	}
 
@@ -104,7 +113,21 @@ public class SearchPattern<T extends Document, D extends TokenizedDocument> exte
 	}
 	
 	public String toString() {
-		return phrases.toString();
+		
+		String ret = "";
+		
+		for (String[] phrase : phrases) {
+			ret = ret + " - " + Arrays.toString(phrase);
+		}
+		
+		return ret;
 	}
 
+	public static boolean isPatternizable(String[] nGram) {
+		return isSearchable(nGram);
+	}
+
+	public List<String[]> getNGrams(){
+		return phrases;
+	}
 }

@@ -82,5 +82,11 @@ public class TokenizedDocument extends Document {
 		return detectedString;
 	
 	}
+	
+	public Span[] getTokenizedSpans() {
+		
+		return detectedSpans;
+	
+	}
 
 }
