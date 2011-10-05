@@ -112,8 +112,16 @@ public class SearchPattern<T extends Document, D extends TokenizedDocument> exte
 		
 	}
 	
-	public String toString() {
-		
+	public static boolean isPatternizable(String[] nGram) {
+		return isSearchable(nGram);
+	}
+
+	public List<String[]> getNGrams(){
+		return phrases;
+	}
+
+	@Override
+	protected String generateToString() {
 		String ret = "";
 		
 		for (String[] phrase : phrases) {
@@ -121,13 +129,5 @@ public class SearchPattern<T extends Document, D extends TokenizedDocument> exte
 		}
 		
 		return ret;
-	}
-
-	public static boolean isPatternizable(String[] nGram) {
-		return isSearchable(nGram);
-	}
-
-	public List<String[]> getNGrams(){
-		return phrases;
 	}
 }

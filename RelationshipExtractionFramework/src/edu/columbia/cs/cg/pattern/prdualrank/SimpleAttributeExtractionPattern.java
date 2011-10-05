@@ -96,11 +96,10 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 		return hashCode;
 	}
 
+
 	@Override
-	public String toString() {
-		
+	protected String generateToString() {
 		return Arrays.toString(wordsBefore) + entityType + Arrays.toString(wordsAfter);
-		
 		
 	}
 }

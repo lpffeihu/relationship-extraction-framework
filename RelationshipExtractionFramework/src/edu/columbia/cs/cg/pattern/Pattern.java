@@ -10,6 +10,7 @@ import edu.columbia.cs.cg.pattern.prdualrank.SearchPattern;
 public abstract class Pattern<T extends Matchable,D extends Document> {
 
 	private int hashCode = -1;
+	private String string = null;
 	
 	public abstract List<T> findMatch(D d);
 	
@@ -29,4 +30,15 @@ public abstract class Pattern<T extends Matchable,D extends Document> {
 		return this.hashCode() == other.hashCode();
 	}
 
+	@Override
+	public String toString() {
+		
+		if (string == null){
+			string = generateToString();
+		}
+		return string;
+		
+	}
+
+	protected abstract String generateToString();
 }

@@ -129,8 +129,6 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 				
 				if (sp.isValid()){
 					
-					System.out.println("WSPE: " + sp.toString());
-					
 					updateMap(searchPatterns,sp);
 					
 				}

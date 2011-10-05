@@ -117,7 +117,8 @@ public class ExtractionPattern<T extends Relationship, D extends TokenizedDocume
 		
 	}
 
-	public String toString(){
+	@Override
+	protected String generateToString() {
 		return simpleAttributeMap.toString();
 	}
 }

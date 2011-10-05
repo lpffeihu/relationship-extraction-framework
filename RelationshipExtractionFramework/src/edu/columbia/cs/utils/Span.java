@@ -56,4 +56,8 @@ public class Span implements Serializable,Comparable<Span> {
 	public boolean contains(Span s) {
 		return start <= s.getStart() && s.getEnd() <= end;
 	}
+	
+	public String toString(){
+		return start + "-" + end;
+	}
 }

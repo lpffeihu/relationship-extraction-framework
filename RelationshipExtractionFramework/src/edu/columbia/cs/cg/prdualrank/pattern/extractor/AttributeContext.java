@@ -25,6 +25,7 @@ public class AttributeContext {
 	private HashMap<String, String[]> previousWords;
 	private HashMap<String, String[]> postWords;
 	private RelationshipType rType;
+	private int hashCode = -1;
 
 	public AttributeContext(RelationshipType relationshipType){
 
@@ -56,6 +57,8 @@ public class AttributeContext {
 			patterns.put(role,generateCombinations(role,size,previousWords.get(role),postWords.get(role)));
 			
 		}
+		
+		
 		
 		List<Map<String, SimpleAttributeExtractionPattern<Entity, TokenizedDocument>>> combinations = MegaCartesianProduct.generateAllPossibilities(patterns);
 		
@@ -106,4 +109,37 @@ public class AttributeContext {
 		
 	}
 
+	@Override
+	public String toString() {
+		
+		return previousWords.toString() + " - " + entities.toString() + " - "+ postWords.toString();
+		
+	}
+	
+	@Override
+	public int hashCode() {
+		
+		if (hashCode  == -1){
+			
+			hashCode = generateHashCode();
+			
+		}
+		return hashCode;
+		
+	}
+
+	private int generateHashCode() {
+		
+		int hash = 1;
+		
+		hash = 31*hash + entities.hashCode();
+		
+		hash = 31*hash + roles.hashCode();
+		
+		hash = 31*hash + previousWords.hashCode();
+		
+		hash = 31*hash + postWords.hashCode();
+		
+		return hash;
+	}
 }

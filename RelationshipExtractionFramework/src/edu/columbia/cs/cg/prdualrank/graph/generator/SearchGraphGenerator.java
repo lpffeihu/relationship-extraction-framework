@@ -37,8 +37,6 @@ public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument
 	protected Map<Relationship, Integer> findTuples(Set<TokenizedDocument> documents,
 			Pattern<Document,TokenizedDocument> pattern){
 	
-		System.out.println(pattern.toString());
-		
 		List<TokenizedDocument> matchedDocs = index.search(queryGenerator.generateQuery((SearchPattern<Document, TokenizedDocument>)pattern),documents.size());
 	
 		//matchedDocs are part of documents

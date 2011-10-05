@@ -138,15 +138,15 @@ public class PRDualRankTest {
 		QueryGenerator<Query> forIndexQueryGenerator = new LuceneQueryGenerator();
 		
 		PRDualRank prDualRank = new PRDualRank(se, qg, k_seed, ngram, window, minsupport, k_nolabel, iterations, numberOfPhrases, 
-				extractionPatternLenght, searchpatternRankFunction, extractpatternRankFunction, tupleRankFunction, tokenizer, rType, myAnalyzer,forIndexQueryGenerator);
+				extractionPatternLenght, searchpatternRankFunction, extractpatternRankFunction, tupleRankFunction, tokenizer, rType, myAnalyzer,forIndexQueryGenerator,span);
 	
 		List<OperableStructure> seeds = new ArrayList<OperableStructure>();
 	
 		seeds.add(generateOperableStructure(rType,"1",locationType,countryRole,"Canada",capitalRole,"Ottawa"));
-		seeds.add(generateOperableStructure(rType,"2",locationType,countryRole,"China",capitalRole,"Beijing"));
-		seeds.add(generateOperableStructure(rType,"3",locationType,countryRole,"Bulgaria",capitalRole,"Sofia"));
-		seeds.add(generateOperableStructure(rType,"4",locationType,countryRole,"France",capitalRole,"Paris"));
-		seeds.add(generateOperableStructure(rType,"5",locationType,countryRole,"Portugal",capitalRole,"Lisbon"));
+//		seeds.add(generateOperableStructure(rType,"2",locationType,countryRole,"China",capitalRole,"Beijing"));
+//		seeds.add(generateOperableStructure(rType,"3",locationType,countryRole,"Bulgaria",capitalRole,"Sofia"));
+//		seeds.add(generateOperableStructure(rType,"4",locationType,countryRole,"France",capitalRole,"Paris"));
+//		seeds.add(generateOperableStructure(rType,"5",locationType,countryRole,"Portugal",capitalRole,"Lisbon"));
 		
 		Model out = prDualRank.train(seeds);
 		

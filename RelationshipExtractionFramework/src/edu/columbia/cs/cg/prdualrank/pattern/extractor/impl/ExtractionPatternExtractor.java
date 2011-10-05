@@ -92,9 +92,9 @@ public class ExtractionPatternExtractor<T extends Relationship> implements Patte
 				
 				Span entitySpan = document.getEntitySpan(entity); //return the indexes whitin the array
 				
-				String[] before = Arrays.copyOfRange(document.getTokenizedString(), Math.max(0, entitySpan.getStart()-span), Math.max(0, entitySpan.getStart()));
+				String[] before = Arrays.copyOfRange(document.getTokenizedString(), Math.max(0, entitySpan.getStart()-span), entitySpan.getStart());
 				
-				String[] after = Arrays.copyOfRange(document.getTokenizedString(), Math.min(entitySpan.getEnd()+1, document.getTokenizedString().length-1), Math.min(entitySpan.getEnd()+1, document.getTokenizedString().length));
+				String[] after = Arrays.copyOfRange(document.getTokenizedString(), Math.min(entitySpan.getEnd()+1, document.getTokenizedString().length-1), Math.min(entitySpan.getEnd()+span, document.getTokenizedString().length));
 				
 				ac.addContext(entity,role,before,after);
 				
