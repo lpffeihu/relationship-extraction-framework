@@ -102,7 +102,9 @@ public class Entity implements Comparable<Entity>, Serializable, Matchable {
 	
 	@Override
 	public int hashCode(){
-		return id.hashCode();
+		
+		return value.hashCode()*31 + entityType.hashCode();
+		
 	}
 	
 	@Override

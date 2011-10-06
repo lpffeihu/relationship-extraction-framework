@@ -60,7 +60,7 @@ public class Relationship implements Serializable,Matchable {
 	
 	@Override
 	public int hashCode(){
-		
+
 		if (hashCode == -1){
 			
 			hashCode = 1;

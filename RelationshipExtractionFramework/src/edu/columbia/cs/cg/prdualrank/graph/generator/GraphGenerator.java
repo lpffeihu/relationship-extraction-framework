@@ -24,11 +24,10 @@ public abstract class GraphGenerator<T extends Matchable,D extends Document> {
 								
 				if (topTuples.contains(tuple)){
 					
-					System.out.println("Graph Generator: " + tuple.toString());
-
 					ret.addContext(pattern,tuple,tuples.get(tuple));
 				
 				}
+
 			}
 			
 		}
