@@ -58,7 +58,7 @@ public class PRDualRankTest {
 		int window = 5;
 		int minsupport = 5;
 		int k_nolabel = 50;
-		int k_seed = 5;
+		int k_seed = 20;
 		int ngram = 3;
 		int span = 10;
 

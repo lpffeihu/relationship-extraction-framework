@@ -63,7 +63,7 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 		
 		if (wordsBefore.length > entitySpan.getStart())
 			return false;
-		if (wordsAfter.length > tokenStrings.length - entitySpan.getEnd())
+		if (wordsAfter.length > tokenStrings.length - entitySpan.getEnd() - 1)
 			return false;
 		
 		for (int i = wordsBefore.length-1; i >=0 ; i--) {

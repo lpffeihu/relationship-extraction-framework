@@ -159,7 +159,7 @@ public class PRDualRank implements Engine{
 					
 					TokenizedDocument tokenizedDocument = new TokenizedDocument(document, tokenizer);
 					
-					updateMap(extractedTuples,filterByRole(role,relationship.getRole(role),pbre.extractTuples(tokenizedDocument)));
+					updateMap(extractedTuples,filterByRole(rType,role,relationship.getRole(role),pbre.extractTuples(tokenizedDocument)));
 					
 				}
 								
@@ -314,16 +314,16 @@ public class PRDualRank implements Engine{
 		return initial;
 	}
 
-	private Map<Relationship,Integer> filterByRole(String role,
+	private Map<Relationship,Integer> filterByRole(RelationshipType relationshipType, String role,
 			Entity value, List<Relationship> extractTuples) {
-		
-		//TODO I have to use the matcher...
 		
 		Map<Relationship, Integer> ret = new HashMap<Relationship, Integer>();
 		
 		for (Relationship relationship : extractTuples) {
 			
-			if (relationship.getRole(role).equals(value)){
+			EntityMatcher em = relationshipType.getMatchers(role);
+			
+			if (em.match(relationship.getRole(role), value)){
 				
 				Integer freq = ret.get(relationship);
 				
