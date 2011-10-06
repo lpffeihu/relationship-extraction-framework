@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -179,12 +180,29 @@ public class PatternExtractionTest {
 		
 		for (Pattern<Relationship, TokenizedDocument> pattern : surv) {
 			
-			System.out.println(pattern.findMatch(tokenized).toString());
+			System.out.println(pattern.toString());
+			
+			List<Relationship> rel = pattern.findMatch(tokenized);
+			
+			for (Relationship relationship2 : rel) {
+				
+				System.out.println(Arrays.toString(getRelavant(relationship2,tokenized)));
+				
+			}
 			
 		}
 
 	}
 	
+	private static String[] getRelavant(Relationship relationship2,
+			TokenizedDocument tokenized) {
+		
+		Entity[] relEntities = relationship2.getEntities();
+		
+		return Arrays.copyOfRange(tokenized.getTokenizedString(),Math.min(tokenized.getEntitySpan(relEntities[0]).getStart(), tokenized.getEntitySpan(relEntities[1]).getStart()) - 5,Math.max(tokenized.getEntitySpan(relEntities[0]).getEnd(), tokenized.getEntitySpan(relEntities[1]).getEnd()) + 5);
+		
+	}
+
 	private static Relationship generateOperableStructure(RelationshipType rType, String id, String entityType,String countryRole, String country, String capitalRole, String capital) {
 		
 		Relationship r1 = new Relationship(rType);
