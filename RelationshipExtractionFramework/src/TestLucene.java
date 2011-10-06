@@ -52,7 +52,7 @@ public class TestLucene {
 		
 		Set<String> stopW = Words.getStopWords();
 		
-		Analyzer myAnalyzer = new TokenBasedAnalyzer(tokenizer,stopW);
+		Analyzer myAnalyzer = new TokenBasedAnalyzer(stopW);
 		
 		try {
 		

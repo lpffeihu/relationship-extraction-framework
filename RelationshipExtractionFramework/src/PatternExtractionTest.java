@@ -28,6 +28,7 @@ import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.pattern.prdualrank.SearchPattern;
 import edu.columbia.cs.cg.prdualrank.index.Index;
 import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
+import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenizerBasedAnalyzer;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.ExtractionPatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.WindowedSearchPatternExtractor;
@@ -128,7 +129,7 @@ public class PatternExtractionTest {
 		
 		TokenizedDocument tokenized = new TokenizedDocument(doc, tokenizer);
 
-		TokenBasedAnalyzer myAnalyzer = new TokenBasedAnalyzer(tokenizer,Words.getStopWords());
+		TokenBasedAnalyzer myAnalyzer = new TokenBasedAnalyzer(Words.getStopWords());
 		
 		Index index = new Index(myAnalyzer,true,Words.getStopWords());
 		
@@ -144,12 +145,14 @@ public class PatternExtractionTest {
 		
 		Map<Pattern<Document, TokenizedDocument>, Integer> patterns = spe.extractPatterns(tokenized, relationship, matchingRelationships);
 		
+//		TokenizerBasedAnalyzer myTokenizerAnalyzer = new TokenizerBasedAnalyzer(tokenizer, Words.getStopWords());
+		
 		QueryGenerator<Query> forIndexQueryGenerator = new LuceneQueryGenerator(myAnalyzer);
 		
 		for (Pattern<Document, TokenizedDocument> pattern : patterns.keySet()) {
 			
-			if (index.search(forIndexQueryGenerator.generateQuery((SearchPattern<Document, TokenizedDocument>)pattern), 1).size() == 1){
-				System.out.println(true);
+			if (index.search(forIndexQueryGenerator.generateQuery((SearchPattern<Document, TokenizedDocument>)pattern), 1).size() == 0){
+				System.out.println(false);
 			}
 			
 		}

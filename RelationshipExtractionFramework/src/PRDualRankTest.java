@@ -21,6 +21,7 @@ import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
 import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.prdualrank.PRDualRank;
 import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
+import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenizerBasedAnalyzer;
 import edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction;
 import edu.columbia.cs.cg.prdualrank.inference.ranking.impl.FScoreBasedRankFunction;
 import edu.columbia.cs.cg.prdualrank.searchengine.SearchEngine;
@@ -134,9 +135,12 @@ public class PRDualRankTest {
 		
 		Set<String> stopW = Words.getStopWords();
 		
-		TokenBasedAnalyzer myAnalyzer = new TokenBasedAnalyzer(tokenizer,stopW);
-		
+//		TokenizerBasedAnalyzer myTokenizerAnalyzer = new TokenizerBasedAnalyzer(tokenizer,stopW);
+
+		TokenBasedAnalyzer myAnalyzer = new TokenBasedAnalyzer(stopW);
+
 		QueryGenerator<Query> forIndexQueryGenerator = new LuceneQueryGenerator(myAnalyzer);
+		
 		
 		PRDualRank prDualRank = new PRDualRank(se, qg, k_seed, ngram, window, minsupport, k_nolabel, iterations, numberOfPhrases, 
 				extractionPatternLenght, searchpatternRankFunction, extractpatternRankFunction, tupleRankFunction, tokenizer, rType, myAnalyzer,forIndexQueryGenerator,span);
