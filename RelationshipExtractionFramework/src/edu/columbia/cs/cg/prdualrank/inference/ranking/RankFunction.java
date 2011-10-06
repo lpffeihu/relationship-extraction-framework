@@ -43,11 +43,13 @@ public abstract class RankFunction <T> {
 	}
 
 	public void setPrecision(Map<T, Double> precisionMap) {
+
 		this.precisionMap = precisionMap;
 		this.elements = precisionMap.keySet();
 	}
 
 	public void setRecall(Map<T, Double> recallMap) {
+
 		this.recallMap = recallMap;
 		this.elements = recallMap.keySet();
 	}

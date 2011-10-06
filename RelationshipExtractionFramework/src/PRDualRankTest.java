@@ -58,7 +58,7 @@ public class PRDualRankTest {
 		int window = 5;
 		int minsupport = 5;
 		int k_nolabel = 50;
-		int k_seed = 5;
+		int k_seed = 50;
 		int ngram = 3;
 		int span = 10;
 
@@ -158,7 +158,7 @@ public class PRDualRankTest {
 		
 		Model out = prDualRank.train(seeds);
 		
-		System.out.println(out.toString());
+//		System.out.println(out.toString());
 		
 	}
 

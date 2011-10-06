@@ -93,7 +93,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		
 		for (Pattern<T,D> pattern : gs.getMatchingPatterns(tuple)) {
 			
-			precision += getPrecision(pattern)*gs.getMatchingFrequency(tuple, pattern)/gs.getFrequency(tuple);
+			precision += getPrecision(pattern)*(double)gs.getMatchingFrequency(tuple, pattern)/(double)gs.getFrequency(tuple);
 			
 		}
 		
@@ -123,7 +123,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		
 		for (Relationship tuple : gs.getMatchingTuples(pattern)) {
 			
-			precision += getPrecision(tuple)*gs.getMatchingFrequency(pattern,tuple)/gs.getFreqency(pattern);
+			precision += getPrecision(tuple)*(double)gs.getMatchingFrequency(pattern,tuple)/(double)gs.getFreqency(pattern);
 			
 		}
 		
@@ -162,7 +162,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		
 		for (Pattern<T,D> pattern : gs.getMatchingPatterns(tuple)) {
 			
-			recall += getRecall(pattern,patternTable)*gs.getMatchingFrequency(tuple, pattern)/gs.getFreqency(pattern);
+			recall += getRecall(pattern,patternTable)*(double)gs.getMatchingFrequency(tuple, pattern)/(double)gs.getFreqency(pattern);
 			
 		}
 		
@@ -198,7 +198,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		
 		for (Relationship tuple : gs.getMatchingTuples(pattern)) {
 
-			recall += getRecall(tuple,tupleTable)*gs.getMatchingFrequency(pattern, tuple)/gs.getFrequency(tuple);
+			recall += getRecall(tuple,tupleTable)*(double)gs.getMatchingFrequency(pattern, tuple)/(double)gs.getFrequency(tuple);
 			
 		}
 		
