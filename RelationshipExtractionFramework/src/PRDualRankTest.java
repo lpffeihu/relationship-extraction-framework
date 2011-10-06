@@ -158,6 +158,7 @@ public class PRDualRankTest {
 		
 		Model out = prDualRank.train(seeds);
 		
+		System.out.println(out.toString());
 		
 	}
 

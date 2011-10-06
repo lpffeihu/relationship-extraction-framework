@@ -60,4 +60,21 @@ public class PRDualRankModel<S extends Matchable,E extends Matchable, D extends 
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		
+		System.out.println("Search Patterns: ");
+		
+		for (Pattern<S,D> pattern : this.sPatterns) {
+			System.out.println(pattern.toString());
+		}
+
+		System.out.println("Extraction Patterns: ");
+		
+		for (Pattern<E,D> pattern : this.ePatterns) {
+			System.out.println(pattern.toString());
+		}
+
+		return "model";
+	}
 }
