@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.TokenizedDocument;
@@ -13,14 +14,16 @@ import edu.columbia.cs.utils.Span;
 
 public class SimpleAttributeExtractionPattern<E extends Entity,D extends TokenizedDocument> extends Pattern<Entity,TokenizedDocument> {
 
-	private String entityType;
+	private Set<String> entityTypes;
 	private String[] wordsBefore;
 	private String[] wordsAfter;
+	private String role;
 
-	public SimpleAttributeExtractionPattern(String entityType, String[] before,
+	public SimpleAttributeExtractionPattern(String role, Set<String> entityTypes, String[] before,
 			String[] after) {
 		
-		this.entityType = entityType;
+		this.role = role;
+		this.entityTypes = entityTypes;
 		this.wordsBefore = before;
 		this.wordsAfter = after;
 		
@@ -35,7 +38,7 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 		
 		for (Entity entity : entities) {
 			
-			if (entity.getEntityType().equals(entityType))
+			if (entityTypes.contains(entity.getEntityType()))
 				filtered.add(entity);
 			
 		}
@@ -60,10 +63,12 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 		
 		if (wordsBefore.length > entitySpan.getStart())
 			return false;
-		if (wordsAfter.length > (tokenStrings.length - entitySpan.getEnd() - 1))
+		if (wordsAfter.length > tokenStrings.length - entitySpan.getEnd())
 			return false;
 		
-		for (int i = 0; i < wordsBefore.length; i++) {
+		for (int i = wordsBefore.length-1; i >=0 ; i--) {
+			
+			System.out.println(i + " - " + tokenStrings[entitySpan.getStart() - (wordsBefore.length - i)]);
 			
 			if (!wordsBefore[i].equals(tokenStrings[entitySpan.getStart() - (wordsBefore.length - i)])){
 				return false;
@@ -73,12 +78,14 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 		
 		for (int i = 0; i < wordsAfter.length; i++) {
 			
+			System.out.println(i + " - " + tokenStrings[entitySpan.getEnd() + i + 1]);
+			
 			if (!wordsAfter[i].equals(tokenStrings[entitySpan.getEnd() + i + 1])){
 				return false;
 			}	
 		
 		}
-		
+
 		return true;
 	}
 
@@ -87,7 +94,9 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 		
 		int hashCode = 1;
 		
-		hashCode = 31*hashCode + entityType.hashCode();
+		hashCode = 31*hashCode + role.hashCode();
+		
+		hashCode = 31*hashCode + entityTypes.hashCode();
 	
 		hashCode = 31*hashCode + Arrays.hashCode(wordsBefore);
 		
@@ -99,7 +108,39 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 
 	@Override
 	protected String generateToString() {
-		return Arrays.toString(wordsBefore) + entityType + Arrays.toString(wordsAfter);
+		return Arrays.toString(wordsBefore) + entityTypes.toString() + " as " + role + Arrays.toString(wordsAfter);
 		
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		SimpleAttributeExtractionPattern<Entity, TokenizedDocument> other = (SimpleAttributeExtractionPattern<Entity, TokenizedDocument>)obj;
+		
+		if (!role.equals(other.role)){
+			return false;
+		}
+		
+		if (!entityTypes.containsAll(other.entityTypes)){
+			return false;
+		}
+		
+		if (wordsAfter.length != other.wordsAfter.length){
+			return false;
+		}
+		
+		if (wordsBefore.length != other.wordsBefore.length){
+			return false;
+		}
+
+		if (!Arrays.equals(wordsAfter, other.wordsAfter)){
+			return false;
+		}
+		
+		if (!Arrays.equals(wordsBefore, other.wordsBefore)){
+			return false;
+		}
+		
+		return true;
 	}
 }

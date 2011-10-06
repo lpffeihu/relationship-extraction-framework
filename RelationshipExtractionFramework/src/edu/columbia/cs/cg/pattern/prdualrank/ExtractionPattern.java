@@ -25,7 +25,6 @@ public class ExtractionPattern<T extends Relationship, D extends TokenizedDocume
 	private Map<String, SimpleAttributeExtractionPattern<Entity,TokenizedDocument>> simpleAttributeMap;
 	private RelationshipType rType;
 	private RelationshipConstraint rConstraint;
-	private int hashCode;
 
 	public ExtractionPattern(List<String> roles, Map<String, SimpleAttributeExtractionPattern<Entity,TokenizedDocument>> simpleAttributeMap, RelationshipType rType) {
 		
@@ -33,7 +32,7 @@ public class ExtractionPattern<T extends Relationship, D extends TokenizedDocume
 		this.simpleAttributeMap = simpleAttributeMap;
 		this.rType = rType;
 		this.rConstraint = rType.getRelationshipConstraint();
-		hashCode = -1;
+
 	}
 
 	@Override

@@ -26,6 +26,7 @@ public class AttributeContext {
 	private HashMap<String, String[]> postWords;
 	private RelationshipType rType;
 	private int hashCode = -1;
+	private HashMap<String, Set<String>> entityTypes;
 
 	public AttributeContext(RelationshipType relationshipType){
 
@@ -34,17 +35,33 @@ public class AttributeContext {
 		roles = new ArrayList<String>();
 		previousWords = new HashMap<String,String[]>();
 		postWords = new HashMap<String,String[]>();
+		entityTypes = new HashMap<String, Set<String>>();
 		
 	}
 	
 	public void addContext(Entity entity, String role, String[] before,
 			String[] after) {
 		
+		updateTypes(role,entity.getEntityType());
 		roles.add(role);
 		entities.put(role,entity);
-		
 		previousWords.put(role,before);
 		postWords.put(role,after);
+		
+	}
+
+	private void updateTypes(String role, String entityType) {
+		
+		Set<String> types = entityTypes.get(role);
+		
+		if (types == null){
+			types = new HashSet<String>();
+		}
+		
+		types.add(entityType);
+		
+		entityTypes.put(role,types);
+
 		
 	}
 
@@ -54,12 +71,10 @@ public class AttributeContext {
 		
 		for (String role : roles) {
 			
-			patterns.put(role,generateCombinations(role,size,previousWords.get(role),postWords.get(role)));
+			patterns.put(role,generateCombinations(role,entityTypes.get(role),size,previousWords.get(role),postWords.get(role)));
 			
 		}
-		
-		
-		
+			
 		List<Map<String, SimpleAttributeExtractionPattern<Entity, TokenizedDocument>>> combinations = MegaCartesianProduct.generateAllPossibilities(patterns);
 		
 		List<Pattern<Relationship,TokenizedDocument>> extractionPatterns = new ArrayList<Pattern<Relationship,TokenizedDocument>>();
@@ -74,7 +89,7 @@ public class AttributeContext {
 		
 	}
 
-	private Set<SimpleAttributeExtractionPattern<Entity, TokenizedDocument>> generateCombinations(String role, int size,
+	private Set<SimpleAttributeExtractionPattern<Entity, TokenizedDocument>> generateCombinations(String role, Set<String> entityTypes, int size,
 			String[] wordsBefore, String[] wordsAfter) {
 		
 		Set<SimpleAttributeExtractionPattern<Entity, TokenizedDocument>> patterns = new HashSet<SimpleAttributeExtractionPattern<Entity,TokenizedDocument>>();
@@ -100,7 +115,7 @@ public class AttributeContext {
 					after = Arrays.copyOfRange(wordsAfter, 0, afterSize);
 				}
 				
-				patterns.add(new SimpleAttributeExtractionPattern<Entity,TokenizedDocument>(role,before,after));
+				patterns.add(new SimpleAttributeExtractionPattern<Entity,TokenizedDocument>(role,entityTypes,before,after));
 				
 			}
 		}

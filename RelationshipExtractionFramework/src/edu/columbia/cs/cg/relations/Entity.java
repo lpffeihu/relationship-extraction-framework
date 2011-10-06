@@ -118,7 +118,7 @@ public class Entity implements Comparable<Entity>, Serializable, Matchable {
 			if (!value.equals(other.value)){
 				return false;
 			}
-			if (entityType.equals(other.entityType)){
+			if (!entityType.equals(other.entityType)){
 				return false;
 			}
 		}else{

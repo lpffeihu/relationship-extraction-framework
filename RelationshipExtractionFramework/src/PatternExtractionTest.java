@@ -127,6 +127,8 @@ public class PatternExtractionTest {
 		
 		doc.setFilename("Ottawa.html");
 		
+//NOT USEFUL		TokenizerBasedAnalyzer myTokenizerAnalyzer = new TokenizerBasedAnalyzer(tokenizer, Words.getStopWords());
+		
 		TokenizedDocument tokenized = new TokenizedDocument(doc, tokenizer);
 
 		TokenBasedAnalyzer myAnalyzer = new TokenBasedAnalyzer(Words.getStopWords());
@@ -136,27 +138,50 @@ public class PatternExtractionTest {
 		index.addDocument(tokenized);
 		
 		index.close();
+
 		
-		PatternExtractor<Document> spe = new WindowedSearchPatternExtractor<Document>(window, ngram, numberOfPhrases);
-		
+//		
+//		PatternExtractor<Document> spe = new WindowedSearchPatternExtractor<Document>(window, ngram, numberOfPhrases);
+//		
 		Relationship relationship = generateOperableStructure(rType,"1",locationType,countryRole,"Canada",capitalRole,"Ottawa");
 		
 		List<Relationship> matchingRelationships = getMatchingRelationships(tokenized, relationship);
 		
-		Map<Pattern<Document, TokenizedDocument>, Integer> patterns = spe.extractPatterns(tokenized, relationship, matchingRelationships);
+//		Map<Pattern<Document, TokenizedDocument>, Integer> patterns = spe.extractPatterns(tokenized, relationship, matchingRelationships);
 		
-//		TokenizerBasedAnalyzer myTokenizerAnalyzer = new TokenizerBasedAnalyzer(tokenizer, Words.getStopWords());
 		
-		QueryGenerator<Query> forIndexQueryGenerator = new LuceneQueryGenerator(myAnalyzer);
+//		QueryGenerator<Query> forIndexQueryGenerator = new LuceneQueryGenerator(myAnalyzer);
+//		
+//		for (Pattern<Document, TokenizedDocument> pattern : patterns.keySet()) {
+//			
+//			if (index.search(forIndexQueryGenerator.generateQuery((SearchPattern<Document, TokenizedDocument>)pattern), 1).size() == 0){
+//				System.out.println(false);
+//			}
+//			
+//		}
+
+		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(span,extractionPatternLenght,rType);
+
+		Map<Pattern<Relationship, TokenizedDocument>, Integer> patterns = epe.extractPatterns(tokenized, relationship, matchingRelationships);
 		
-		for (Pattern<Document, TokenizedDocument> pattern : patterns.keySet()) {
+		Set<Entry<Pattern<Relationship, TokenizedDocument>, Integer>> entries = patterns.entrySet();
+		
+		List<Pattern<Relationship, TokenizedDocument>> surv = new ArrayList<Pattern<Relationship,TokenizedDocument>>();
+		
+		for (Entry<Pattern<Relationship, TokenizedDocument>, Integer> entry : entries) {
 			
-			if (index.search(forIndexQueryGenerator.generateQuery((SearchPattern<Document, TokenizedDocument>)pattern), 1).size() == 0){
-				System.out.println(false);
+			if (entry.getValue() > 3){
+//				System.out.println(entry.getKey() + " - " + entry.getValue());
+				surv.add(entry.getKey());
 			}
 			
 		}
-//		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(span,extractionPatternLenght,rType);
+		
+		for (Pattern<Relationship, TokenizedDocument> pattern : surv) {
+			
+			System.out.println(pattern.findMatch(tokenized).toString());
+			
+		}
 
 	}
 	
