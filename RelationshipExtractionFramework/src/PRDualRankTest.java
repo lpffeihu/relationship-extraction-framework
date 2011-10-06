@@ -52,13 +52,13 @@ public class PRDualRankTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		int extractionPatternLenght = 10;
+		int extractionPatternLenght = 5;
 		int numberOfPhrases = 2;
 		int iterations = 3;
 		int window = 5;
 		int minsupport = 5;
 		int k_nolabel = 50;
-		int k_seed = 20;
+		int k_seed = 5;
 		int ngram = 3;
 		int span = 10;
 
