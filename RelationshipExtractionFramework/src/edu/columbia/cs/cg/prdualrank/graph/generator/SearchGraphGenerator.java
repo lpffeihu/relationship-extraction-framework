@@ -27,6 +27,7 @@ public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument
 	private RelationshipType rType;
 	private Index index;
 	private QueryGenerator<Query> queryGenerator;
+	private Map<Document,Map<RelationshipType,List<Relationship>>> cachedPotentialRelationships;
 	
 	public SearchGraphGenerator(RelationshipType rType, Index index, QueryGenerator<Query> queryGenerator){
 		this.rType = rType;
@@ -66,6 +67,11 @@ public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument
 	private List<Relationship> retrievePotentialTuples(
 			TokenizedDocument document, RelationshipType relationshipType) {
 		
+		List<Relationship> cached = getCatchedPotentialTuples(document,relationshipType); 
+		
+		if (cached != null)
+			return cached;
+		
 		Set<Entity> entities = new HashSet<Entity>(document.getEntities());
 		
 		Set<String> roles = relationshipType.getRoles();
@@ -102,8 +108,51 @@ public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument
 			
 		}
 		
+		putCatchedPotentialTuples(document,rType,matchingTuples);
+		
 		return matchingTuples;
 		
+	}
+	private void putCatchedPotentialTuples(TokenizedDocument document,
+			RelationshipType relationshipType, List<Relationship> matchingTuples) {
+		
+		getCatchedPotentialTuples(document, relationshipType).addAll(matchingTuples);
+		
+	}
+	private List<Relationship> getCatchedPotentialTuples(
+			TokenizedDocument document, RelationshipType relationshipType) {
+		
+		List<Relationship> byType = getCachedPotentialTuplesbyDocument(document).get(relationshipType);
+		
+		if (byType == null){
+			getCachedPotentialTuplesbyDocument(document).put(relationshipType, new ArrayList<Relationship>());
+			return null;
+		}
+		
+		return byType;
+	}
+	private Map<RelationshipType, List<Relationship>> getCachedPotentialTuplesbyDocument(
+			TokenizedDocument document) {
+		
+		Map<RelationshipType, List<Relationship>> byDoc = getCachedPotentialTuplesTable().get(document);
+		
+		if (byDoc == null){
+			
+			byDoc = new HashMap<RelationshipType, List<Relationship>>();
+			
+			getCachedPotentialTuplesTable().put(document,byDoc);
+			
+		}
+		
+		return byDoc;
+		
+	}
+	private Map<Document, Map<RelationshipType, List<Relationship>>> getCachedPotentialTuplesTable() {
+		
+		if (cachedPotentialRelationships == null){
+			cachedPotentialRelationships = new HashMap<Document, Map<RelationshipType,List<Relationship>>>();
+		}
+		return cachedPotentialRelationships;
 	}
 
 }
