@@ -31,7 +31,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		this.seeds = seeds;
 		patternTable = new HashMap<Pattern<T,D>, Pair<Double,Double>>();
 		tupleTable = new HashMap<Relationship, Pair<Double,Double>>();
-
+		
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 	public void runQuestR(PRDualRankGraph<T,D> gs) {
 		convergence.reset();
 		
-		while(convergence.converged()){
+		while(!convergence.converged()){
 			
 			for (Pattern<T,D> pattern : gs.getPatterns()) {
 				
@@ -146,9 +146,14 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 
 	private <E> double getPrecision(E key,
 			Map<Relationship, Pair<Double, Double>> table) {
-		System.out.println(key.toString());
-		return table.get(key).a();
 		
+		Pair<Double,Double> pair =  table.get(key);
+		
+		if (pair == null){
+			return 0.0;
+		}
+		
+		return pair.a();
 	}
 
 	private double calculateRecall(Relationship tuple,PRDualRankGraph<T,D> gs) {
@@ -165,7 +170,13 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 	}
 
 	private <E> double getRecall(E key, Map<E,Pair<Double,Double>> table) {
-		return table.get(key).b();
+		Pair<Double,Double> pair = table.get(key);
+		
+		if (pair == null){
+			return 0;
+		}
+
+		return pair.b();
 	}
 
 	private <E> void setRecall(E key, double recall, Map<E,Pair<Double,Double>> table) {
