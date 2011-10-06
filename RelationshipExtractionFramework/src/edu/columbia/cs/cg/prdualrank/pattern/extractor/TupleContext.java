@@ -29,16 +29,17 @@ public class TupleContext {
 		
 		Set<String[]> ngrams = new HashSet<String[]>();
 		
-		for (int i = 1; i <= ngram; i++) {
-			
-			for (String[] segment : words) {
+		for (String[] segment : words) {
+
+			for (int i = 1; i <= ngram; i++) {
 				
-				ngrams.addAll(generateNgrams(segment,ngram));
+				ngrams.addAll(generateNgrams(segment,i));
 				
 			}
 			
+			
 		}
-				
+			
 		return ngrams;
 	}
 

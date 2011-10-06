@@ -31,6 +31,7 @@ import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
 import edu.columbia.cs.cg.prdualrank.graph.generator.ExtractionGraphGenerator;
 import edu.columbia.cs.cg.prdualrank.graph.generator.SearchGraphGenerator;
 import edu.columbia.cs.cg.prdualrank.index.Index;
+import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
 import edu.columbia.cs.cg.prdualrank.inference.InferencePRDualRank;
 import edu.columbia.cs.cg.prdualrank.inference.convergence.NumberOfIterationsConvergence;
 import edu.columbia.cs.cg.prdualrank.inference.quest.MapBasedQuestCalculator;
@@ -71,13 +72,13 @@ public class PRDualRank implements Engine{
 	private int extractionPatternLenght;
 	private Tokenizer tokenizer;
 	private RelationshipType rType;
-	private Analyzer myAnalyzer;
+	private TokenBasedAnalyzer myAnalyzer;
 	private QueryGenerator<Query> forIndexQueryGenerator;
 	
 	public PRDualRank(SearchEngine se, QueryGenerator<String> qg, int k_seed, int ngram, int window, int minsupport,
 			int k_nolabel, int iterations, int numberOfPhrases, int extractionPatternLenght, RankFunction<Pattern<Document,TokenizedDocument>> searchpatternRankFunction,
 			RankFunction<Pattern<Relationship,TokenizedDocument>> extractpatternRankFunction, RankFunction<Relationship> tupleRankFunction, 
-			Tokenizer tokenizer, RelationshipType rType, Analyzer myAnalyzer, QueryGenerator<Query> forIndexQueryGenerator,int span){
+			Tokenizer tokenizer, RelationshipType rType, TokenBasedAnalyzer myAnalyzer, QueryGenerator<Query> forIndexQueryGenerator,int span){
 		this.se = se;
 		this.qg = qg;
 		this.k_seed = k_seed;

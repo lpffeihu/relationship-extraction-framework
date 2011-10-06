@@ -76,7 +76,7 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 			
 			for (int i = 0; i < realSpans.size() - 1; i++) {
 				
-				String[] middle = Arrays.copyOfRange(document.getTokenizedString(), realSpans.get(i).getEnd()+1, Math.max(realSpans.get(i).getEnd()+1, realSpans.get(i+1).getStart()));
+				String[] middle = Arrays.copyOfRange(document.getTokenizedString(), realSpans.get(i).getEnd()+1, Math.max(realSpans.get(i).getEnd(), realSpans.get(i+1).getStart()));
 			
 				tc.addWords(middle);
 				
@@ -104,9 +104,10 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 			
 			for (String[] nGram : nGrams) {
 				
-				if (SearchPattern.isPatternizable(nGram))
+				if (SearchPattern.isPatternizable(nGram)){
+					
 					ngrams.add(nGram);
-				
+				}
 			}
 			
 		}
@@ -159,27 +160,28 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 	
 		if (tupleSpans.size()<=1)
 			return tupleSpans;
+
+		List<Span> notIntersecting = new ArrayList<Span>(tupleSpans);
 		
-		List<Span> notIntersecting = new ArrayList<Span>();
 		List<Span> intersecting = new ArrayList<Span>();
 		
-		for (Span span : tupleSpans) {
+		for (int i=0;i<tupleSpans.size();i++) {
 			
-			boolean intersects = false;
+			Span span = tupleSpans.get(i);
 			
-			for (Span span2 : notIntersecting) {
-			
-				if (span2.intersects(span)){
-					intersects = true;
-					break;
+			for (int j=0;j<tupleSpans.size();j++) {
+
+				if (i==j)
+					continue;
+				
+				Span span2 = tupleSpans.get(j);
+
+				if (span2.intersects(span) || span.getEnd()==span2.getStart() || span2.getEnd()==span.getStart()){
+					notIntersecting.remove(span2);
+					if (!intersecting.contains(span2))
+						intersecting.add(span2);
 				}
 				
-			}
-			
-			if (!intersects){
-				notIntersecting.add(span);
-			}else{
-				intersecting.add(span);
 			}
 			
 		}
@@ -189,41 +191,39 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 		}
 	
 		Collections.sort(intersecting);
-		
-		int first = intersecting.get(0).getStart();
-		
-		int last = intersecting.get(0).getEnd();
-		
-		List<Span> unified = new ArrayList<Span>();
+	
+		List<Span> unifiedList = new ArrayList<Span>();
+
+		Span unified = intersecting.get(0);
+
+		int last = unified.getEnd();
+
 		
 		for (int i = 0; i < intersecting.size()-1; i++) {
+
+			Span s2 = intersecting.get(i+1);
 			
-			for (int j = i+1; j < intersecting.size(); j++) {
+			if (unified.intersects(s2) || unified.getEnd()==s2.getStart() || s2.getEnd()==unified.getStart()){
 				
-				Span s1 = intersecting.get(i);
-				Span s2 = intersecting.get(j);
+				last = Math.max(unified.getEnd(), s2.getEnd());
 				
-				if (s1.intersects(s2)){
-					
-					last = Math.max(s1.getEnd(), s2.getEnd());
-					
-				} else {
-					
-					unified.add(new Span(first,last));
-					
-					first = s2.getStart();
-					
-					last = s2.getEnd();
-					
-				}
+				unified = new Span(unified.getStart(),last);
+				
+			} else {
+				
+				unifiedList.add(unified);
+				
+				unified = new Span(s2.getStart(),s2.getEnd());
+				
+				last = s2.getEnd();
 				
 			}
 			
 		}
 		
-		unified.add(new Span(first,last));
+		unifiedList.add(unified);
 		
-		notIntersecting.addAll(unified);
+		notIntersecting.addAll(unifiedList);
 		
 		return notIntersecting;
 		
@@ -233,19 +233,15 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 		
 		Words.initialize(null, null);
 		
-		String[] str1 = new String[]{"Chinese", "Basketball", "Association"};
-		String[] str2 = new String[]{"Chinese", "Basketball", "Association"};
-						
-		List<String[]> phrases = new ArrayList<String[]>();
+		Span t1 = new Span(5, 14);
+		Span t2 = new Span(1,15);
+		Span t3 = new Span(16,30);
+		Span t4 = new Span(31,45);
 		
-		phrases.add(str1);
-		phrases.add(str2);
+		List<Span> t = new ArrayList<Span>();
 		
-		SearchPattern<Document, TokenizedDocument> sp1 = new SearchPattern<Document, TokenizedDocument>(phrases);
+		t.add(t1);t.add(t2);t.add(t3);t.add(t4);
 		
-		System.out.println(sp1.isValid());
-		
-		System.out.println(sp1.toString());
 	}
 	
 }

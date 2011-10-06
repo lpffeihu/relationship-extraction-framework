@@ -4,21 +4,33 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.util.Version;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.pattern.prdualrank.SearchPattern;
+import edu.columbia.cs.cg.prdualrank.index.Index;
+import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
 import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 
 public class LuceneQueryGenerator extends QueryGenerator<Query> {
 
+	private QueryParser qp;
+
+	public LuceneQueryGenerator(TokenBasedAnalyzer tbAnalyzer){
+		qp = new QueryParser(Version.LUCENE_34, Index.CONTENT, tbAnalyzer);
+	}
+	
+	
 	@Override
 	public Query generateQuery(Relationship relationship) {
 		// TODO Implement before trying over local collection
@@ -41,7 +53,7 @@ public class LuceneQueryGenerator extends QueryGenerator<Query> {
 		
 		for (String[] strings : nGrams) {
 			
-			Query nGramQuery = generateNGramQuery(strings);
+			Query nGramQuery = generateNGramQuery(getString(strings));
 			
 			bq.add(nGramQuery, Occur.MUST);
 			
@@ -50,16 +62,15 @@ public class LuceneQueryGenerator extends QueryGenerator<Query> {
 		return bq;
 	}
 
-	private Query generateNGramQuery(String[] strings) {
-		
-		PhraseQuery pq = new PhraseQuery();
-		
-        // Build a Query object
-		for (int i = 0; i < strings.length; i++) {
-			pq.add(new Term("content",strings[i]));
+	private Query generateNGramQuery(String query) {
+
+		try {
+			return qp.parse(query);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		return pq;
+		return null;
 	}
 
 

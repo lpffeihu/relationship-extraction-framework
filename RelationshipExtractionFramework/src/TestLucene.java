@@ -34,6 +34,7 @@ import org.apache.lucene.util.Version;
 
 import edu.columbia.cs.cg.document.tokenized.tokenizer.OpenNLPTokenizer;
 import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
+import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
 import edu.columbia.cs.utils.Words;
 
 
@@ -51,7 +52,7 @@ public class TestLucene {
 		
 		Set<String> stopW = Words.getStopWords();
 		
-		Analyzer myAnalyzer = new TokenizerBasedAnalyzer(tokenizer,stopW);
+		Analyzer myAnalyzer = new TokenBasedAnalyzer(tokenizer,stopW);
 		
 		try {
 		

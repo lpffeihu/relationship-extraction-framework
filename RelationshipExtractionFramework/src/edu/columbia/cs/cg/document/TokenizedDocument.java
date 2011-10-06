@@ -80,7 +80,7 @@ public class TokenizedDocument extends Document {
 		
 		int firstIndex = binarySearch(detectedSpans,entity.getOffset(),0,detectedSpans.length-1);
 		
-		int endIndex = binarySearch(detectedSpans,entity.getOffset() + entity.getLength(), firstIndex,detectedSpans.length-1);
+		int endIndex = binarySearch(detectedSpans,entity.getOffset() + entity.getLength()-1, firstIndex,detectedSpans.length-1);
 		
 		ret = new Span(firstIndex,endIndex);
 		
@@ -99,7 +99,7 @@ public class TokenizedDocument extends Document {
 		int mid = low + (high - low) / 2;
 		if (spans[mid].getStart() > offset)
 			return binarySearch(spans, offset, low, mid-1);
-		else if (spans[mid].getEnd() < offset)
+		else if (spans[mid].getEnd() <= offset)
 			return binarySearch(spans, offset, mid+1, high);
 		else
 			return mid; // found

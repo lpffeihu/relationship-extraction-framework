@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.saxon.query.QueryParser;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.StopFilter;
@@ -27,21 +29,26 @@ import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
 import edu.columbia.cs.cg.document.TokenizedDocument;
+import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
+import edu.columbia.cs.cg.prdualrank.index.reader.TokenBasedReader;
 import edu.columbia.cs.cg.prdualrank.index.tokenizer.SpanBasedTokenizer;
+import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl.LuceneQueryGenerator;
 
 public class Index {
 
 	private static final String PATH = "path";
 	private static final String FILE_NAME = "filename";
+	public static final String CONTENT = "content";
+	
 	private IndexWriter indexWriter;
 	private RAMDirectory idx;
-	private Analyzer myAnalyzer;
+	private TokenBasedAnalyzer myAnalyzer;
 	private boolean lowercase;
 	private Set<String> stopWords;
 	private IndexSearcher IndexSearcher;
 	private Map<String, TokenizedDocument> documentMap;
 
-	public Index(Analyzer myAnalyzer,boolean lowercase, Set<String> stopWords) {
+	public Index(TokenBasedAnalyzer myAnalyzer,boolean lowercase, Set<String> stopWords) {
 
 		//Index Creation
 
@@ -77,7 +84,7 @@ public class Index {
 	public void addDocument(TokenizedDocument document) {
 		
 		try {
-			indexWriter.addDocument(createDocument(document), myAnalyzer);
+			indexWriter.addDocument(createDocument(document),myAnalyzer);
 		} catch (CorruptIndexException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,16 +103,7 @@ public class Index {
 		
 		doc.add(new Field(FILE_NAME,document.getFilename(),Store.YES,org.apache.lucene.document.Field.Index.NO));
 		
-		TokenStream tok = new SpanBasedTokenizer(document.getTokenizedSpans(), document.getTokenizedString());
-		
-		if (lowercase){
-			tok = new LowerCaseFilter(Version.LUCENE_34, tok);
-		}
-		if (stopWords != null){
-			tok = new StopFilter(Version.LUCENE_34, tok, stopWords);
-		}
-				
-		doc.add(new Field("content",tok));
+		doc.add(new Field(CONTENT,myAnalyzer.getReader(document.getTokenizedSpans(),document.getTokenizedString())));
 		
 		save(createKey(document.getPath(),document.getFilename()),document);
 		
@@ -152,7 +150,7 @@ public class Index {
 	}
 
 	public List<edu.columbia.cs.cg.document.TokenizedDocument> search(Query query, int n) {
-		
+
 		TopDocs result = null;
 		
 		try {

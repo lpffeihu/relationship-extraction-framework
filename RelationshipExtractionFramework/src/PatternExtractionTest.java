@@ -1,8 +1,14 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.Query;
@@ -19,14 +25,13 @@ import edu.columbia.cs.cg.document.tagger.entity.impl.DictionaryBasedEntityTagge
 import edu.columbia.cs.cg.document.tokenized.tokenizer.OpenNLPTokenizer;
 import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
 import edu.columbia.cs.cg.pattern.Pattern;
-import edu.columbia.cs.cg.prdualrank.PRDualRank;
+import edu.columbia.cs.cg.pattern.prdualrank.SearchPattern;
+import edu.columbia.cs.cg.prdualrank.index.Index;
 import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
-import edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction;
-import edu.columbia.cs.cg.prdualrank.inference.ranking.impl.FScoreBasedRankFunction;
-import edu.columbia.cs.cg.prdualrank.searchengine.SearchEngine;
-import edu.columbia.cs.cg.prdualrank.searchengine.impl.BingSearchEngine;
+import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
+import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.ExtractionPatternExtractor;
+import edu.columbia.cs.cg.prdualrank.pattern.extractor.impl.WindowedSearchPatternExtractor;
 import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator;
-import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl.ConcatQueryGenerator;
 import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl.LuceneQueryGenerator;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
@@ -34,33 +39,33 @@ import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint;
 import edu.columbia.cs.cg.relations.constraints.relations.WordDistanceBetweenEntities;
 import edu.columbia.cs.cg.relations.constraints.roles.EntityTypeConstraint;
+import edu.columbia.cs.cg.relations.constraints.roles.RoleConstraint;
 import edu.columbia.cs.cg.relations.entity.matcher.EntityMatcher;
 import edu.columbia.cs.cg.relations.entity.matcher.impl.DictionaryEntityMatcher;
-import edu.columbia.cs.model.Model;
 import edu.columbia.cs.og.structure.OperableStructure;
 import edu.columbia.cs.og.structure.impl.RelationOperableStructure;
 import edu.columbia.cs.utils.Dictionary;
+import edu.columbia.cs.utils.MegaCartesianProduct;
 import edu.columbia.cs.utils.Words;
 
 
-public class PRDualRankTest {
+public class PatternExtractionTest {
 
 	/**
 	 * @param args
+	 * @throws FileNotFoundException 
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void main(String[] args) throws FileNotFoundException {
 		
-		int extractionPatternLenght = 10;
+		int window = 20;
+		int ngram = 4;
 		int numberOfPhrases = 2;
-		int iterations = 3;
-		int window = 5;
-		int minsupport = 5;
-		int k_nolabel = 50;
-		int k_seed = 100;
-		int ngram = 3;
-		int span = 10;
-
+		
+		int span=10;
+		int extractionPatternLenght=10;
+		
+		Words.initialize(new File("data/stopWords.txt"), null);
+		
 		//countries Dictionary
 		String countriesFile = "data/country.txt";
 		Dictionary countriessdictionary = new Dictionary(new File(countriesFile), ";","country");
@@ -94,11 +99,7 @@ public class PRDualRankTest {
 		
 		EntityMatcher capitalMatcher = new DictionaryEntityMatcher(capitalsdictionary);
 		rType.setMatchers(capitalMatcher, capitalRole);
-		
-		
-		Set<RelationshipType> relationshipTypes = new HashSet<RelationshipType>();
-		relationshipTypes.add(rType);
-		
+
 		//How to segment the html documents
 		DocumentSegmentator docSegmentator = new SimpleSegmentDocumentSegmentator();
 		
@@ -111,58 +112,119 @@ public class PRDualRankTest {
 		//Preprocessor for html documents;
 		Preprocessor preprocessor = new HTMLContentKeeper();
 		
+		Set<RelationshipType> relationshipTypes = new HashSet<RelationshipType>();
+		relationshipTypes.add(rType);
+		
 		//Loader from string to Document.
 		RawDocumentLoader loader = new RawDocumentLoader(relationshipTypes, preprocessor , docSegmentator, countryDictionaryTagger, capitalDictionaryTagger);
 		
-		//Generation of queries based on Concatenation
-		QueryGenerator<String> qg = new ConcatQueryGenerator();
+		String file = "/home/pjbarrio/Desktop/test/Ottawa.html";
+		
+		Document doc = loader.load(new FileReader(file));
 
-		//Bing Search Engine
-		SearchEngine se = new BingSearchEngine(loader);
+		doc.setPath("/home/pjbarrio/Desktop/test/");
 		
-		//Ranking functions
-		double betaextr = 1.0;
-		RankFunction<Pattern<Relationship, TokenizedDocument>> extractpatternRankFunction = new FScoreBasedRankFunction<Pattern<Relationship,TokenizedDocument>>(betaextr);
-		double betatup = 1.0;
-		RankFunction<Relationship> tupleRankFunction = new FScoreBasedRankFunction<Relationship>(betatup);
-		double betasearch = 1.0;
-		RankFunction<Pattern<Document, TokenizedDocument>> searchpatternRankFunction = new FScoreBasedRankFunction<Pattern<Document,TokenizedDocument>>(betasearch);
-				
-		Words.initialize(new File("data/stopWords.txt"), null);
+		doc.setFilename("Ottawa.html");
 		
-		//Index And Search.
+		TokenizedDocument tokenized = new TokenizedDocument(doc, tokenizer);
+
+		TokenBasedAnalyzer myAnalyzer = new TokenBasedAnalyzer(tokenizer,Words.getStopWords());
 		
-		Set<String> stopW = Words.getStopWords();
+		Index index = new Index(myAnalyzer,true,Words.getStopWords());
 		
-		TokenBasedAnalyzer myAnalyzer = new TokenBasedAnalyzer(tokenizer,stopW);
+		index.addDocument(tokenized);
+		
+		index.close();
+		
+		PatternExtractor<Document> spe = new WindowedSearchPatternExtractor<Document>(window, ngram, numberOfPhrases);
+		
+		Relationship relationship = generateOperableStructure(rType,"1",locationType,countryRole,"Canada",capitalRole,"Ottawa");
+		
+		List<Relationship> matchingRelationships = getMatchingRelationships(tokenized, relationship);
+		
+		Map<Pattern<Document, TokenizedDocument>, Integer> patterns = spe.extractPatterns(tokenized, relationship, matchingRelationships);
 		
 		QueryGenerator<Query> forIndexQueryGenerator = new LuceneQueryGenerator(myAnalyzer);
 		
-		PRDualRank prDualRank = new PRDualRank(se, qg, k_seed, ngram, window, minsupport, k_nolabel, iterations, numberOfPhrases, 
-				extractionPatternLenght, searchpatternRankFunction, extractpatternRankFunction, tupleRankFunction, tokenizer, rType, myAnalyzer,forIndexQueryGenerator,span);
-	
-		List<OperableStructure> seeds = new ArrayList<OperableStructure>();
-	
-		seeds.add(generateOperableStructure(rType,"1",locationType,countryRole,"Canada",capitalRole,"Ottawa"));
-//		seeds.add(generateOperableStructure(rType,"2",locationType,countryRole,"China",capitalRole,"Beijing"));
-//		seeds.add(generateOperableStructure(rType,"3",locationType,countryRole,"Bulgaria",capitalRole,"Sofia"));
-//		seeds.add(generateOperableStructure(rType,"4",locationType,countryRole,"France",capitalRole,"Paris"));
-//		seeds.add(generateOperableStructure(rType,"5",locationType,countryRole,"Portugal",capitalRole,"Lisbon"));
-		
-		Model out = prDualRank.train(seeds);
-		
-		
-	}
+		for (Pattern<Document, TokenizedDocument> pattern : patterns.keySet()) {
+			
+			if (index.search(forIndexQueryGenerator.generateQuery((SearchPattern<Document, TokenizedDocument>)pattern), 1).size() == 1){
+				System.out.println(true);
+			}
+			
+		}
+//		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(span,extractionPatternLenght,rType);
 
-	private static OperableStructure generateOperableStructure(RelationshipType rType, String id, String entityType,String countryRole, String country, String capitalRole, String capital) {
+	}
+	
+	private static Relationship generateOperableStructure(RelationshipType rType, String id, String entityType,String countryRole, String country, String capitalRole, String capital) {
 		
 		Relationship r1 = new Relationship(rType);
 		Entity countryE = new Entity(id, entityType, 0, country.length(), country, null);
 		r1.setRole(countryRole, countryE);
 		Entity capitalE = new Entity(id, entityType, 0, capital.length(), capital, null);
 		r1.setRole(capitalRole, capitalE);
-		return new RelationOperableStructure(r1);
+		return r1;
 		
 	}
 
+	private static List<Relationship> getMatchingRelationships(TokenizedDocument document,
+			Relationship relationship) {
+		
+		Set<Entity> entities = new HashSet<Entity>(document.getEntities());
+		
+		Collection<String> roles = relationship.getRoles();
+		
+		Map<String,Set<Entity>> candidateEntitiesForRole = new HashMap<String,Set<Entity>>();
+		
+		for(String role : roles){
+			
+			RoleConstraint roleConstraint = relationship.getRelationshipType().getConstraint(role);
+			
+			Set<Entity> entitiesForRole = roleConstraint.getCompatibleEntities(entities);
+			
+			EntityMatcher entityMatcher = relationship.getRelationshipType().getMatchers(role);
+			
+			Set<Entity> filteredEntitiesForRole = new HashSet<Entity>();
+			
+			for (Entity entity : entitiesForRole) {
+				
+				if (entityMatcher.match(relationship.getRole(role), entity)){
+					filteredEntitiesForRole.add(entity);
+				}
+				
+			}
+
+			candidateEntitiesForRole.put(role, filteredEntitiesForRole);
+		
+		}
+
+		List<Relationship> matchingTuples = new ArrayList<Relationship>();
+		
+		List<Map<String, Entity>> possibilities = MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole);
+		
+		for(Map<String,Entity> candidate : possibilities){
+			
+			Relationship newRelationship = new Relationship(relationship.getRelationshipType());
+			
+			for(Entry<String,Entity> entry : candidate.entrySet()){
+
+				newRelationship.setRole(entry.getKey(), entry.getValue());
+			
+			}
+
+			if (relationship.getRelationshipType().getRelationshipConstraint().checkConstraint(newRelationship)){
+				
+				matchingTuples.add(newRelationship);
+				
+			}
+			
+		}
+		
+		return matchingTuples;
+
+		
+	}
+
+	
 }
