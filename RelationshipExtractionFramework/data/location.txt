@@ -1,0 +1,428 @@
+Kabul
+Tirane
+Algiers
+Andorra la Vella
+Luanda
+Saint John's
+Buenos Aires
+Yerevan
+Canberra
+Vienna
+Baku
+Nassau
+Manama
+Dhaka
+Bridgetown
+Minsk
+Brussels
+Belmopan
+Porto-Novo
+Thimphu
+La Paz
+Sucre
+Sarajevo
+Gaborone
+Brasilia
+Bandar Seri Begawan
+Sofia
+Ouagadougou
+Bujumbura
+Phnom Penh
+Yaounde
+Ottawa
+Praia
+Bangui
+N'Djamena
+Santiago
+Beijing
+Bogota
+Moroni
+Brazzaville
+Kinshasa
+San Jose
+Yamoussoukro
+Abidjan
+Zagreb
+Havana
+Nicosia
+Prague
+Copenhagen
+Djibouti
+Roseau
+Santo Domingo
+Dili
+Dili
+Quito
+Cairo
+San Salvador
+Malabo
+Asmara
+Tallinn
+Addis Ababa
+Suva
+Helsinki
+Paris
+Libreville
+Banjul
+Tbilisi
+Berlin
+Accra
+Athens
+Saint George's
+Guatemala City
+Conakry
+Bissau
+Georgetown
+Port-au-Prince
+Tegucigalpa
+Budapest
+Reykjavik
+New Delhi
+Jakarta
+Tehran
+Baghdad
+Dublin
+Jerusalem
+Tel Aviv
+Rome
+Kingston
+Tokyo
+Amman
+Astana
+Nairobi
+Tarawa Atoll
+Pyongyang
+Seoul
+Pristina
+Kuwait City
+Bishkek
+Vientiane
+Riga
+Beirut
+Maseru
+Monrovia
+Tripoli
+Vaduz
+Vilnius
+Luxembourg
+Skopje
+Antananarivo
+Lilongwe
+Kuala Lumpur
+Male
+Bamako
+Valletta
+Majuro
+Nouakchott
+Port Louis
+Mexico City
+Palikir
+Chisinau
+Monaco
+Ulaanbaatar
+Podgorica
+Rabat
+Maputo
+Rangoon
+Yangon
+Naypyidaw
+Nay Pyi Taw
+Rangoon
+Yangon
+Naypyidaw
+Nay Pyi Taw
+Windhoek
+Yaren District
+Kathmandu
+Amsterdam
+The Hague
+Wellington
+Managua
+Niamey
+Abuja
+Oslo
+Muscat
+Islamabad
+Melekeok
+Panama City
+Port Moresby
+Asuncion
+Lima
+Manila
+Warsaw
+Lisbon
+Doha
+Bucharest
+Moscow
+Kigali
+Basseterre
+Castries
+Kingstown
+Apia
+San Marino
+Sao Tome
+Riyadh
+Dakar
+Belgrade
+Victoria
+Freetown
+Singapore
+Bratislava
+Ljubljana
+Honiara
+Mogadishu
+Pretoria
+Cape Town
+Bloemfontein
+Juba
+Madrid
+Colombo
+Sri Jayewardenepura Kotte
+Khartoum
+Paramaribo
+Mbabane
+Stockholm
+Bern
+Damascus
+Taipei
+Dushanbe
+Dar es Salaam
+Dodoma
+Bangkok
+Lome
+Nuku'alofa
+Port-of-Spain
+Tunis
+Ankara
+Ashgabat
+Vaiaku village
+Funafuti province
+Kampala
+Kyiv
+Abu Dhabi
+London
+Washington D.C.
+Montevideo
+Tashkent
+Port-Vila
+Vatican City
+Vatican City
+Caracas
+Hanoi
+Sanaa
+Lusaka
+Harare
+Afghanistan
+Albania
+Algeria
+Andorra
+Angola
+Antigua and Barbuda
+Argentina
+Armenia
+Australia
+Austria
+Azerbaijan
+The Bahamas
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Belize
+Benin
+Bhutan
+Bolivia
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Brazil
+Brunei
+Bulgaria
+Burkina Faso
+Burundi
+Cambodia
+Cameroon
+Canada
+Cape Verde
+Central African Republic
+Chad
+Chile
+China
+Colombia
+Comoros
+Republic of the Congo
+Democratic Republic of the Congo
+Costa Rica
+Cote d'Ivoire
+Cote d'Ivoire
+Croatia
+Cuba
+Cyprus
+Czech Republic
+Denmark
+Djibouti
+Dominica
+Dominican Republic
+East Timor
+Timor-Leste
+Ecuador
+Egypt
+El Salvador
+Equatorial Guinea
+Eritrea
+Estonia
+Ethiopia
+Fiji
+Finland
+France
+Gabon
+The Gambia
+Georgia
+Germany
+Ghana
+Greece
+Grenada
+Guatemala
+Guinea
+Guinea-Bissau
+Guyana
+Haiti
+Honduras
+Hungary
+Iceland
+India
+Indonesia
+Iran
+Iraq
+Ireland
+Israel
+Israel
+Italy
+Jamaica
+Japan
+Jordan
+Kazakhstan
+Kenya
+Kiribati
+North Korea
+South Korea
+Kosovo
+Kuwait
+Kyrgyzstan
+Laos
+Latvia
+Lebanon
+Lesotho
+Liberia
+Libya
+Liechtenstein
+Lithuania
+Luxembourg
+Macedonia
+Madagascar
+Malawi
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Mauritania
+Mauritius
+Mexico
+Federated States of Micronesia
+Moldova
+Monaco
+Mongolia
+Montenegro
+Morocco
+Mozambique
+Myanmar
+Myanmar
+Myanmar
+Myanmar
+Burma
+Burma
+Burma
+Burma
+Namibia
+Nauru
+Nepal
+Netherlands
+Netherlands
+New Zealand
+Nicaragua
+Niger
+Nigeria
+Norway
+Oman
+Pakistan
+Palau
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Poland
+Portugal
+Qatar
+Romania
+Russia
+Rwanda
+Saint Kitts and Nevis
+Saint Lucia
+Saint Vincent and the Grenadines
+Samoa
+San Marino
+Sao Tome and Principe
+Saudi Arabia
+Senegal
+Serbia
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+Solomon Islands
+Somalia
+South Africa
+South Africa
+South Africa
+South Sudan
+Spain
+Sri Lanka
+Sri Lanka
+Sudan
+Suriname
+Swaziland
+Sweden
+Switzerland
+Syria
+Taiwan
+Tajikistan
+Tanzania
+Tanzania
+Thailand
+Togo
+Tonga
+Trinidad and Tobago
+Tunisia
+Turkey
+Turkmenistan
+Tuvalu
+Tuvalu
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States of America
+Uruguay
+Uzbekistan
+Vanuatu
+Vatican City
+Holy See
+Venezuela
+Vietnam
+Yemen
+Zambia
+Zimbabwe

@@ -62,6 +62,9 @@ public class PRDualRankTest {
 		int ngram = 3;
 		int span = 10;
 
+		String locationsFile = "data/location.txt";
+		Dictionary locationsdictionary = new Dictionary(new File(locationsFile), ";","location");
+		
 		//countries Dictionary
 		String countriesFile = "data/country.txt";
 		Dictionary countriessdictionary = new Dictionary(new File(countriesFile), ";","country");
@@ -90,10 +93,10 @@ public class PRDualRankTest {
 		
 		rType.setConstraints(constraint);
 		
-		EntityMatcher countryMatcher = new DictionaryEntityMatcher(countriessdictionary);
+		EntityMatcher countryMatcher = new DictionaryEntityMatcher(locationsdictionary);
 		rType.setMatchers(countryMatcher, countryRole);
 		
-		EntityMatcher capitalMatcher = new DictionaryEntityMatcher(capitalsdictionary);
+		EntityMatcher capitalMatcher = new DictionaryEntityMatcher(locationsdictionary);
 		rType.setMatchers(capitalMatcher, capitalRole);
 		
 		

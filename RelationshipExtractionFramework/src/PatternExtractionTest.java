@@ -68,6 +68,9 @@ public class PatternExtractionTest {
 		
 		Words.initialize(new File("data/stopWords.txt"), null);
 		
+		String locationsFile = "data/location.txt";
+		Dictionary locationsdictionary = new Dictionary(new File(locationsFile), ";","location");
+		
 		//countries Dictionary
 		String countriesFile = "data/country.txt";
 		Dictionary countriessdictionary = new Dictionary(new File(countriesFile), ";","country");
@@ -96,10 +99,10 @@ public class PatternExtractionTest {
 		
 		rType.setConstraints(constraint);
 		
-		EntityMatcher countryMatcher = new DictionaryEntityMatcher(countriessdictionary);
+		EntityMatcher countryMatcher = new DictionaryEntityMatcher(locationsdictionary);
 		rType.setMatchers(countryMatcher, countryRole);
 		
-		EntityMatcher capitalMatcher = new DictionaryEntityMatcher(capitalsdictionary);
+		EntityMatcher capitalMatcher = new DictionaryEntityMatcher(locationsdictionary);
 		rType.setMatchers(capitalMatcher, capitalRole);
 
 		//How to segment the html documents
@@ -144,9 +147,16 @@ public class PatternExtractionTest {
 //		
 //		PatternExtractor<Document> spe = new WindowedSearchPatternExtractor<Document>(window, ngram, numberOfPhrases);
 //		
-		Relationship relationship = generateOperableStructure(rType,"1",locationType,countryRole,"Canada",capitalRole,"Ottawa");
+		Relationship relationship = generateOperableStructure(rType,"1",locationType,countryRole,new String("Ottawa"),capitalRole,new String("Ottawa"));
+	
+		Relationship relationship2 = generateOperableStructure(rType,"2",locationType,countryRole,new String("Ottawa"),capitalRole,new String("Ottawa"));
 		
-		List<Relationship> matchingRelationships = getMatchingRelationships(tokenized, relationship);
+		System.out.println(relationship.hashCode());
+		System.out.println(relationship2.hashCode());
+		
+		System.out.println(relationship.equals(relationship2));
+		
+//		List<Relationship> matchingRelationships = getMatchingRelationships(tokenized, relationship);
 		
 //		Map<Pattern<Document, TokenizedDocument>, Integer> patterns = spe.extractPatterns(tokenized, relationship, matchingRelationships);
 		
@@ -161,36 +171,36 @@ public class PatternExtractionTest {
 //			
 //		}
 
-		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(span,extractionPatternLenght,rType);
-
-		Map<Pattern<Relationship, TokenizedDocument>, Integer> patterns = epe.extractPatterns(tokenized, relationship, matchingRelationships);
-		
-		Set<Entry<Pattern<Relationship, TokenizedDocument>, Integer>> entries = patterns.entrySet();
-		
-		List<Pattern<Relationship, TokenizedDocument>> surv = new ArrayList<Pattern<Relationship,TokenizedDocument>>();
-		
-		for (Entry<Pattern<Relationship, TokenizedDocument>, Integer> entry : entries) {
-			
-			if (entry.getValue() > 3){
-//				System.out.println(entry.getKey() + " - " + entry.getValue());
-				surv.add(entry.getKey());
-			}
-			
-		}
-		
-		for (Pattern<Relationship, TokenizedDocument> pattern : surv) {
-			
-			System.out.println(pattern.toString());
-			
-			List<Relationship> rel = pattern.findMatch(tokenized);
-			
-			for (Relationship relationship2 : rel) {
-				
-				System.out.println(Arrays.toString(getRelavant(relationship2,tokenized)));
-				
-			}
-			
-		}
+//		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(span,extractionPatternLenght,rType);
+//
+//		Map<Pattern<Relationship, TokenizedDocument>, Integer> patterns = epe.extractPatterns(tokenized, relationship, matchingRelationships);
+//		
+//		Set<Entry<Pattern<Relationship, TokenizedDocument>, Integer>> entries = patterns.entrySet();
+//		
+//		List<Pattern<Relationship, TokenizedDocument>> surv = new ArrayList<Pattern<Relationship,TokenizedDocument>>();
+//		
+//		for (Entry<Pattern<Relationship, TokenizedDocument>, Integer> entry : entries) {
+//			
+//			if (entry.getValue() > 3){
+////				System.out.println(entry.getKey() + " - " + entry.getValue());
+//				surv.add(entry.getKey());
+//			}
+//			
+//		}
+//		
+//		for (Pattern<Relationship, TokenizedDocument> pattern : surv) {
+//			
+//			System.out.println(pattern.toString());
+//			
+//			List<Relationship> rel = pattern.findMatch(tokenized);
+//			
+//			for (Relationship relationship2 : rel) {
+//				
+//				System.out.println(Arrays.toString(getRelavant(relationship2,tokenized)));
+//				
+//			}
+//			
+//		}
 
 	}
 	
@@ -206,9 +216,9 @@ public class PatternExtractionTest {
 	private static Relationship generateOperableStructure(RelationshipType rType, String id, String entityType,String countryRole, String country, String capitalRole, String capital) {
 		
 		Relationship r1 = new Relationship(rType);
-		Entity countryE = new Entity(id, entityType, 0, country.length(), country, null);
+		Entity countryE = new Entity(id, entityType, (int)Math.round(Math.random()*500), country.length(), country, null);
 		r1.setRole(countryRole, countryE);
-		Entity capitalE = new Entity(id, entityType, 0, capital.length(), capital, null);
+		Entity capitalE = new Entity(id, entityType, (int)Math.round(Math.random()*500), capital.length(), capital, null);
 		r1.setRole(capitalRole, capitalE);
 		return r1;
 		

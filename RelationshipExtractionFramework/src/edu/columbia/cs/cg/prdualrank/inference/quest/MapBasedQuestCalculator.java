@@ -146,7 +146,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 
 	private <E> double getPrecision(E key,
 			Map<Relationship, Pair<Double, Double>> table) {
-		
+		System.out.println(key.toString());
 		return table.get(key).a();
 		
 	}
