@@ -22,7 +22,7 @@ public class RelationshipType implements Serializable {
 	private int numberEntities;
 	
 	private RoleConstraint[] roleConstraints;
-	private EntityMatcher[] entityMatchers;
+	EntityMatcher[] entityMatchers;
 	private RelationshipConstraint relConstraints;
 	
 	public RelationshipType(String type, String ... roles){
