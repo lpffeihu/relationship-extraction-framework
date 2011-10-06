@@ -83,11 +83,14 @@ public class Relationship implements Serializable,Matchable {
 			
 			Relationship other = (Relationship)o;
 			
+			if (!type.equals(other.type))
+				return false;
+			
 			for (String role : type.getRoles()) {
 				
 				EntityMatcher em = type.getMatchers(role);
 				Entity e1 = getRole(role);
-				Entity e2 = getRole(role);
+				Entity e2 = other.getRole(role);
 	
 				if (!em.match(e1, e2))
 					return false;
