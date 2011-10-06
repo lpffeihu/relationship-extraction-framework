@@ -22,9 +22,12 @@ public abstract class GraphGenerator<T extends Matchable,D extends Document> {
 			
 			for (Relationship tuple : tuples.keySet()) {
 				
-				if (topTuples.contains(tuple))
-					ret.addContext(pattern,tuple,tuples.get(tuple));
 				
+				if (topTuples.contains(tuple)){
+					System.out.println("Graph Generator: " + tuple.toString());
+
+					ret.addContext(pattern,tuple,tuples.get(tuple));
+				}
 			}
 			
 		}

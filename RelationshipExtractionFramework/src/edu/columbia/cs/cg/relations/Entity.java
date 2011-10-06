@@ -108,9 +108,21 @@ public class Entity implements Comparable<Entity>, Serializable, Matchable {
 	@Override
 	public boolean equals(Object o){
 		if(o instanceof Entity){
-			return id.equals(((Entity) o).id);
+			
+			Entity other = (Entity)o;
+			
+			if (offset != other.offset)
+				return false;
+			if (!value.equals(other.value)){
+				return false;
+			}
+			if (entityType.equals(other.entityType)){
+				return false;
+			}
+		}else{
+			return false;
 		}
-		return false;
+		return true;
 	}
 	
 }

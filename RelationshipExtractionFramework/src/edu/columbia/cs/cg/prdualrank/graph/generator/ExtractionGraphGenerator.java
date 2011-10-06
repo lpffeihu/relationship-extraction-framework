@@ -17,8 +17,6 @@ public class ExtractionGraphGenerator<T extends Relationship, D extends Tokenize
 	protected Map<Relationship, Integer> findTuples(Set<TokenizedDocument> documents,
 			Pattern<Relationship,TokenizedDocument> pattern) {
 		
-		System.out.println(pattern.toString());
-		
 		Map<Relationship, Integer> relationshipMap = new HashMap<Relationship, Integer>();
 				
 		for (TokenizedDocument document : documents) {
