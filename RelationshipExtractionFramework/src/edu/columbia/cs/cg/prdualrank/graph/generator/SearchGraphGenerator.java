@@ -44,6 +44,8 @@ public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument
 		
 		Map<Relationship,Integer> tupleMap = new HashMap<Relationship, Integer>();
 		
+		//TODO: this code should be optimized the get and put of
+		//HashMap are being called too many times
 		for (TokenizedDocument document : matchedDocs) {
 
 			List<Relationship> tuples = retrievePotentialTuples(document,rType);
@@ -60,6 +62,8 @@ public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument
 			}
 			
 		}
+		
+		
 		
 		return tupleMap;
 		
