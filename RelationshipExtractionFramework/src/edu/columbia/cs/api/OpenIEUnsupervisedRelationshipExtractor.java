@@ -36,6 +36,32 @@ import edu.washington.cs.knowitall.extractor.conf.ReVerbConfFunction;
 import edu.washington.cs.knowitall.nlp.ChunkedSentence;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 
+/**
+ * Implementation of the relationship extractor that is based on the unsupervised
+ * learning of KnowItAll. Additionally, this extractor can use a classifier to determine
+ * the confidence that each result of the unsupervised learning is a relationship (ReVerb
+ * approach)
+ * 
+ * <br>
+ * <br>
+ * 
+ * This class uses the original software of ReVerb that can be found in
+ * <a href="http://reverb.cs.washington.edu/">http://reverb.cs.washington.edu/</a>
+ * 
+ * <br>
+ * <br>
+ * 
+ * To know more about KnowItAll or Reverb please refer to:
+ * 
+ * 
+ * <a href="http://ai.cs.washington.edu/pubs/279">Identifying Relations for Open
+ * Information Extraction</a>
+ * 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class OpenIEUnsupervisedRelationshipExtractor<D extends Document> implements RelationshipExtractor<Document>{
 
 	private SentenceSplitter splitter;
@@ -45,21 +71,66 @@ public class OpenIEUnsupervisedRelationshipExtractor<D extends Document> impleme
 	private Classifier cla;
 	private double threshold;
 
+	/**
+	 * Constructor of the Open IE relationship extractor. This constructor does not
+	 * receive a classifier nor a threshold. In this case the classifier that is used
+	 * is the default classifier of ReVerb while the threshold is set to 0.5.
+	 * 
+	 * @param splitter the sentence splitter
+	 * @param tokenizer the tokenizer
+	 * @param pos the POS tagger
+	 * @param chunker the NLP chunker
+	 */
 	public OpenIEUnsupervisedRelationshipExtractor(SentenceSplitter splitter,
 			Tokenizer tokenizer,POSTagger pos,Chunker chunker){
 		this(splitter,tokenizer,pos,chunker,null,0.5);
 	}
 	
+	/**
+	 * Constructor of the Open IE relationship extractor. This constructor does not
+	 * receive a threshold. In this case the threshold is set to 0.5.
+	 * 
+	 * @param splitter the sentence splitter
+	 * @param tokenizer the tokenizer
+	 * @param pos the POS tagger
+	 * @param chunker the NLP chunker
+	 * @param cla the classifier used to compute the confidence that a given answer is a relationship
+	 */
 	public OpenIEUnsupervisedRelationshipExtractor(SentenceSplitter splitter,
 			Tokenizer tokenizer,POSTagger pos,Chunker chunker, Classifier cla){
 		this(splitter,tokenizer,pos,chunker,cla,0.5);
 	}
 	
+	/**
+	 * Constructor of the Open IE relationship extractor. This constructor does not
+	 * receive a classifier. In this case the classifier that is used
+	 * is the default classifier of ReVerb.
+	 * 
+	 * @param splitter the sentence splitter
+	 * @param tokenizer the tokenizer
+	 * @param pos the POS tagger
+	 * @param chunker the NLP chunker
+	 * @param threshold the confidence threshold to consider that a given candidate is
+	 * a relationship: if the confidence of a candidate is higher than the threshold
+	 * then the candidate is considered a relationship otherwise it is discarded
+	 */
 	public OpenIEUnsupervisedRelationshipExtractor(SentenceSplitter splitter,
 			Tokenizer tokenizer,POSTagger pos,Chunker chunker, double threshold){
 		this(splitter,tokenizer,pos,chunker,null,threshold);
 	}
 
+	/**
+	 * Constructor of the Open IE relationship extractor.
+	 * 
+	 * @param splitter the sentence splitter
+	 * @param tokenizer the tokenizer
+	 * @param pos the POS tagger
+	 * @param chunker the NLP chunker
+	 * @param cla the classifier used to compute the confidence that a given answer is a relationship
+	 * @param threshold the confidence threshold to consider that a given candidate is
+	 * a relationship: if the confidence of a candidate is higher than the threshold
+	 * then the candidate is considered a relationship otherwise it is discarded
+	 */
 	public OpenIEUnsupervisedRelationshipExtractor(SentenceSplitter splitter,
 			Tokenizer tokenizer,POSTagger pos,Chunker chunker, Classifier cla,
 			double threshold){
@@ -71,7 +142,17 @@ public class OpenIEUnsupervisedRelationshipExtractor<D extends Document> impleme
 		this.threshold=threshold;
 	}
 
-
+	/**
+	 * 
+	 * Implementation of the extractTuples method. This method starts by splitting the
+	 * input document into sentences. Each sentence is tokenized, and its POS tags and
+	 * chunks are computed. Next, the candidates to relationships are generated
+	 * using KnowItAll unsupervised learning. Finally, the the confidence of the
+	 * candidate is computed using the classifier confidence. Only the candidates
+	 * with confidence above the threshold are returned as relationships.
+	 * 
+	 * @param d the document that contains the information to be extracted
+	 */
 	public List<Relationship> extractTuples(Document doc){
 		Sentence[] sents = splitter.split(doc);
 		List<ChunkedSentence> chunkedSents = new ArrayList<ChunkedSentence>();

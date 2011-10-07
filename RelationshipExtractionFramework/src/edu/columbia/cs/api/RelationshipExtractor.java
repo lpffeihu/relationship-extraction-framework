@@ -25,7 +25,6 @@ public interface RelationshipExtractor<D> {
 	 * between entities of the document
 	 * 
 	 * @param d the document that contains the information to be extracted
-	 * @return a list of relationships between entities present in the document d
 	 */
 	public List<Relationship> extractTuples(D d);
 	

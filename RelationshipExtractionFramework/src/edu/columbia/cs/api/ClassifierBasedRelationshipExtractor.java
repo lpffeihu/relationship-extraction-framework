@@ -49,8 +49,7 @@ public class ClassifierBasedRelationshipExtractor<D extends Document> implements
 	 * Implementation of the extract Tuples method that uses the classifier to
 	 * extract tuples from the input document
 	 * 
-	 * @param d a tokenized document from which we will extract information
-	 * @return list of relationships between entities of the input document
+	 * @param d the document that contains the information to be extracted
 	 */
 	public List<Relationship> extractTuples(Document d){
 		

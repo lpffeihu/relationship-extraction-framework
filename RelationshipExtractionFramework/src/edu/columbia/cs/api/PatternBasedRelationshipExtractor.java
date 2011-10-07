@@ -40,7 +40,6 @@ public class PatternBasedRelationshipExtractor<T extends Relationship, D extends
 	 * extract tuples from the input document
 	 * 
 	 * @param d a tokenized document from which we will extract information
-	 * @return list of relationships between entities of the input document
 	 */
 	@Override
 	public List<Relationship> extractTuples(D d) {
