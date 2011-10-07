@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,56 +73,30 @@ public abstract class WebBasedSearchEngine implements SearchEngine {
 		
 		System.out.println(urls.size());
 		
-		Map<URL,String> urlContentMap = Parallel.map(urls, new Function<URL, String>() {
-
-			@Override
-			public String apply(URL url) {
-				
-				System.out.print(".");
-				
-				int attempt = 0;
-				
-				while (attempt < ATTEMPTS){
-				
-					BufferedReader br = null;
-					
-					try {
-						
-						br = new BufferedReader(new InputStreamReader(url.openStream()));
-								
-						StringBuilder sb = new StringBuilder();
-							
-						String fileLine = br.readLine();
-						
-						if (fileLine != null)
-							sb.append(fileLine);
-						
-						while ((fileLine = br.readLine())!=null){
-							
-							sb.append("\n" + fileLine);
-							
-						}
-
-						return sb.toString();
-						
-					} catch (MalformedURLException e) {
-						
-						//not do anything
-						
-					} catch (IOException e) {
+		Map<URL,String> urlContentMap = new HashMap<URL, String>();
+		
+		List<Thread> downloaderPool = new ArrayList<Thread>();
+		
+		for (URL url : urls) {
 			
-						//not do anything
-						
-					}
-					
-					attempt++;
-				}
-
-				return "";
-
+			Thread t = new Thread(new Downloader(url, urlContentMap));
+			
+			downloaderPool.add(t);
+			
+			t.start();
+			
+		}
+		
+		for (Thread thread : downloaderPool) {
+			
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-		});
+			
+		}
 		
 		List<Document> ret = new ArrayList<Document>();
 		
@@ -133,12 +108,14 @@ public abstract class WebBasedSearchEngine implements SearchEngine {
 			
 			System.out.print(".");
 			
-			if (!document.isEmpty()){
+			if (document != null && !document.isEmpty()){
 				
 				Document d = loader.load(document);
 				d.setPath(url.getHost());
 				d.setFilename(url.getFile());
 				ret.add(d);
+			} else {
+				System.out.println("EMPTY: " + url);
 			}
 			
 		}
