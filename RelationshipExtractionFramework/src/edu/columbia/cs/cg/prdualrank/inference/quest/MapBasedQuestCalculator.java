@@ -31,7 +31,14 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		this.seeds = seeds;
 		patternTable = new HashMap<Pattern<T,D>, Pair<Double,Double>>();
 		tupleTable = new HashMap<Relationship, Pair<Double,Double>>();
-		
+		initializeSeedRecall();
+	}
+
+	private void initializeSeedRecall() {
+		double numSeeds=seeds.size();
+		for(Relationship r : seeds){
+			tupleTable.put(r, new Pair<Double,Double>(1.0,1.0/numSeeds));
+		}
 	}
 
 	@Override
@@ -55,8 +62,6 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 			}
 			
 		}
-
-		
 	}
 
 	@Override
@@ -80,8 +85,6 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 			}
 			
 		}
-
-		
 	}
 
 	private double calculatePrecision(Relationship tuple,PRDualRankGraph<T,D> gs) {
