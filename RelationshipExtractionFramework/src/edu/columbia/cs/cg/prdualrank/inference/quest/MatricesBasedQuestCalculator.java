@@ -40,8 +40,7 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 	private boolean completeConvergence=true;
 	private static final double COMPARISON_THRESHOLD = 1e-10;
 	
-	public MatricesBasedQuestCalculator(Set<Relationship> seeds){
-		this.seeds=seeds;
+	public MatricesBasedQuestCalculator(){
 		patternIds = new HashMap<Pattern<T,D>, Integer>();
 		tupleIds = new HashMap<Relationship, Integer>();
 		patternIdsInverse=new HashMap<Integer,Pattern<T,D>>();
@@ -52,8 +51,8 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 		patternsRecallMap=new HashMap<Pattern<T,D>,Double>();
 	}
 
-	public MatricesBasedQuestCalculator(Set<Relationship> seeds, int numberIterations) {
-		this(seeds);
+	public MatricesBasedQuestCalculator(int numberIterations) {
+		this();
 		this.completeConvergence=false;
 		this.numberIterations=numberIterations;
 	}
@@ -385,5 +384,12 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 	@Override
 	public Map<Pattern<T,D>, Double> getPatternRecallMap() {
 		return patternsRecallMap;
+	}
+
+	@Override
+	public void setSeeds(Set<Relationship> seeds) {
+		
+		this.seeds = seeds;
+		
 	}
 }

@@ -25,13 +25,11 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 	private ConvergenceFinder convergence;
 	private Set<Relationship> seeds;
 
-	public MapBasedQuestCalculator(Set<Relationship> seeds, ConvergenceFinder convergence) {
+	public MapBasedQuestCalculator(ConvergenceFinder convergence) {
 		
 		this.convergence = convergence;
-		this.seeds = seeds;
 		patternTable = new HashMap<Pattern<T,D>, Pair<Double,Double>>();
 		tupleTable = new HashMap<Relationship, Pair<Double,Double>>();
-		initializeSeedRecall();
 	}
 
 	private void initializeSeedRecall() {
@@ -257,6 +255,12 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 	@Override
 	public Map<Relationship, Double> getTupleRecallMap() {
 		return tupleRecall;
+	}
+
+	@Override
+	public void setSeeds(Set<Relationship> seeds) {
+		this.seeds = seeds;
+		initializeSeedRecall();
 	}
 	
 }

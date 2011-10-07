@@ -35,6 +35,7 @@ import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
 import edu.columbia.cs.cg.prdualrank.inference.InferencePRDualRank;
 import edu.columbia.cs.cg.prdualrank.inference.convergence.NumberOfIterationsConvergence;
 import edu.columbia.cs.cg.prdualrank.inference.quest.MapBasedQuestCalculator;
+import edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator;
 import edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction;
 import edu.columbia.cs.cg.prdualrank.model.PRDualRankModel;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
@@ -59,53 +60,48 @@ public class PRDualRank implements Engine{
 	private SearchEngine se;
 	private QueryGenerator<String> qg;
 	private int k_seed;
-	private int span;
-	private int ngram;
-	private int window;
 	private int minsupport;
 	private int k_nolabel;
 	private int iterations;
 	private RankFunction<Pattern<Document,TokenizedDocument>> searchpatternRankFunction;
 	private RankFunction<Pattern<Relationship,TokenizedDocument>> extractpatternRankFunction;
 	private RankFunction<Relationship> tupleRankFunction;
-	private int numberOfPhrases;
-	private int extractionPatternLenght;
 	private Tokenizer tokenizer;
 	private RelationshipType rType;
 	private TokenBasedAnalyzer myAnalyzer;
 	private QueryGenerator<Query> forIndexQueryGenerator;
+	private PatternExtractor<Document> spe;
+	private PatternExtractor<Relationship> epe;
+	private QuestCalculator<Document, TokenizedDocument> searchPatternQuestCalculator;
+	private QuestCalculator<Relationship, TokenizedDocument> extractionPatternQuestCalculator;
 	
-	public PRDualRank(SearchEngine se, QueryGenerator<String> qg, int k_seed, int ngram, int window, int minsupport,
-			int k_nolabel, int iterations, int numberOfPhrases, int extractionPatternLenght, RankFunction<Pattern<Document,TokenizedDocument>> searchpatternRankFunction,
+	public PRDualRank(PatternExtractor<Document> spe, PatternExtractor<Relationship> epe, SearchEngine se, QueryGenerator<String> qg, int k_seed, int minsupport,
+			int k_nolabel, int iterations, RankFunction<Pattern<Document,TokenizedDocument>> searchpatternRankFunction,
 			RankFunction<Pattern<Relationship,TokenizedDocument>> extractpatternRankFunction, RankFunction<Relationship> tupleRankFunction, 
-			Tokenizer tokenizer, RelationshipType rType, TokenBasedAnalyzer myAnalyzer, QueryGenerator<Query> forIndexQueryGenerator,int span){
+			Tokenizer tokenizer, RelationshipType rType, TokenBasedAnalyzer myAnalyzer, QueryGenerator<Query> forIndexQueryGenerator,
+			QuestCalculator<Document, TokenizedDocument> searchPatternQuestCalculator, QuestCalculator<Relationship, TokenizedDocument> extractionPatternQuestCalculator){
 		this.se = se;
 		this.qg = qg;
 		this.k_seed = k_seed;
-		this.ngram = ngram;
-		this.window = window;
 		this.minsupport = minsupport;
 		this.k_nolabel = k_nolabel;
 		this.iterations = iterations;
 		this.searchpatternRankFunction = searchpatternRankFunction;
 		this.extractpatternRankFunction = extractpatternRankFunction;
 		this.tupleRankFunction = tupleRankFunction;
-		this.numberOfPhrases = numberOfPhrases;
-		this.extractionPatternLenght = extractionPatternLenght;
 		this.tokenizer = tokenizer;
 		this.rType = rType;
 		this.myAnalyzer = myAnalyzer;
 		this.forIndexQueryGenerator = forIndexQueryGenerator;
-		this.span = span;
+		this.spe = spe;
+		this.epe = epe;
+		this.searchPatternQuestCalculator = searchPatternQuestCalculator;
+		this.extractionPatternQuestCalculator = extractionPatternQuestCalculator;
 		//span is for the relationship type. that comes in the List<OperableStructure>
 	}
 	
 	@Override
 	public Model train(List<OperableStructure> list) {
-		
-		PatternExtractor<Document> spe = new WindowedSearchPatternExtractor<Document>(window, ngram, numberOfPhrases);
-		
-		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(span,extractionPatternLenght,rType);
 		
 		HashMap<Pattern<Document,TokenizedDocument>, Integer> Ps = new HashMap<Pattern<Document,TokenizedDocument>, Integer>();
 		
@@ -201,13 +197,17 @@ public class PRDualRank implements Engine{
 		
 		System.out.println("Ranking...");
 		
-		search.rank(Gs, searchpatternRankFunction, tupleRankFunction, new MapBasedQuestCalculator<Document,TokenizedDocument>(seeds,new NumberOfIterationsConvergence(iterations)));
+		searchPatternQuestCalculator.setSeeds(seeds);
+		
+		search.rank(Gs, searchpatternRankFunction, tupleRankFunction, searchPatternQuestCalculator);
 		
 		InferencePRDualRank<Relationship,TokenizedDocument> extract = new InferencePRDualRank<Relationship,TokenizedDocument>();
 
 		System.out.println("Ranking...");
 		
-		extract.rank(Ge, extractpatternRankFunction, tupleRankFunction, new MapBasedQuestCalculator<Relationship,TokenizedDocument>(seeds,new NumberOfIterationsConvergence(iterations)));
+		extractionPatternQuestCalculator.setSeeds(seeds);
+		
+		extract.rank(Ge, extractpatternRankFunction, tupleRankFunction, extractionPatternQuestCalculator);
 		
 		System.out.println("Returning...");
 		
