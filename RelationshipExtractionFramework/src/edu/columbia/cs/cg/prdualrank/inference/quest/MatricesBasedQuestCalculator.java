@@ -306,6 +306,8 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 			Pattern<T,D> pattern = patternIdsInverse.get(i);
 			patternsPrecisionMap.put(pattern, patternsPrecision.get(i));
 		}
+		
+		
 	}
 
 	@Override

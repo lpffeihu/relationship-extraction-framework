@@ -37,7 +37,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 	private void initializeSeedRecall() {
 		double numSeeds=seeds.size();
 		for(Relationship r : seeds){
-			tupleTable.put(r, new Pair<Double,Double>(1.0,1.0/numSeeds));
+			setRecall(r,1.0/numSeeds,tupleTable);
 		}
 	}
 
@@ -62,14 +62,15 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 			}
 			
 		}
+		generatePatternMaps();
+		generateTupleMaps();
 	}
 
 	@Override
 	public void runQuestR(PRDualRankGraph<T,D> gs) {
 		convergence.reset();
 		
-		while(!convergence.converged()){
-			
+		while(!convergence.converged()){		
 			for (Pattern<T,D> pattern : gs.getPatterns()) {
 				
 				double recall = calculateRecall(pattern, gs);
@@ -81,10 +82,11 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 				
 				double recall = calculateRecall(tuple,gs);
 				setRecall(tuple,recall,tupleTable);
-				
 			}
 			
 		}
+		generatePatternMaps();
+		generateTupleMaps();
 	}
 
 	private double calculatePrecision(Relationship tuple,PRDualRankGraph<T,D> gs) {
@@ -211,20 +213,11 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 
 	@Override
 	public Map<Pattern<T,D>, Double> getPatternPrecisionMap() {
-		
-		if (patternPrecision == null){
-			generatePatternMaps();
-		}
-	
 		return patternPrecision;
 	}
 
 	@Override
 	public Map<Relationship, Double> getTuplePrecisionMap() {
-		
-		if (tuplePrecision == null){
-			generateTupleMaps();
-		}
 		return tuplePrecision;
 	}
 
@@ -232,9 +225,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		
 		tuplePrecision = new HashMap<Relationship, Double>();
 		tupleRecall = new HashMap<Relationship, Double>();
-		
 		loadMap(tupleTable,tuplePrecision,tupleRecall);
-		
 	}
 
 	private <E> void loadMap(Map<E, Pair<Double, Double>> table,
@@ -242,7 +233,6 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 			Map<E, Double> recall) {
 
 		for (Entry<E, Pair<Double, Double>> entry : table.entrySet()) {
-			
 			precision.put(entry.getKey(), entry.getValue().a());
 			recall.put(entry.getKey(), entry.getValue().b());
 			
@@ -253,9 +243,6 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 
 	@Override
 	public Map<Pattern<T,D>, Double> getPatternRecallMap() {
-		if (patternRecall == null){
-			generatePatternMaps();
-		}
 		return patternRecall;
 	}
 
@@ -269,12 +256,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 
 	@Override
 	public Map<Relationship, Double> getTupleRecallMap() {
-		
-		if (tupleRecall == null){
-			generateTupleMaps();
-		}
 		return tupleRecall;
-		
 	}
 	
 }
