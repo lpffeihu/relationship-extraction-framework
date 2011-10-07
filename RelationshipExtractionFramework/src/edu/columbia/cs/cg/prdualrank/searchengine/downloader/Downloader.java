@@ -32,35 +32,28 @@ public class Downloader implements Runnable {
 	@Override
 	public void run() {
 		
-		URLConnection conn = null;
-		try {
-			conn = url.openConnection();
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		 
-		        // Set up a request.
-		conn.setConnectTimeout(TIME_OUT);    // 10 sec
-		conn.setReadTimeout(TIME_OUT);       // 10 sec
 		
-		conn.setRequestProperty( "User-agent", "spider" );
 
 		int attempt = 0;
 		
 		while (attempt < ATTEMPTS){
-		
-			try {
-				Thread.sleep(attempt*TIME_INTERVAL);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-			BufferedReader br = null;
-			
+	
 			try {
 				
+				Thread.sleep(attempt*TIME_INTERVAL);
+				
+				URLConnection conn = null;
+			
+				conn = url.openConnection();
+				 
+				        // Set up a request.
+				conn.setConnectTimeout(TIME_OUT);    // 10 sec
+				conn.setReadTimeout(TIME_OUT);       // 10 sec
+				
+				conn.setRequestProperty( "User-agent", "spider" );
+								
+				BufferedReader br = null;
+			
 				conn.connect();
 				
 				br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -90,12 +83,14 @@ public class Downloader implements Runnable {
 				
 			} catch (MalformedURLException e) {
 				
-				//not do anything
+				//do not do anything
 				
 			} catch (IOException e) {
 	
-				//not do anything
+				//do not do anything
 				
+			} catch (InterruptedException e) {
+				//don't do anything
 			}
 			
 			attempt++;
