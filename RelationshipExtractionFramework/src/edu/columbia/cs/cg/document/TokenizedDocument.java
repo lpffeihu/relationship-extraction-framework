@@ -9,6 +9,22 @@ import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.utils.Span;
 
+/**
+ * Particular type of Document that went through a tokenization process.
+ * 
+ * <br>
+ * <br>
+ * 
+ * Like a Document, a TokenizedDocument is defined by its path, the name of the file,
+ * a list of Segments that represent the content of the document and annotations of
+ * entities and relationships in the document. Additionally, a TokenizedDocument is
+ * composed by the information that results from the tokenization.
+ * 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class TokenizedDocument extends Document {
 
 	private Span[] detectedSpans;
@@ -17,6 +33,12 @@ public class TokenizedDocument extends Document {
 
 	private Map<Entity, Span> entitySpanTable;
 	
+	/**
+	 * Constructor of the Document
+	 * 
+	 * @param d document without tokenization
+	 * @param tokenizer tokenizer used to tokenize the document
+	 */
 	public TokenizedDocument(Document d, Tokenizer tokenizer) {
 		
 		super(d);
@@ -67,10 +89,10 @@ public class TokenizedDocument extends Document {
 
 	/**
 	 * Returns the indexes in the tokenization.
-	 * @param entity
-	 * @return
+	 * 
+	 * @param entity Entity that we are trying to find the indexes for
+	 * @return start and end indexes of the input entity
 	 */
-	
 	public Span getEntitySpan(Entity entity) {
 		
 		Span ret = entitySpanTable.get(entity);
@@ -105,12 +127,23 @@ public class TokenizedDocument extends Document {
 			return mid; // found
 	}
 
+	/**
+	 * Returns an array of Strings where each entry is the value of each token of the text
+	 * 
+	 * @return tokens of the text
+	 */
 	public String[] getTokenizedString() {
 		
 		return detectedString;
 	
 	}
 	
+	/**
+	 * Returns an array of spans where each entry corresponds to the start and ending
+	 * indexes of the tokens in the text
+	 * 
+	 * @return indexes of the tokens of the text
+	 */
 	public Span[] getTokenizedSpans() {
 		
 		return detectedSpans;

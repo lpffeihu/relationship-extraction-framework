@@ -57,8 +57,9 @@ public class Document implements Serializable, Writable, Matchable {
 	
 	/**
 	 * From text constructor for documents that are not stored in disk
+	 * 
+	 * @param text list of segments in the document
 	 */
-	
 	public Document(List<Segment> text){
 				
 		this(null,null,text);
