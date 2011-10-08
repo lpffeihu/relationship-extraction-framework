@@ -1,17 +1,8 @@
 package edu.columbia.cs.cg.document.tagger.entity.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.aliasi.chunk.Chunk;
 import com.aliasi.chunk.Chunking;
@@ -26,14 +17,65 @@ import edu.columbia.cs.cg.document.tagger.entity.EntityTagger;
 import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
 import edu.columbia.cs.utils.Dictionary;
 
+/**
+ * The DictionaryBasedEntityTagger extends EntityTagger.
+ *
+ * <br>
+ * <br>
+ *
+ * Instances of this class use a dictionary to annotate the entities of the text.
+ * 
+ * <br>
+ * <br>
+ * 
+ * The algorithm used for the dictionary matching is the Aho-Corasick algorithm. For
+ * more details about this algorithm please refer to:
+ * 
+ * <br>
+ * <br>
+ * 
+ * Aho, Alfred V.; Margaret J. Corasick (June 1975). "Efficient string matching: An aid to
+ * bibliographic search". Communications of the ACM 18 (6): 333–340.
+ * 
+ * <br>
+ * <br>
+ * 
+ * This class uses the implementation of Aho-Corasick from 
+ * <a href="http://alias-i.com/lingpipe/">Lingpipe</a> which uses information from the
+ * tokenization in the matching.
+ * 
+ * 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class DictionaryBasedEntityTagger extends EntityTagger {
 
+	/** The Constant CHUNK_SCORE. This is actually not used since we do not consider
+	 *  the confidence of the annotator
+	 */
 	private static final double CHUNK_SCORE = 1.0;
+	
+	/** The number of documents. Used to generate the ids. */
 	private int processedDocuments;
+	
+	/** The dictionary. */
 	private MapDictionary<String> dictionary;
+	
+	/** The matcher. */
 	private ExactDictionaryChunker matcher;
+	
+	/** The tokenizer. */
 	private Tokenizer tokenizer;
 
+	/**
+	 * Instantiates a new dictionary based entity tagger.
+	 *
+	 * @param tag the tag to be assigned to entities that match the dictionary
+	 * @param dictionary the dictionary
+	 * @param tokenizer the tokenizer
+	 */
 	public DictionaryBasedEntityTagger(String tag, Dictionary dictionary, Tokenizer tokenizer){
 		super(tag);
 		processedDocuments = 0;
@@ -42,6 +84,11 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 
 	}
 
+	/**
+	 * Creates the matching dictionary.
+	 *
+	 * @param dict the dict
+	 */
 	private void createMatchingDictionary(Dictionary dict) {
 		
 		dictionary = new MapDictionary<String>();
@@ -58,12 +105,20 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
                                      true,true);
 	}
 
+	/**
+	 * Gets the tokenizer factory.
+	 *
+	 * @return the tokenizer factory
+	 */
 	private TokenizerFactory getTokenizerFactory() {
 		
 		return InstanceBasedTokenizedFactory.getInstance(tokenizer);
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.document.tagger.entity.EntityTagger#findSpans(edu.columbia.cs.cg.document.Document)
+	 */
 	@Override
 	protected List<EntitySpan> findSpans(Document d) {
 		
@@ -101,6 +156,15 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 		
 	}
 
+	/**
+	 * Creates the id.
+	 *
+	 * @param processedDocument the processed document
+	 * @param matches the matches
+	 * @param type the type
+	 * @param tag the tag
+	 * @return the string
+	 */
 	private String createId(int processedDocument, int matches, String type, String tag) {
 		
 		return processedDocument + "-" + matches + "-" + type + "-" + tag;
