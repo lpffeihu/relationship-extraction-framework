@@ -35,7 +35,7 @@ import edu.columbia.cs.utils.Dictionary;
  * <br>
  * 
  * Aho, Alfred V.; Margaret J. Corasick (June 1975). "Efficient string matching: An aid to
- * bibliographic search". Communications of the ACM 18 (6): 333–340.
+ * bibliographic search". Communications of the ACM 18 (6): 333-340.
  * 
  * <br>
  * <br>
@@ -85,9 +85,10 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 	}
 
 	/**
-	 * Creates the matching dictionary.
+	 * Creates the Lingpipe representation of a dictionary using the our representation
+	 * of a dictionary
 	 *
-	 * @param dict the dict
+	 * @param dict the dictionary used by this entity tagger
 	 */
 	private void createMatchingDictionary(Dictionary dict) {
 		
@@ -157,17 +158,19 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 	}
 
 	/**
-	 * Creates the id.
+	 * Assigns an Id to the entity. The id is of the form:
+	 * 
+	 * idDocument-idEntityDoc-typeChunk-tagAnnotator
 	 *
-	 * @param processedDocument the processed document
-	 * @param matches the matches
-	 * @param type the type
-	 * @param tag the tag
-	 * @return the string
+	 * @param idDocument the processed document
+	 * @param idEntityDoc the matches
+	 * @param typeChunk the type
+	 * @param tagAnnotator the tag
+	 * @return the id in the form "idDocument-idEntityDoc-typeChunk-tagAnnotator"
 	 */
-	private String createId(int processedDocument, int matches, String type, String tag) {
+	private String createId(int idDocument, int dEntityDoc, String typeChunk, String tagAnnotator) {
 		
-		return processedDocument + "-" + matches + "-" + type + "-" + tag;
+		return idDocument + "-" + dEntityDoc + "-" + typeChunk + "-" + tagAnnotator;
 		
 	}
 
