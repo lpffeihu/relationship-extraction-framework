@@ -1,3 +1,14 @@
+/**
+ * This class defines the behavior of the generation of search pattern as discussed with the authors of PRDualRank.
+ * Notice that it differs from the one described on the paper on the universe of words used to generate the Search Patterns.
+ * In this case, a window around the tuples is used. However, in the paper, no such window is described.
+ * According to the authors, this approach was used to run the experiments to obtain better performance (in time) of the results.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.pattern.extractor.impl;
 
 import java.io.File;
@@ -28,12 +39,22 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 	private int ngram;
 	private int numberOfPhrases;
 
+	/**
+	 * Instantiates a new windowed search pattern extractor.
+	 *
+	 * @param window the number of words around the tuple to be used to generate the search patterns.
+	 * @param ngram the maximum size of ngrams to be calculated in order to generate the search patterns. 
+	 * @param numberOfPhrases the maximum number of ngrams to be combined in the search pattern generation.
+	 */
 	public WindowedSearchPatternExtractor(int window, int ngram, int numberOfPhrases) {
 		this.window = window;
 		this.ngram = ngram;
 		this.numberOfPhrases = numberOfPhrases;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor#extractPatterns(edu.columbia.cs.cg.document.TokenizedDocument, edu.columbia.cs.cg.relations.Relationship, java.util.List)
+	 */
 	@Override
 	public Map<Pattern<Document,TokenizedDocument>, Integer> extractPatterns(TokenizedDocument document,
 			Relationship relationship, List<Relationship> matchingRelationships) {
@@ -229,19 +250,4 @@ public class WindowedSearchPatternExtractor<T extends Document> implements Patte
 		
 	}
 
-	public static void main(String[] args) {
-		
-		Words.initialize(null, null);
-		
-		Span t1 = new Span(5, 14);
-		Span t2 = new Span(1,15);
-		Span t3 = new Span(16,30);
-		Span t4 = new Span(31,45);
-		
-		List<Span> t = new ArrayList<Span>();
-		
-		t.add(t1);t.add(t2);t.add(t3);t.add(t4);
-		
-	}
-	
 }

@@ -1,3 +1,11 @@
+/**
+ * Search Engine used to issue queries to Bing Search Engine. The user has to write its own API key.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.searchengine.impl;
 
 import java.net.MalformedURLException;
@@ -18,6 +26,11 @@ import edu.columbia.cs.cg.prdualrank.searchengine.WebBasedSearchEngine;
 
 public class BingSearchEngine extends WebBasedSearchEngine {
 
+	/**
+	 * Instantiates a new bing search engine.
+	 *
+	 * @param loader the loader
+	 */
 	public BingSearchEngine(RawDocumentLoader loader) {
 		super(loader);
 	}

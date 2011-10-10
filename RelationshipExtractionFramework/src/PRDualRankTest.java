@@ -22,9 +22,9 @@ import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.prdualrank.PRDualRank;
 import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
 import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenizerBasedAnalyzer;
-import edu.columbia.cs.cg.prdualrank.inference.convergence.NumberOfIterationsConvergence;
-import edu.columbia.cs.cg.prdualrank.inference.quest.MapBasedQuestCalculator;
+import edu.columbia.cs.cg.prdualrank.inference.convergence.impl.NumberOfIterationsConvergence;
 import edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator;
+import edu.columbia.cs.cg.prdualrank.inference.quest.impl.MapBasedQuestCalculator;
 import edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction;
 import edu.columbia.cs.cg.prdualrank.inference.ranking.impl.FScoreBasedRankFunction;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
@@ -158,7 +158,7 @@ public class PRDualRankTest {
 		
 		QuestCalculator<Relationship,TokenizedDocument> epqc = new MapBasedQuestCalculator<Relationship,TokenizedDocument>(new NumberOfIterationsConvergence(iterations));
 		
-		PRDualRank prDualRank = new PRDualRank(spe, epe, se, qg, k_seed, minsupport, k_nolabel, iterations, searchpatternRankFunction, 
+		PRDualRank prDualRank = new PRDualRank(spe, epe, se, qg, k_seed, minsupport, k_nolabel, searchpatternRankFunction, 
 				extractpatternRankFunction, tupleRankFunction, tokenizer, rType, myAnalyzer,forIndexQueryGenerator,spqc,epqc);
 	
 		List<OperableStructure> seeds = new ArrayList<OperableStructure>();

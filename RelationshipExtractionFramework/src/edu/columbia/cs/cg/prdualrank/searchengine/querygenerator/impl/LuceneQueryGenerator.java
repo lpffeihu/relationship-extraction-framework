@@ -1,3 +1,11 @@
+/**
+ * Class used to generate the queries to issue in Lucene.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl;
 
 import java.io.IOException;
@@ -33,24 +41,38 @@ public class LuceneQueryGenerator extends QueryGenerator<Query> {
 	private QueryParser qp;
 	private TokenBasedAnalyzer tbAnalyzer;
 
+	/**
+	 * Instantiates a new lucene query generator.
+	 *
+	 * @param tbAnalyzer The analyzer to segment and parse the queries to be issued in Lucene. Has to match the Analyzer used to index the collection of documents.
+	 */
 	public LuceneQueryGenerator(TokenBasedAnalyzer tbAnalyzer){
 		this.tbAnalyzer = tbAnalyzer;
 		qp = new QueryParser(Version.LUCENE_34, Index.CONTENT, tbAnalyzer);
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator#generateQuery(edu.columbia.cs.cg.relations.Relationship)
+	 */
 	@Override
 	public Query generateQuery(Relationship relationship) {
 		// TODO Implement before trying over local collection
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator#generateQuery(edu.columbia.cs.cg.relations.Entity)
+	 */
 	@Override
 	public Query generateQuery(Entity role) {
 		// TODO Implement before trying over local collection
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator#generateQuery(edu.columbia.cs.cg.pattern.prdualrank.SearchPattern)
+	 */
 	@Override
 	public Query generateQuery(
 			SearchPattern<Document, TokenizedDocument> pattern) {

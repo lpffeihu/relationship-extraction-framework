@@ -1,3 +1,12 @@
+/**
+ * Generates a graph based on the extraction patterns and based on the assumption that extraction patterns only match the tuples whose
+ * context match the pattern.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.graph.generator;
 
 import java.util.HashMap;

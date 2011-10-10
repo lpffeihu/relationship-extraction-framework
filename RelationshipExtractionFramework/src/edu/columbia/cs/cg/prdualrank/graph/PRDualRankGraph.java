@@ -1,3 +1,11 @@
+/**
+ * The graph connecting patterns and tuples as defined in PRDualRank paper.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.graph;
 
 import java.util.HashMap;
@@ -16,6 +24,9 @@ public class PRDualRankGraph<T extends Matchable,D extends Document> {
 	Map<Pattern<T,D>,Map<Relationship,Integer>> patternTupleFrequency;
 	Map<Relationship,Map<Pattern<T,D>, Integer>> tuplePatternFrequency;
 	
+	/**
+	 * Instantiates a new PRDualRank graph.
+	 */
 	public PRDualRankGraph(){
 		patternFrequency = new HashMap<Pattern<T,D>, Integer>();
 		tupleFrequency = new HashMap<Relationship, Integer>();
@@ -24,6 +35,14 @@ public class PRDualRankGraph<T extends Matchable,D extends Document> {
 	}
 	
 	
+	/**
+	 * Adds a new connection between a pattern and a tuple. Also includes the frequency with which this connection (called 'context'
+	 * in the paper) appears in the collection being processed.
+	 *
+	 * @param pattern the pattern to be added in the graph.
+	 * @param tuple the tuple to be connected to the pattern.
+	 * @param frequency the frequency with which this context appears in the 'snippets'
+	 */
 	public void addContext(Pattern<T,D> pattern, Relationship tuple, int frequency) {
 		
 		updateFrequency(patternFrequency,pattern,frequency);
@@ -63,15 +82,32 @@ public class PRDualRankGraph<T extends Matchable,D extends Document> {
 	}
 
 
+	/**
+	 * Gets the patterns from the graph.
+	 *
+	 * @return the patterns
+	 */
 	public Set<Pattern<T,D>> getPatterns() {
 		return patternFrequency.keySet();
 	}
 
+	/**
+	 * Gets the tuples from the graph.
+	 *
+	 * @return the tuples
+	 */
 	public Set<Relationship> getTuples() {
 		return tupleFrequency.keySet();
 	}
 
 
+	/**
+	 * Gets the matching frequency between a pattern and a tuple.
+	 *
+	 * @param pattern the pattern
+	 * @param tuple the tuple
+	 * @return the frequency which which this pair appears in the graph.
+	 */
 	public int getMatchingFrequency(Pattern<T,D> pattern, Relationship tuple) {
 		
 		return patternTupleFrequency.get(pattern).get(tuple);
@@ -79,26 +115,61 @@ public class PRDualRankGraph<T extends Matchable,D extends Document> {
 	}
 
 
+	/**
+	 * Gets the matching tuples given a pattern
+	 *
+	 * @param pattern the pattern
+	 * @return the matching tuples
+	 */
 	public Set<Relationship> getMatchingTuples(Pattern<T,D> pattern) {
 		return patternTupleFrequency.get(pattern).keySet();
 	}
 
 
+	/**
+	 * Gets the total frequency of a pattern in the graph. It is the sum of all the individual frequencies with
+	 * all the matching tuples.
+	 *
+	 * @param pattern the pattern
+	 * @return the freqency with which the pattern appears in the collection.
+	 */
 	public double getFreqency(Pattern<T,D> pattern) {
 		return patternFrequency.get(pattern);
 	}
 
 
+	/**
+	 * Gets the total frequency of a tuple. It includes all the patterns that match this tuple.
+	 *
+	 * @param tuple the tuple
+	 * @return the frequency in the graph.
+	 */
 	public int getFrequency(Relationship tuple) {
 		return tupleFrequency.get(tuple);
 	}
 
 
+	/**
+	 * Gets the matching frequency between a tuple and a pattern. Should return the same value than 
+	 * getMatchingFrequency(pattern,tuple) if the graph is consistent.
+	 *
+	 * @param tuple the tuple
+	 * @param pattern the pattern
+	 * @return the matching frequency with which the tuple and the pattern appear in the collection (represented in the graph)
+	 */
 	public int getMatchingFrequency(Relationship tuple, Pattern<T,D> pattern) {
 		return tuplePatternFrequency.get(tuple).get(pattern);
 	}
 
 
+	/**
+	 * Gets the matching patterns of a given tuple. The meaning of 'Match' depends on the patterns. For instance, for search patterns,
+	 * 'to match' means to hit the document containing the tuple. However for extraction patterns, it means to match the context of
+	 * the tuple in some document.
+	 *
+	 * @param tuple the tuple
+	 * @return the patterns that 'match' the tuple. 
+	 */
 	public Set<Pattern<T,D>> getMatchingPatterns(Relationship tuple) {
 		
 		return tuplePatternFrequency.get(tuple).keySet();

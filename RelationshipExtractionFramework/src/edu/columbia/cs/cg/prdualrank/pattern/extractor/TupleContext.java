@@ -1,3 +1,11 @@
+/**
+ * This class represents the text surrounding a tuple. Is used in the generation of search Patterns using Window Generation.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.pattern.extractor;
 
 import java.util.ArrayList;
@@ -14,17 +22,34 @@ public class TupleContext {
 	private ArrayList<String[]> words;
 	private List<Span> spans;
 
+	/**
+	 * Instantiates a new tuple context.
+	 *
+	 * @param realSpans the non overlapping text segments of a tuple. Overlapping segments were combined in a previous step.
+	 * @param window the size of the window used to generate the context.
+	 */
 	public TupleContext(List<Span> realSpans, int window){
 		this.spans = realSpans;
 		words = new ArrayList<String[]>();
 	}
 	
+	/**
+	 * Adds a new sequence of words to the context. Notice that this text might appear before, in between or after the attributes of a tuple.
+	 *
+	 * @param newWords the new detected sequence of words between attributes.
+	 */
 	public void addWords(String[] newWords) {
 		
 		words.add(newWords);
 		
 	}
 
+	/**
+	 * Generate ngrams of size lower or equal to 'ngram' based on the sequences of words.
+	 *
+	 * @param ngram the maximum size of ngrams.
+	 * @return the set of ngrams extracted from the words surrounding the tuple.
+	 */
 	public Set<String[]> generateNgrams(int ngram) {
 		
 		Set<String[]> ngrams = new HashSet<String[]>();
@@ -57,6 +82,9 @@ public class TupleContext {
 		return ngrams;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString(){
 		
 		String ret = "";

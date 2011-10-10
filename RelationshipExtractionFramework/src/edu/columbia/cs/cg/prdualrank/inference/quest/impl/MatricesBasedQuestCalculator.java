@@ -1,4 +1,12 @@
-package edu.columbia.cs.cg.prdualrank.inference.quest;
+/**
+ * QuestCalculator based on matrix multiplication. Useful for fully connected graphs or for longer number of iterations.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
+package edu.columbia.cs.cg.prdualrank.inference.quest.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +28,7 @@ import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.pattern.matchable.Matchable;
 import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
 import edu.columbia.cs.cg.prdualrank.inference.convergence.ConvergenceFinder;
+import edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.utils.Pair;
 
@@ -40,6 +49,9 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 	private boolean completeConvergence=true;
 	private static final double COMPARISON_THRESHOLD = 1e-10;
 	
+	/**
+	 * Instantiates a new matrices based quest calculator.
+	 */
 	public MatricesBasedQuestCalculator(){
 		patternIds = new HashMap<Pattern<T,D>, Integer>();
 		tupleIds = new HashMap<Relationship, Integer>();
@@ -51,6 +63,11 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 		patternsRecallMap=new HashMap<Pattern<T,D>,Double>();
 	}
 
+	/**
+	 * Instantiates a new matrices based quest calculator specifying a limited number of iterations.
+	 *
+	 * @param numberIterations the number iterations to be simulated.
+	 */
 	public MatricesBasedQuestCalculator(int numberIterations) {
 		this();
 		this.completeConvergence=false;
@@ -225,6 +242,9 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 		return matrix;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#runQuestP(edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph)
+	 */
 	@Override
 	public void runQuestP(PRDualRankGraph<T,D> gs) {
 		SparseRCDoubleMatrix2D Mt = getLeftMatrixForPrecision(gs);
@@ -309,6 +329,9 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#runQuestR(edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph)
+	 */
 	@Override
 	public void runQuestR(PRDualRankGraph<T,D> gs) {
 		SparseRCDoubleMatrix2D Mt = getLeftMatrixForRecall(gs);
@@ -366,26 +389,41 @@ public class MatricesBasedQuestCalculator<T extends Matchable,D extends Document
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#getTuplePrecisionMap()
+	 */
 	@Override
 	public Map<Relationship, Double> getTuplePrecisionMap() {
 		return tuplesPrecisionMap;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#getTupleRecallMap()
+	 */
 	@Override
 	public Map<Relationship, Double> getTupleRecallMap() {
 		return tuplesRecallMap;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#getPatternPrecisionMap()
+	 */
 	@Override
 	public Map<Pattern<T,D>, Double> getPatternPrecisionMap() {
 		return patternsPrecisionMap;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#getPatternRecallMap()
+	 */
 	@Override
 	public Map<Pattern<T,D>, Double> getPatternRecallMap() {
 		return patternsRecallMap;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#setSeeds(java.util.Set)
+	 */
 	@Override
 	public void setSeeds(Set<Relationship> seeds) {
 		

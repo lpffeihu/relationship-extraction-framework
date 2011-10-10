@@ -1,3 +1,11 @@
+/**
+ * Lucene Indexer and Searcher. Used for optimal matching of the search patterns. Based on Lucene 3.4 core.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.index;
 
 
@@ -48,6 +56,13 @@ public class Index {
 	private IndexSearcher IndexSearcher;
 	private Map<String, TokenizedDocument> documentMap;
 
+	/**
+	 * Instantiates a new index.
+	 *
+	 * @param myAnalyzer the analyzer to be used to index the content.
+	 * @param lowercase specifies if the content will be stored in lowercase. No match case will be allowed if true.
+	 * @param stopWords the set stop words. Empty set if no stop words are considered.
+	 */
 	public Index(TokenBasedAnalyzer myAnalyzer,boolean lowercase, Set<String> stopWords) {
 
 		//Index Creation
@@ -81,6 +96,11 @@ public class Index {
 
 	}
 
+	/**
+	 * Adds the document to the index.
+	 *
+	 * @param document the document to be indexed.
+	 */
 	public void addDocument(TokenizedDocument document) {
 		
 		try {
@@ -129,6 +149,9 @@ public class Index {
 		return path+"-"+fileName;
 	}
 
+	/**
+	 * Closes and optimize the index.
+	 */
 	public void close() {
 		
 		try {
@@ -149,6 +172,13 @@ public class Index {
 		
 	}
 
+	/**
+	 * Search the query in the index.
+	 *
+	 * @param query the query to be issued
+	 * @param n the number of documents to be retrieved.
+	 * @return the list of documents that match the query.
+	 */
 	public List<edu.columbia.cs.cg.document.TokenizedDocument> search(Query query, int n) {
 
 		TopDocs result = null;

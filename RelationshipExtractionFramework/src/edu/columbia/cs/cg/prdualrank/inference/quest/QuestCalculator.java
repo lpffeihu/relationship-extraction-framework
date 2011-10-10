@@ -1,3 +1,11 @@
+/**
+ * Defines the behavior of the QUEST functions defined in PRDualRank.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.inference.quest;
 
 import java.util.Map;

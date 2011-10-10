@@ -1,6 +1,20 @@
+/**
+ * 
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.document.tagger;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.cg.document.tagger.entity.EntitySpan;
+import edu.columbia.cs.cg.relations.Entity;
 
 /**
  * Tagger is an abstract class that represents objects that can be used to annotate
@@ -19,18 +33,27 @@ import edu.columbia.cs.cg.document.Document;
  * @version     0.1
  * @since       2011-09-27
  */
-public abstract class Tagger {
+public abstract class Tagger<C extends Taggeable,O> {
 
-	/** The tag. */
-	private String tag;
+	private Set<String> tags;
 
+	/**
+	 * Instantiates a new tagger.
+	 *
+	 * @param tags The tags to be assigned to every annotation made by this tagger
+	 */
+	public Tagger(Set<String> tags){
+		this.tags = tags;
+	}
+	
 	/**
 	 * Instantiates a new tagger.
 	 *
 	 * @param tag The tag to be assigned to every annotation made by this tagger
 	 */
 	public Tagger(String tag){
-		this.tag = tag;
+		tags = new HashSet<String>();
+		tags.add(tag);
 	}
 	
 	/**
@@ -39,15 +62,52 @@ public abstract class Tagger {
 	 *
 	 * @param d the document to be annotated
 	 */
-	public abstract void enrich(Document d);
+	public void enrich(Document d){
+		
+		List<C> spans = findSpans(d);
+
+		for (C span : spans) {
+			
+			O object = createInstance(span,d);
+				
+			updateDocument(d,object);
+				
+		}
+
+	}
+	
+	
 	
 	/**
-	 * Gets the tag that is assigned when this tagger is used to annotate a document.
+	 * Updates the document by adding the tagged object.
 	 *
-	 * @return the tag
+	 * @param d the document
+	 * @param object the tagged object
 	 */
-	protected String getTag(){
-		return tag;
+	protected abstract void updateDocument(Document d, O object);
+
+	/**
+	 * Find spans of the objects to be tagged.
+	 *
+	 * @param d the document
+	 * @return the list of spans
+	 */
+	protected abstract List<C> findSpans(Document d);
+
+	/**
+	 * Creates the instance of a tagged object using the object spans found by a specific instantiation of Tagger.
+	 *
+	 * @param container the objct spans
+	 * @param d the document
+	 * @return the tagged object.
+	 */
+	private O createInstance(C container,Document d){
+		
+		if (tags.contains(container.getTag())){
+			return generateInstance(container,d);
+		}
+		return null;
 	}
 
+	protected abstract O generateInstance(C container, Document d);
 }

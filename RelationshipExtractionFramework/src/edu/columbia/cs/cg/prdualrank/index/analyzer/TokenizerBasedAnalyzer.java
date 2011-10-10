@@ -1,3 +1,11 @@
+/**
+ * Analyzer for Lucene based on a particular instance of a Tokenizer.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.index.analyzer;
 
 import java.io.BufferedReader;
@@ -21,11 +29,20 @@ public class TokenizerBasedAnalyzer extends Analyzer {
 	private Tokenizer tokenizer;
 	private Set<String> stopWords;
 
+	/**
+	 * Instantiates a new tokenizer based analyzer.
+	 *
+	 * @param tokenizer the tokenizer to be used to tokenize the stream
+	 * @param stopWords the stop words set to be used during indexing.
+	 */
 	public TokenizerBasedAnalyzer(Tokenizer tokenizer, Set<String> stopWords){
 		this.tokenizer = tokenizer;
 		this.stopWords = stopWords;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+	 */
 	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
 		

@@ -1,3 +1,11 @@
+/**
+ * Abstract class to provide the behavior of different ranking functions based on precision and recall.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.inference.ranking;
 
 import java.util.Comparator;
@@ -34,26 +42,51 @@ public abstract class RankFunction <T> {
 	protected Map<T, Double> recallMap;
 	private Set<T> elements;
 
+	/**
+	 * The ranking function has to inform if precision is required in its ranking function.
+	 *
+	 * @return if the ranking function is based in precision
+	 */
 	public boolean requiresPrecision() {
 		return false;
 	}
 
+	/**
+	 * The ranking function has to inform if recall is required in its ranking function.
+	 *
+	 * @return if the ranking function is based in recall
+	 */
 	public boolean requiresRecall() {
 		return false;
 	}
 
+	/**
+	 * sets the precision map used to generate the ranking.
+	 *
+	 * @param precisionMap the map with all the stored precisions.
+	 */
 	public void setPrecision(Map<T, Double> precisionMap) {
 
 		this.precisionMap = precisionMap;
 		this.elements = precisionMap.keySet();
 	}
 
+	/**
+	 * sets the recall map used to generate the ranking.
+	 *
+	 * @param recallMap the map with all the stored recall.
+	 */
 	public void setRecall(Map<T, Double> recallMap) {
 
 		this.recallMap = recallMap;
 		this.elements = recallMap.keySet();
 	}
 
+	/**
+	 * Generates the ranking of the stored objects.
+	 *
+	 * @return the objects sorted according to the rank function.
+	 */
 	public SortedSet<T> rank() {
 		
 		SortedSet<T> ret = new TreeSet<T>(new ObjectAfterRankComparator<T>(getComparator()));

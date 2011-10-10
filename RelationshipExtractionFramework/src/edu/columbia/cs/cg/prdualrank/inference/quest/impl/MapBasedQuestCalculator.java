@@ -1,4 +1,13 @@
-package edu.columbia.cs.cg.prdualrank.inference.quest;
+/**
+ * QuestCalculator based on Maps. This implementation matched the one described in the PRDualRank paper.
+ * Performs well for non-connected graphs.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
+package edu.columbia.cs.cg.prdualrank.inference.quest.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +19,7 @@ import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.pattern.matchable.Matchable;
 import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
 import edu.columbia.cs.cg.prdualrank.inference.convergence.ConvergenceFinder;
+import edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.utils.Pair;
 
@@ -25,6 +35,11 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 	private ConvergenceFinder convergence;
 	private Set<Relationship> seeds;
 
+	/**
+	 * Instantiates a new map based quest calculator.
+	 *
+	 * @param convergence the convergence method used to stop the execution.
+	 */
 	public MapBasedQuestCalculator(ConvergenceFinder convergence) {
 		
 		this.convergence = convergence;
@@ -39,6 +54,9 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#runQuestP(edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph)
+	 */
 	@Override
 	public void runQuestP(PRDualRankGraph<T,D> gs) {
 		convergence.reset();
@@ -64,6 +82,9 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		generateTupleMaps();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#runQuestR(edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph)
+	 */
 	@Override
 	public void runQuestR(PRDualRankGraph<T,D> gs) {
 		convergence.reset();
@@ -209,11 +230,17 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#getPatternPrecisionMap()
+	 */
 	@Override
 	public Map<Pattern<T,D>, Double> getPatternPrecisionMap() {
 		return patternPrecision;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#getTuplePrecisionMap()
+	 */
 	@Override
 	public Map<Relationship, Double> getTuplePrecisionMap() {
 		return tuplePrecision;
@@ -239,6 +266,9 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#getPatternRecallMap()
+	 */
 	@Override
 	public Map<Pattern<T,D>, Double> getPatternRecallMap() {
 		return patternRecall;
@@ -252,11 +282,17 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		loadMap(patternTable, patternPrecision, patternRecall);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#getTupleRecallMap()
+	 */
 	@Override
 	public Map<Relationship, Double> getTupleRecallMap() {
 		return tupleRecall;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator#setSeeds(java.util.Set)
+	 */
 	@Override
 	public void setSeeds(Set<Relationship> seeds) {
 		this.seeds = seeds;

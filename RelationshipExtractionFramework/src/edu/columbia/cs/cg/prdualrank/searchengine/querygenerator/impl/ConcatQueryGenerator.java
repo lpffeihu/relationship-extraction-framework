@@ -1,3 +1,11 @@
+/**
+ * Query generator based in the simple concatenation of the strings to be searched.
+ * 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl;
 
 import java.util.Collection;
@@ -13,6 +21,9 @@ import edu.columbia.cs.cg.relations.Relationship;
 
 public class ConcatQueryGenerator extends QueryGenerator<String> {
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator#generateQuery(edu.columbia.cs.cg.relations.Relationship)
+	 */
 	public String generateQuery(Relationship relationship) {
 		
 		String ret = "";
@@ -32,10 +43,16 @@ public class ConcatQueryGenerator extends QueryGenerator<String> {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator#generateQuery(edu.columbia.cs.cg.relations.Entity)
+	 */
 	public String generateQuery(Entity role) {
 		return role.getValue();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator#generateQuery(edu.columbia.cs.cg.pattern.prdualrank.SearchPattern)
+	 */
 	@Override
 	public String generateQuery(
 			SearchPattern<Document, TokenizedDocument> pattern) {

@@ -1,3 +1,11 @@
+/**
+ * Ranks objects according to their recall.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.inference.ranking.impl;
 
 import java.util.Comparator;
@@ -17,6 +25,9 @@ public class RecallBasedRankFunction<T> extends RankFunction<T> {
 		};
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction#requiresRecall()
+	 */
 	@Override
 	public boolean requiresRecall() {
 		return true;

@@ -1,3 +1,12 @@
+/**
+ * Generator of the graph for the search patterns. A pattern matches a tuple when the tuple appears in any of the documents retrieved
+ * after issuing a query using the search pattern. The frequency is based on the number of documents that fit this condition.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.graph.generator;
 
 import java.util.ArrayList;
@@ -29,6 +38,13 @@ public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument
 	private QueryGenerator<Query> queryGenerator;
 	private Map<Document,Map<RelationshipType,List<Relationship>>> cachedPotentialRelationships;
 	
+	/**
+	 * Instantiates a new search graph generator.
+	 *
+	 * @param rType the relationship type being processed
+	 * @param index the index containing all the processed documents (it is for efficiency)
+	 * @param queryGenerator the query generator that transforms search patterns into queries accepted by the index.
+	 */
 	public SearchGraphGenerator(RelationshipType rType, Index index, QueryGenerator<Query> queryGenerator){
 		this.rType = rType;
 		this.index = index;

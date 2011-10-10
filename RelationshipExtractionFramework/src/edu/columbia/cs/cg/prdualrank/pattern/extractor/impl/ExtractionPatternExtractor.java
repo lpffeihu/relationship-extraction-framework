@@ -1,3 +1,11 @@
+/**
+ * Class used to generate Extraction Patterns as described in PRDualRank paper.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.pattern.extractor.impl;
 
 import java.io.FileInputStream;
@@ -31,6 +39,13 @@ public class ExtractionPatternExtractor<T extends Relationship> implements Patte
 	private RelationshipType rType;
 	private int span;
 	
+	/**
+	 * Instantiates a new extraction pattern extractor.
+	 *
+	 * @param span Maximum distance (in words) in between attributes of a tuple
+	 * @param individualPatternSize Maximum size of an extraction pattern, per attribute.
+	 * @param rType The relationship type to be extracted.
+	 */
 	public ExtractionPatternExtractor(int span, int individualPatternSize, RelationshipType rType) {
 		this.span = span;
 		this.rType = rType;
@@ -38,6 +53,9 @@ public class ExtractionPatternExtractor<T extends Relationship> implements Patte
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor#extractPatterns(edu.columbia.cs.cg.document.TokenizedDocument, edu.columbia.cs.cg.relations.Relationship, java.util.List)
+	 */
 	@Override
 	public Map<Pattern<Relationship,TokenizedDocument>, Integer> extractPatterns(TokenizedDocument document,
 			Relationship relationship, List<Relationship> matchingRelationships) {

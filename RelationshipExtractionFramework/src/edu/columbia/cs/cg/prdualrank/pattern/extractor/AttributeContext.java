@@ -1,3 +1,11 @@
+/**
+ * Represent the words around every attribute of a tuple. It is used to generate extraction patterns.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.pattern.extractor;
 
 import java.util.ArrayList;
@@ -28,6 +36,11 @@ public class AttributeContext {
 	private int hashCode = -1;
 	private HashMap<String, Set<String>> entityTypes;
 
+	/**
+	 * Instantiates a new attribute context.
+	 *
+	 * @param relationshipType the relationship type that will be contained in this attribute context.
+	 */
 	public AttributeContext(RelationshipType relationshipType){
 
 		this.rType = relationshipType;
@@ -39,6 +52,14 @@ public class AttributeContext {
 		
 	}
 	
+	/**
+	 * Adds the context for an specific role and entity.
+	 *
+	 * @param entity the entity being processed.
+	 * @param role the role in the relationship of the entity being processed.
+	 * @param before the words preceding the entity within the text where it is contained.
+	 * @param after the words succeeding the entity within the text where it is contained.
+	 */
 	public void addContext(Entity entity, String role, String[] before,
 			String[] after) {
 		
@@ -65,6 +86,12 @@ public class AttributeContext {
 		
 	}
 
+	/**
+	 * Generate extraction patterns based on the context of all the attributes. Used all the possible combination of extraction patterns.
+	 *
+	 * @param size the maximum size of the extraction pattern used for one attribute. Extraction patterns are composed by as many attribute extraction patterns as instantiated attributes the tuple has.
+	 * @return the list of generated extraction patterns.
+	 */
 	public List<Pattern<Relationship,TokenizedDocument>> generateExtractionPatterns(int size) {
 		
 		Map<String,Set<SimpleAttributeExtractionPattern<Entity, TokenizedDocument>>> patterns = new HashMap<String, Set<SimpleAttributeExtractionPattern<Entity, TokenizedDocument>>>();
@@ -124,6 +151,9 @@ public class AttributeContext {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		
@@ -131,6 +161,9 @@ public class AttributeContext {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		

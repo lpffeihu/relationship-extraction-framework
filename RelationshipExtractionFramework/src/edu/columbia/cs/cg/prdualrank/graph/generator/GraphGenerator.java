@@ -1,3 +1,11 @@
+/**
+ * Defines the behavior of a graph generator. The difference in Graph Generators relies on the definition of frequency and matching. 
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.graph.generator;
 
 import java.util.Map;
@@ -11,6 +19,14 @@ import edu.columbia.cs.cg.relations.Relationship;
 
 public abstract class GraphGenerator<T extends Matchable,D extends Document> {
 
+	/**
+	 * Generates the graph given the top tuples and the patterns that match them.
+	 *
+	 * @param topTuples the top tuples
+	 * @param patterns the patterns
+	 * @param documents the documents processed during execution.
+	 * @return the PrDualRank graph instance.
+	 */
 	public PRDualRankGraph<T,D> generateGraph(Set<Relationship> topTuples,
 			Set<Pattern<T,D>> patterns, Set<D> documents) {
 		

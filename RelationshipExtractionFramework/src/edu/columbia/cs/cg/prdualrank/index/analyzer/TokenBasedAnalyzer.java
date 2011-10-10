@@ -1,3 +1,11 @@
+/**
+ * Using the TokenBasedReader, tokenizes the stream in order to be either indexed or searched.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.index.analyzer;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,10 +28,18 @@ public class TokenBasedAnalyzer extends Analyzer {
 
 	private Set<String> stopWords;
 	
+	/**
+	 * Instantiates a new token based analyzer.
+	 *
+	 * @param stopWords the stop words that are not going to be indexed and therefore searched.
+	 */
 	public TokenBasedAnalyzer(Set<String> stopWords) {
 		this.stopWords = stopWords;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.apache.lucene.analysis.Analyzer#tokenStream(java.lang.String, java.io.Reader)
+	 */
 	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
 		
@@ -37,6 +53,13 @@ public class TokenBasedAnalyzer extends Analyzer {
 			
 	}
 
+	/**
+	 * Creates an instance of the reader used to create the TokenStream required by Lucene.
+	 *
+	 * @param tokenizedSpans the spans found in the stream to be indexed or searched. 
+	 * @param tokenizedString the token values matching the spans in tokenizedSpans.
+	 * @return the reader
+	 */
 	public Reader getReader(Span[] tokenizedSpans, String[] tokenizedString) {
 		
 		return new TokenBasedReader(tokenizedSpans, tokenizedString);

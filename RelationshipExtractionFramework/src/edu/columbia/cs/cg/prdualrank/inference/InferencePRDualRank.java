@@ -1,3 +1,11 @@
+/**
+ * Defines the inference procedure to rank patterns as described in PRDualRank paper.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.inference;
 
 import java.util.SortedSet;
@@ -15,9 +23,14 @@ public class InferencePRDualRank<T extends Matchable,D extends Document> {
 	private SortedSet<Relationship> rankedTuples;
 	private SortedSet<Pattern<T,D>> rankedPatterns;
 
-	public InferencePRDualRank(){
-	}
-	
+	/**
+	 * Ranks the patterns and tuples in the graph based on the specified ranking function, using the passed questCalculator.
+	 *
+	 * @param gs the graph connecting tuples and patterns.
+	 * @param patternRankFunction the pattern rank function used to rank patterns.
+	 * @param tupleRankFunction the tuple rank function used to rank tuples.
+	 * @param questCalculator the quest calculator used to calculate the required metrics (precision or recall in this case)
+	 */
 	public void rank(PRDualRankGraph<T,D> gs, RankFunction<Pattern<T,D>> patternRankFunction, RankFunction<Relationship> tupleRankFunction, QuestCalculator<T,D> questCalculator) {
 	
 		if (patternRankFunction.requiresPrecision() || tupleRankFunction.requiresPrecision()){
@@ -46,10 +59,20 @@ public class InferencePRDualRank<T extends Matchable,D extends Document> {
 		
 	}
 
+	/**
+	 * Gets the ranked tuples.
+	 *
+	 * @return the ranked tuples according to the tuple ranking function.
+	 */
 	public SortedSet<Relationship> getRankedTuples() {
 		return rankedTuples;
 	}
 
+	/**
+	 * Gets the ranked patterns according to the pattern ranking function.
+	 *
+	 * @return the ranked patterns
+	 */
 	public SortedSet<Pattern<T,D>> getRankedPatterns() {
 		return rankedPatterns;
 	}

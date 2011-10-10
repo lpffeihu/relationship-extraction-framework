@@ -1,3 +1,12 @@
+/**
+ * Tokenizer for Lucene Search Engine based on the already calculated tokens of the element we want either to index or 
+ * search for.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.index.tokenizer;
 import java.io.IOException;
 
@@ -21,6 +30,12 @@ public class SpanBasedTokenizer extends Tokenizer {
 	private String[] content;
 	private int currentIndex;
 	
+	/**
+	 * Instantiates a new span based tokenizer.
+	 *
+	 * @param spans the spans of the element to be tokenized
+	 * @param content the content the splitted content of the element to be tokenized. Must match the spans.
+	 */
 	public SpanBasedTokenizer(Span[] spans, String[] content) {
 		
 		this.spans = spans;
@@ -29,6 +44,9 @@ public class SpanBasedTokenizer extends Tokenizer {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see org.apache.lucene.analysis.TokenStream#incrementToken()
+	 */
 	@Override
 	public boolean incrementToken() throws IOException {
 		
