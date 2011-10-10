@@ -1,8 +1,17 @@
 package edu.columbia.cs.cg.document.tagger.entity.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.aliasi.chunk.Chunk;
 import com.aliasi.chunk.Chunking;
@@ -13,8 +22,10 @@ import com.aliasi.tokenizer.TokenizerFactory;
 
 import edu.columbia.cs.cg.document.Document;
 import edu.columbia.cs.cg.document.Segment;
+import edu.columbia.cs.cg.document.tagger.entity.EntitySpan;
 import edu.columbia.cs.cg.document.tagger.entity.EntityTagger;
 import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
+import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.utils.Dictionary;
 
 /**
@@ -50,7 +61,7 @@ import edu.columbia.cs.utils.Dictionary;
  * @version     0.1
  * @since       2011-09-27
  */
-public class DictionaryBasedEntityTagger extends EntityTagger {
+public class DictionaryBasedEntityTagger extends EntityTagger<EntitySpan,Entity> {
 
 	/** The Constant CHUNK_SCORE. This is actually not used since we do not consider
 	 *  the confidence of the annotator
@@ -68,6 +79,7 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 	
 	/** The tokenizer. */
 	private Tokenizer tokenizer;
+	private String tag;
 
 	/**
 	 * Instantiates a new dictionary based entity tagger.
@@ -78,6 +90,7 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 	 */
 	public DictionaryBasedEntityTagger(String tag, Dictionary dictionary, Tokenizer tokenizer){
 		super(tag);
+		this.tag = tag;
 		processedDocuments = 0;
 		this.tokenizer = tokenizer;
 		createMatchingDictionary(dictionary);
@@ -147,7 +160,7 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 	            
 	        	String value = content.substring(start,end);
 	            
-	            entitySpans.add(new EntitySpan(createId(processedDocuments,matches,chunk.type(),getTag()), value, offset + start, value.length()));
+	            entitySpans.add(new EntitySpan(createId(processedDocuments,matches,chunk.type(),tag),tag, value, offset + start, value.length()));
 	        
 			}
 					
@@ -170,7 +183,7 @@ public class DictionaryBasedEntityTagger extends EntityTagger {
 	 */
 	private String createId(int idDocument, int dEntityDoc, String typeChunk, String tagAnnotator) {
 		
-		return idDocument + "-" + dEntityDoc + "-" + typeChunk + "-" + tagAnnotator;
+		return processedDocument + "-" + matches + "-" + type + "-" + tag;
 		
 	}
 
