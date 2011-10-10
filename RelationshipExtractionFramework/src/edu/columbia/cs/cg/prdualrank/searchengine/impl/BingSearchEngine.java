@@ -98,12 +98,18 @@ public class BingSearchEngine extends WebBasedSearchEngine {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.searchengine.WebBasedSearchEngine#getRunnableQueryExecutor(java.lang.String, int, int, java.net.URL[])
+	 */
 	@Override
 	protected Runnable getRunnableQueryExecutor(String query, int start,
 			int count, URL[] documentResults) {
 		return new BingQuerier(query,start,count,documentResults);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.searchengine.WebBasedSearchEngine#getNumberOfResultsPerThread()
+	 */
 	@Override
 	protected int getNumberOfResultsPerThread() {
 		return 50;

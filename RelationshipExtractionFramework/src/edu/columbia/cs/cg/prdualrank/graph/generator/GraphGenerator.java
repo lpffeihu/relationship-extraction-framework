@@ -52,6 +52,13 @@ public abstract class GraphGenerator<T extends Matchable,D extends Document> {
 		
 	}
 
+	/**
+	 * Generates a map containing the matching tuples and the frequency with which they co-exist in the documents.
+	 *
+	 * @param documents the documents to be analyzed.
+	 * @param pattern the pattern to be used in the collection of documents.
+	 * @return the map containing the matching tuples and their frequency in the collection.
+	 */
 	protected abstract Map<Relationship, Integer> findTuples(Set<D> documents,
 			Pattern<T,D> pattern);
 	

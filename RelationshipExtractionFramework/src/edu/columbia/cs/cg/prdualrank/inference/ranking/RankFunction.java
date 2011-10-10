@@ -101,6 +101,11 @@ public abstract class RankFunction <T> {
 
 	}
 
+	/**
+	 * Gets the comparator object used in the ranking function.
+	 *
+	 * @return the comparator to rank T objects 
+	 */
 	protected abstract Comparator<? super T> getComparator();
 
 }

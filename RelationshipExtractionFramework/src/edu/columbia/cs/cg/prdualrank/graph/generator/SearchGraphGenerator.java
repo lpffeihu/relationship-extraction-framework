@@ -50,6 +50,10 @@ public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument
 		this.index = index;
 		this.queryGenerator = queryGenerator;
 	}
+	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.graph.generator.GraphGenerator#findTuples(java.util.Set, edu.columbia.cs.cg.pattern.Pattern)
+	 */
 	@Override
 	protected Map<Relationship, Integer> findTuples(Set<TokenizedDocument> documents,
 			Pattern<Document,TokenizedDocument> pattern){

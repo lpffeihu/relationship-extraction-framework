@@ -10,8 +10,16 @@ package edu.columbia.cs.cg.prdualrank.inference.convergence;
 
 public interface ConvergenceFinder {
 
+	/**
+	 * Set the state of the convergence finder to initial.
+	 */
 	void reset();
 
+	/**
+	 * Aks if the method has converged.
+	 *
+	 * @return true, if converged.
+	 */
 	boolean converged();
 
 }

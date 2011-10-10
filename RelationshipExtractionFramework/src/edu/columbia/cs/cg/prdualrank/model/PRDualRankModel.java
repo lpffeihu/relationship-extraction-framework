@@ -46,12 +46,18 @@ public class PRDualRankModel<S extends Matchable,E extends Matchable, D extends 
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.model.Model#getPredictedLabel(edu.columbia.cs.og.structure.OperableStructure)
+	 */
 	@Override
 	protected Set<String> getPredictedLabel(OperableStructure s) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.model.Model#getPredictionPropertyValue(edu.columbia.cs.model.Model.PredictionProperties)
+	 */
 	@Override
 	protected Object getPredictionPropertyValue(
 			PredictionProperties predictionProperties) {
@@ -59,6 +65,9 @@ public class PRDualRankModel<S extends Matchable,E extends Matchable, D extends 
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.model.Model#getAvailablePredictionProperties()
+	 */
 	@Override
 	protected PredictionProperties[] getAvailablePredictionProperties() {
 		// TODO Auto-generated method stub

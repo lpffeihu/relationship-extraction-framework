@@ -177,8 +177,23 @@ public abstract class WebBasedSearchEngine implements SearchEngine {
 		
 	}
 
+	/**
+	 * Gets the query executor runnable object that interacts with the web api.
+	 *
+	 * @param query the query
+	 * @param start the index of the first result to be retrieved
+	 * @param count the number of documents to be retrieved.
+	 * @param documentResults the array where the url of the results are going to be stored. First used index in the array is start.
+	 * @return the query executor runnable object.
+	 */
 	protected abstract Runnable getRunnableQueryExecutor(String query, int start, int count, URL[] documentResults);
 
+	/**
+	 * Gets the maximum number of results allowed per thread. Some web apis do not allow to retrieve more than a certain
+	 * number of documents after submitting a query.
+	 *
+	 * @return the number of documents to be retrieved per thread.
+	 */
 	protected abstract int getNumberOfResultsPerThread();
 	
 }

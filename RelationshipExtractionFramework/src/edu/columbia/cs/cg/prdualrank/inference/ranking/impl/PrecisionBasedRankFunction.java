@@ -14,6 +14,9 @@ import edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction;
 
 public class PrecisionBasedRankFunction<T> extends RankFunction<T> {
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction#getComparator()
+	 */
 	@Override
 	protected Comparator<T> getComparator() {
 		

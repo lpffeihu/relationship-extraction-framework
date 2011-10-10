@@ -25,6 +25,9 @@ public class FScoreBasedRankFunction<T> extends RankFunction<T> {
 		this.betasq = beta*beta;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction#getComparator()
+	 */
 	@Override
 	protected Comparator<T> getComparator() {
 		return new Comparator<T>() {
