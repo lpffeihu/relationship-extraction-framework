@@ -9,15 +9,61 @@ import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.utils.Words;
 
+/**
+ * The Class SearchPattern represents a pattern that can be used for Document
+ * Retrieval.
+ * 
+ * <br>
+ * <br>
+ * 
+ * A SearchPattern is composed by several phrases that can be used to query for the
+ * documents.
+ *
+ * @param <T> the type of document to be retrieved
+ * @param <D> the 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class SearchPattern<T extends Document, D extends TokenizedDocument> extends Pattern<Document,TokenizedDocument> {
 
+	/** The phrases. */
 	private List<String[]> phrases;
 
+	/**
+	 * Instantiates a new search pattern by providing the set of phrases to be used
+	 * as queries
+	 *
+	 * @param phrases the phrases to be used as queries
+	 */
 	public SearchPattern(List<String[]> phrases) {
 		this.phrases = phrases;
 		
 	}
 
+	/**
+	 * Checks if is the search pattern is valid
+	 * 
+	 * <br>
+	 * <br>
+	 * 
+	 * A search pattern is valid if:
+	 * 
+	 * 1) None of its phrases are stop words
+	 * 
+	 * <br>
+	 * <br>
+	 * 
+	 * 2) It does not contain repeated phrases
+	 * 
+	 * <br>
+	 * <br>
+	 * 
+	 * 3) The phrases do not overlap
+	 *
+	 * @return true, if is valid
+	 */
 	public boolean isValid() {
 		
 		for (String[] phrase : phrases) {
@@ -93,12 +139,18 @@ public class SearchPattern<T extends Document, D extends TokenizedDocument> exte
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.pattern.Pattern#findMatch(edu.columbia.cs.cg.document.Document)
+	 */
 	@Override
 	public List<Document> findMatch(TokenizedDocument d) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.pattern.Pattern#generateHashCode()
+	 */
 	@Override
 	protected int generateHashCode() {
 		
@@ -112,14 +164,33 @@ public class SearchPattern<T extends Document, D extends TokenizedDocument> exte
 		
 	}
 	
+	/**
+	 * Static method that checks is a given phrase can be used as a valid pattern.
+	 *
+	 * <br>
+	 * <br>
+	 * 
+	 * See the description of the method isValid() to learn what is a valid pattern
+	 *
+	 * @param nGram the sequence that may be used as a phrase
+	 * @return true, if nGram can form a valid pattern
+	 */
 	public static boolean isPatternizable(String[] nGram) {
 		return isSearchable(nGram);
 	}
 
+	/**
+	 * Gets the list of phrases from the search pattern
+	 *
+	 * @return the list of phrases from the search pattern
+	 */
 	public List<String[]> getNGrams(){
 		return phrases;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.pattern.Pattern#generateToString()
+	 */
 	@Override
 	protected String generateToString() {
 		String ret = "";

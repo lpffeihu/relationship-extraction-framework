@@ -12,13 +12,46 @@ import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.utils.Span;
 
+/**
+ * The Class SimpleAttributeExtractionPattern represents a pattern that can be used
+ * for Role Extraction.
+ * 
+ * <br>
+ * <br>
+ * 
+ * A SimpleAttributeExtractionPattern is composed by a set of entity types that
+ * can match the pattern, a list of words before the entity, a list of words after
+ * the entity and finally the role to be assigned to the extracted entity
+ *
+ * @param <E> the element type
+ * @param <D> the generic type
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class SimpleAttributeExtractionPattern<E extends Entity,D extends TokenizedDocument> extends Pattern<Entity,TokenizedDocument> {
 
+	/** The entity types. */
 	private Set<String> entityTypes;
+	
+	/** The words before. */
 	private String[] wordsBefore;
+	
+	/** The words after. */
 	private String[] wordsAfter;
+	
+	/** The role. */
 	private String role;
 
+	/**
+	 * Instantiates a new simple attribute extraction pattern.
+	 *
+	 * @param role the role to be assigned to the extracted entity
+	 * @param entityTypes a set of entity types that can match the pattern
+	 * @param before the array of words before the entity
+	 * @param after the array of words after the entity
+	 */
 	public SimpleAttributeExtractionPattern(String role, Set<String> entityTypes, String[] before,
 			String[] after) {
 		
@@ -29,6 +62,9 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.pattern.Pattern#findMatch(edu.columbia.cs.cg.document.Document)
+	 */
 	@Override
 	public List<Entity> findMatch(TokenizedDocument d) {
 		
@@ -85,6 +121,9 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.pattern.Pattern#generateHashCode()
+	 */
 	@Override
 	protected int generateHashCode() {
 		
@@ -102,12 +141,18 @@ public class SimpleAttributeExtractionPattern<E extends Entity,D extends Tokeniz
 	}
 
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.pattern.Pattern#generateToString()
+	 */
 	@Override
 	protected String generateToString() {
 		return Arrays.toString(wordsBefore) + entityTypes.toString() + " as " + role + Arrays.toString(wordsAfter);
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.pattern.Pattern#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		

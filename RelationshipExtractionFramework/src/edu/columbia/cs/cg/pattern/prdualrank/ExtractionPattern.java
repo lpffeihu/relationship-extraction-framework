@@ -19,13 +19,46 @@ import edu.columbia.cs.cg.relations.RelationshipType;
 import edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 
+/**
+ * The Class ExtractionPattern represents a pattern that can be used for Relationship
+ * Extraction.
+ * 
+ * <br>
+ * <br>
+ * 
+ * An ExtractionPattern is composed by several roles that can be fulfilled by entities
+ * of the relationship that we are trying to extract. Each role in the ExtractionPattern
+ * is also associated with a subpattern that is an object of the class
+ * SimpleAttributeExtractionPattern.
+ *
+ * @param <T> the type of relationship that this pattern extracts
+ * @param <D> the type of document that we can extract from
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class ExtractionPattern<T extends Relationship, D extends TokenizedDocument> extends Pattern<Relationship,TokenizedDocument> {
 
+	/** The roles. */
 	private List<String> roles;
+	
+	/** The simple attribute map. */
 	private Map<String, SimpleAttributeExtractionPattern<Entity,TokenizedDocument>> simpleAttributeMap;
+	
+	/** The r type. */
 	private RelationshipType rType;
+	
+	/** The r constraint. */
 	private RelationshipConstraint rConstraint;
 
+	/**
+	 * Instantiates a new extraction pattern.
+	 *
+	 * @param roles the list of roles that this pattern must match
+	 * @param simpleAttributeMap map that associates each role to the subpattern surounding the entity that must fulfill it
+	 * @param rType the type of relationship that must be extracted
+	 */
 	public ExtractionPattern(List<String> roles, Map<String, SimpleAttributeExtractionPattern<Entity,TokenizedDocument>> simpleAttributeMap, RelationshipType rType) {
 		
 		this.roles = roles;
@@ -35,6 +68,9 @@ public class ExtractionPattern<T extends Relationship, D extends TokenizedDocume
 
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.pattern.Pattern#findMatch(edu.columbia.cs.cg.document.Document)
+	 */
 	@Override
 	public List<Relationship> findMatch(TokenizedDocument d) {
 		
@@ -102,6 +138,9 @@ public class ExtractionPattern<T extends Relationship, D extends TokenizedDocume
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.pattern.Pattern#generateHashCode()
+	 */
 	protected int generateHashCode() {
 		
 		int hashCode = 1;
@@ -116,6 +155,9 @@ public class ExtractionPattern<T extends Relationship, D extends TokenizedDocume
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.pattern.Pattern#generateToString()
+	 */
 	@Override
 	protected String generateToString() {
 		return simpleAttributeMap.toString();
