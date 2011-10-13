@@ -13,17 +13,48 @@ import edu.columbia.cs.cg.relations.Entity;
 import edu.columbia.cs.cg.relations.Relationship;
 import edu.columbia.cs.utils.Span;
 
+/**
+ * The Class WordDistanceBetweenEntities is an implementation of RelationshipConstraint
+ * that checks if the number of words between entities is less than a given value passed
+ * to the constructor.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class WordDistanceBetweenEntities implements RelationshipConstraint {
 
+	/** The tokenizer. */
 	private Tokenizer tokenizer;
+	
+	/** The Maxdistance. */
 	private int Maxdistance;
+	
+	/** The activate cache. */
 	private boolean activateCache;
 
+	/**
+	 * Instantiates a new word distance between entities.
+	 * 
+	 * <br>
+	 * <br>
+	 * 
+	 * The constructor receives two parameters. The first is the tokenizer that is
+	 * used to split the text into words. The second is the maximum allowed distance
+	 * between the entities.
+	 *
+	 * @param tokenizer the tokenizer
+	 * @param Maxdistance the maxdistance
+	 */
 	public WordDistanceBetweenEntities(Tokenizer tokenizer, int Maxdistance){
 		this.tokenizer = tokenizer;
 		this.Maxdistance = Maxdistance;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.relations.constraints.relations.RelationshipConstraint#checkConstraint(edu.columbia.cs.cg.relations.Relationship)
+	 */
 	@Override
 	public boolean checkConstraint(Relationship rel) {
 		
