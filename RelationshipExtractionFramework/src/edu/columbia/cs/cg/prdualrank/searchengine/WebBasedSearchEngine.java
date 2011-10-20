@@ -1,5 +1,19 @@
 /**
  * Abstract class that provides the behavior of any Web search engine used in PRdualRank.
+ * 
+ * <br> 
+ * This class is abstract given that many implementation of WebBasedSearchEngines are available:
+ * 1.<a href="http://developer.yahoo.com/search/boss/">Yahoo Boss API</a>. Please read usage terms.
+ * 2.<a href="http://msdn.microsoft.com/en-us/library/dd900818.aspx">Bing API</a>. Please read usage terms.
+ * 
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br>
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
  *
  * @author      Pablo Barrio
  * @author		Goncalo Simoes

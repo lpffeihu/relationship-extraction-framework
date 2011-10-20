@@ -1,6 +1,17 @@
 /**
- * Abstract class to provide the behavior of different ranking functions based on precision and recall.
+ * Abstract class to provide the behavior of different ranking functions that are based on precision and recall. 
+ * <br>
+ * Classes that extend this one have to overwrite <b>requiresPrecision</b> and/or <b>requiredRecall</b> accordingly to the measure. For instance, <b>F-Measure</b> 
+ * implements both, because it requires both.
  *
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br>
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
  * @author      Pablo Barrio
  * @author		Goncalo Simoes
  * @version     0.1

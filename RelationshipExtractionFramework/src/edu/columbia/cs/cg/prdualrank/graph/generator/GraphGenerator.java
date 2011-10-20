@@ -1,5 +1,17 @@
 /**
- * Defines the behavior of a graph generator. The difference in Graph Generators relies on the definition of frequency and matching. 
+ * Defines the behavior of a graph generator. 
+ * <br>
+ * Further implementations can be seen by looking at the subtypes of this class.
+ * <br>
+ * The difference in Graph Generators relies on the definition of frequency and matching. For instance, <b>Search Patterns</b> match <b>Documents</b> while <b>Extraction Patterns</b> match <b>Context of tuples</b>
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br>
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
  *
  * @author      Pablo Barrio
  * @author		Goncalo Simoes

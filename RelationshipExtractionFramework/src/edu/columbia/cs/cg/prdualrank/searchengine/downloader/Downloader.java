@@ -1,6 +1,18 @@
 /**
- * Runnable class used to download documents from the web. It stores the specified url in a Map together with its content.
+ * Runnable class used to download documents from the web. It stores the specified URL in a Map together with its content.
+ * <br>
+ * It will try <b>ATTEMPTS</b> times to retrieve in case previous searches are unsuccessful, waiting <b>TIME_INTERVAL*ATTEMPTS</b> everytime before trying again.
+ * <br>
+ * There are two time outs set for the connection: Read and Connection. This value is given in milliseconds in: <b>TIME_OUT</b>
  *
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br>
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
  * @author      Pablo Barrio
  * @author		Goncalo Simoes
  * @version     0.1

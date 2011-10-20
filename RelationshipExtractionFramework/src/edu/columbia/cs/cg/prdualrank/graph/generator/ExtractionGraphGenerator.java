@@ -1,7 +1,17 @@
 /**
- * Generates a graph based on the extraction patterns and based on the assumption that extraction patterns only match the tuples whose
+ * Generates a graph, based on the extraction patterns and based on the assumption that extraction patterns only match the tuples whose
  * context match the pattern.
+ * <br>
+ * Different type of extraction patterns can be defined. For instance, an <b>Extraction Pattern</b> "COMPANY was acquired by BUYER", matches the tuple context: "You Tube was acquired by Google"
  *
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br>
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
  * @author      Pablo Barrio
  * @author		Goncalo Simoes
  * @version     0.1

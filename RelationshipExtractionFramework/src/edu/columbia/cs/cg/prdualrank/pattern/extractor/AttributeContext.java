@@ -1,6 +1,22 @@
 /**
- * Represent the words around every attribute of a tuple. It is used to generate extraction patterns.
+ * Represent the words around every attribute of a tuple. It is used to generate <b>Extraction Patterns</p>.
+ * <br>
+ * For instance, for a sentence: "After Google Inc. acquired YouTube for $1", depending on the configuration of the algorithm, some extraction patterns are:
+ * <br>1. "After <b>BUYER</b> acquired <b>COMPANY</b> for"
+ * <br>2. "<b>BUYER</b> acquired <b>COMPANY</b>"
+ * <br>3. "<b>BUYER</b> acquired <b>COMPANY</b> for"
  *
+ * Also, words from other sentences might be included in the context.
+ * 
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br>
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
+ * 
  * @author      Pablo Barrio
  * @author		Goncalo Simoes
  * @version     0.1

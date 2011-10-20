@@ -1,6 +1,25 @@
 /**
- * This class represents the text surrounding a tuple. Is used in the generation of search Patterns using Window Generation.
+ * This class represents the text surrounding a tuple. Is used in the generation of <b>Search Patterns<\b> using Window Generation. The size of the windows, define the size of the context.
+ * 
+ * <br>
+ * For instance, given a span between entities larger than 9, a windows size of 10 and a sentence (from <a href="http://www.google.com/press/pressrel/google_youtube.html">Google.com</a>): "When the acquisition is complete, YouTube will retain its distinct brand identity, 
+ * strengthening and complementing Google’s own fast-growing video business. 
+ * YouTube will continue to be based in San Bruno, CA, and all YouTube employees will remain with the company. With Google’s technology, advertiser relationships and global reach, 
+ * YouTube will continue to build on its success as one of the world’s most popular services for video entertainment." 
+ * 
+ * <br>One of the <b>Tuple Context</b> (Considering the first two occurrences of <b>Google</b> and <b>YouTube</b>):
+ * 
+ * <br>1. ["When","the","acquisition","is","complete"] COMPANY ["will","retain","its","distinct","brand","identity","strengthening","and","complementing"] BUYER ["'s","own","fast-growing","video","business","YouTube","will","continue","to","be"]
+* 
  *
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br>
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
  * @author      Pablo Barrio
  * @author		Goncalo Simoes
  * @version     0.1

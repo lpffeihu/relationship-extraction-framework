@@ -1,6 +1,19 @@
 /**
- * Class used to generate the queries to issue in Lucene.
- *
+ * Class used to generate the queries to issue using Lucene Engine.
+ * 
+ * <br>
+ * For this Class, Apache Lucene Engine is required. 
+ * @see <a href="http://lucene.apache.org/"> Lucene </a>
+ * 
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
+ * 
+ * 
  * @author      Pablo Barrio
  * @author		Goncalo Simoes
  * @version     0.1

@@ -1,5 +1,16 @@
 /**
- * QuestCalculator based on matrix multiplication. Useful for fully connected graphs or for longer number of iterations.
+ * QuestCalculator based on <b>Matrix Multiplication</b>. Useful for fully-connected graphs or for graphs that will take a long number of iterations to converge.
+ * <br>
+ * For sparse graphs, @see MapBasedQuestCalculator
+ * 
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br>
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
  *
  * @author      Pablo Barrio
  * @author		Goncalo Simoes

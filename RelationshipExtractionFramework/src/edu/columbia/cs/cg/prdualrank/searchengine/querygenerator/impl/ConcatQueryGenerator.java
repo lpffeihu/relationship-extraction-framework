@@ -1,6 +1,21 @@
 /**
  * Query generator based in the simple concatenation of the strings to be searched.
  * 
+ * <br>For instance, for a <b>Relationship</b> (Microsoft Corporation, Redmond Seattle), the generated query will be: "Microsoft Corporation Redmond Seattle". 
+ * 
+ * <br><b>Comment</b>: Then, depending on how the search engine wants to divide
+ * it, it is how the query is going to be issued. One possibility is to send it as boolean query where a document will be a hit, if it contains all the words in the query (order does not matter)
+ * 
+ * <br>For an <b>Entity</b> (Microsoft Corporation), the generated query will be: "Microsoft Corporation". To understand how the query is issued, please read the <b>Comment</b> above.
+ * 
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br>
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
  * @author      Pablo Barrio
  * @author		Goncalo Simoes
  * @version     0.1
