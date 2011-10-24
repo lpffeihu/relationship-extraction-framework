@@ -17,28 +17,18 @@
  */
 package edu.columbia.cs.cg.prdualrank.pattern.extractor.impl;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import opennlp.tools.tokenize.TokenizerME;
-import opennlp.tools.tokenize.TokenizerModel;
-import opennlp.tools.util.InvalidFormatException;
-
-import edu.columbia.cs.cg.document.TokenizedDocument;
-import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.resource.AttributeContext;
-import edu.columbia.cs.cg.relations.Entity;
-import edu.columbia.cs.cg.relations.Relationship;
-import edu.columbia.cs.cg.relations.RelationshipType;
+import edu.columbia.cs.ref.model.TokenizedDocument;
+import edu.columbia.cs.ref.model.entity.Entity;
+import edu.columbia.cs.ref.model.pattern.Pattern;
+import edu.columbia.cs.ref.model.relationship.Relationship;
+import edu.columbia.cs.ref.model.relationship.RelationshipType;
 import edu.columbia.cs.utils.Span;
 
 public class ExtractionPatternExtractor<T extends Relationship> implements PatternExtractor<Relationship> {
