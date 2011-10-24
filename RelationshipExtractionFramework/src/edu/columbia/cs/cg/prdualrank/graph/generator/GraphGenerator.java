@@ -23,11 +23,11 @@ package edu.columbia.cs.cg.prdualrank.graph.generator;
 import java.util.Map;
 import java.util.Set;
 
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.pattern.Pattern;
-import edu.columbia.cs.cg.pattern.matchable.Matchable;
 import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
-import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.pattern.Pattern;
+import edu.columbia.cs.ref.model.pattern.resources.Matchable;
+import edu.columbia.cs.ref.model.relationship.Relationship;
 
 public abstract class GraphGenerator<T extends Matchable,D extends Document> {
 

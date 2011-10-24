@@ -2,7 +2,7 @@ package edu.columbia.cs.api;
 
 import java.util.List;
 
-import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.ref.model.relationship.Relationship;
 
 /**
  * Interface for Relationship Extractor

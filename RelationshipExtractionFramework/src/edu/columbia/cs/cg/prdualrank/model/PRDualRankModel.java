@@ -24,14 +24,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.pattern.Pattern;
-import edu.columbia.cs.cg.pattern.matchable.Matchable;
-import edu.columbia.cs.cg.relations.Relationship;
-import edu.columbia.cs.cg.relations.RelationshipType;
-import edu.columbia.cs.model.Model;
-import edu.columbia.cs.og.configuration.StructureConfiguration;
-import edu.columbia.cs.og.structure.OperableStructure;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.StructureConfiguration;
+import edu.columbia.cs.ref.model.core.structure.OperableStructure;
+import edu.columbia.cs.ref.model.pattern.Pattern;
+import edu.columbia.cs.ref.model.pattern.resources.Matchable;
+import edu.columbia.cs.ref.model.re.Model;
+import edu.columbia.cs.ref.model.relationship.Relationship;
+import edu.columbia.cs.ref.model.relationship.RelationshipType;
 
 public class PRDualRankModel<S extends Matchable,E extends Matchable, D extends Document> extends Model {
 

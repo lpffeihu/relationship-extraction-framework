@@ -3,14 +3,14 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import edu.columbia.cs.cg.candidates.CandidatesGenerator;
-import edu.columbia.cs.cg.collection.split.KFoldSplitter;
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.document.loaders.impl.ACE2005Loader;
-import edu.columbia.cs.cg.relations.RelationshipType;
-import edu.columbia.cs.cg.relations.constraints.roles.EntityTypeConstraint;
-import edu.columbia.cs.cg.sentence.impl.OpenNLPMESplitter;
-import edu.columbia.cs.data.Dataset;
+import edu.columbia.cs.ref.algorithm.CandidatesGenerator;
+import edu.columbia.cs.ref.model.Dataset;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.constraint.role.impl.EntityTypeConstraint;
+import edu.columbia.cs.ref.model.relationship.RelationshipType;
+import edu.columbia.cs.ref.tool.collection.splitter.impl.KFoldSplitter;
+import edu.columbia.cs.ref.tool.document.splitter.impl.OpenNLPMESplitter;
+import edu.columbia.cs.ref.tool.loader.document.impl.ace2005.ACE2005Loader;
 
 
 public class SplitACE2005 {

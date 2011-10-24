@@ -47,11 +47,11 @@ import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
-import edu.columbia.cs.cg.document.TokenizedDocument;
 import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
 import edu.columbia.cs.cg.prdualrank.index.reader.TokenBasedReader;
 import edu.columbia.cs.cg.prdualrank.index.tokenizer.SpanBasedTokenizer;
 import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl.LuceneQueryGenerator;
+import edu.columbia.cs.ref.model.TokenizedDocument;
 
 public class Index {
 
@@ -190,7 +190,7 @@ public class Index {
 	 * @param n the number of documents to be retrieved.
 	 * @return the list of documents that match the query.
 	 */
-	public List<edu.columbia.cs.cg.document.TokenizedDocument> search(Query query, int n) {
+	public List<edu.columbia.cs.ref.model.TokenizedDocument> search(Query query, int n) {
 
 		TopDocs result = null;
 		

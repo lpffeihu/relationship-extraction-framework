@@ -18,12 +18,11 @@
  */
 package edu.columbia.cs.cg.prdualrank.searchengine.querygenerator;
 
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.document.TokenizedDocument;
-import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.pattern.prdualrank.SearchPattern;
-import edu.columbia.cs.cg.relations.Entity;
-import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.TokenizedDocument;
+import edu.columbia.cs.ref.model.entity.Entity;
+import edu.columbia.cs.ref.model.relationship.Relationship;
 
 public abstract class QueryGenerator<Q> {
 

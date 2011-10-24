@@ -21,7 +21,7 @@ package edu.columbia.cs.cg.prdualrank.searchengine;
 
 import java.util.List;
 
-import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.ref.model.Document;
 
 public interface SearchEngine {
 

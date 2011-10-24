@@ -32,9 +32,9 @@ import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.util.Version;
 
-import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
 import edu.columbia.cs.cg.prdualrank.index.reader.TokenBasedReader;
 import edu.columbia.cs.cg.prdualrank.index.tokenizer.SpanBasedTokenizer;
+import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
 import edu.columbia.cs.utils.Span;
 
 public class TokenizerBasedAnalyzer extends Analyzer {

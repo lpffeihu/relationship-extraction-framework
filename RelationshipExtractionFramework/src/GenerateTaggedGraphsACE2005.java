@@ -2,13 +2,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
-import edu.columbia.cs.cg.candidates.CandidateSentence;
-import edu.columbia.cs.cg.candidates.CandidatesSentenceReader;
-import edu.columbia.cs.og.algorithm.StructureGenerator;
-import edu.columbia.cs.og.configuration.StructureConfiguration;
-import edu.columbia.cs.og.core.CoreWriter;
-import edu.columbia.cs.og.core.impl.ShortestPathKernel;
-import edu.columbia.cs.og.structure.OperableStructure;
+import edu.columbia.cs.ref.algorithm.StructureGenerator;
+import edu.columbia.cs.ref.model.CandidateSentence;
+import edu.columbia.cs.ref.model.StructureConfiguration;
+import edu.columbia.cs.ref.model.core.impl.ShortestPathKernel;
+import edu.columbia.cs.ref.model.core.structure.OperableStructure;
+import edu.columbia.cs.ref.tool.io.CandidatesSentenceReader;
+import edu.columbia.cs.ref.tool.io.CoreWriter;
 
 
 public class GenerateTaggedGraphsACE2005 {

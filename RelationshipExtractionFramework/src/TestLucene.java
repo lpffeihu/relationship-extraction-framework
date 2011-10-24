@@ -32,9 +32,9 @@ import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
-import edu.columbia.cs.cg.document.tokenized.tokenizer.OpenNLPTokenizer;
-import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
 import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
+import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
+import edu.columbia.cs.ref.tool.tokenizer.impl.OpenNLPTokenizer;
 import edu.columbia.cs.utils.Words;
 
 

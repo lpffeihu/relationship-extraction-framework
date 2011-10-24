@@ -1,0 +1,83 @@
+package edu.columbia.cs.ref.model.core.impl;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import opennlp.tools.util.InvalidFormatException;
+
+import edu.columbia.cs.ref.algorithm.feature.generation.FeatureGenerator;
+import edu.columbia.cs.ref.algorithm.feature.generation.SentenceFeatureGenerator;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.EntitySplitsFG;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.KnowItAllChunkingFG;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenInformationExtractionFG;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPPartOfSpeechFG;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPTokenizationFG;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.SpansToStringsConvertionFG;
+import edu.columbia.cs.ref.model.CandidateSentence;
+import edu.columbia.cs.ref.model.core.Core;
+import edu.columbia.cs.ref.model.core.structure.OperableStructure;
+import edu.columbia.cs.ref.model.core.structure.impl.OpenInformationExtractionOS;
+import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
+import edu.columbia.cs.ref.model.feature.impl.WekaInstanceFS;
+import edu.columbia.cs.utils.AlternativeOpenIEFeatures;
+import edu.columbia.cs.utils.Span;
+import edu.washington.cs.knowitall.extractor.conf.ReVerbFeatures;
+
+public class OpenInformationExtractionCore extends Core {
+
+	@Override
+	protected List<FeatureGenerator> createMandatoryFeatureGenerators() {
+		// TODO OpenNLPtoken Chunks entitySplits
+		
+		List<FeatureGenerator> features = new ArrayList<FeatureGenerator>();
+		
+		try {
+			FeatureGenerator<SequenceFS<Span>> tokenSpans = new OpenNLPTokenizationFG("en-token.bin");
+			
+			FeatureGenerator<SequenceFS<String>> tokens = new SpansToStringsConvertionFG(tokenSpans);
+			
+			FeatureGenerator<SequenceFS<String>> pos = new OpenNLPPartOfSpeechFG("en-pos-maxent.bin",tokens);
+			
+			FeatureGenerator<SequenceFS<String>> chunk = new KnowItAllChunkingFG(tokens,pos);
+			
+			FeatureGenerator<SequenceFS<Span>> entitySplits = new EntitySplitsFG(tokenSpans);
+			
+			FeatureGenerator<WekaInstanceFS> wekaFS = new OpenInformationExtractionFG(
+					new AlternativeOpenIEFeatures(),tokens,pos,chunk,entitySplits);
+			
+			features.add(tokens);
+			
+			features.add(pos);
+			
+			features.add(chunk);
+			
+			features.add(entitySplits);
+			
+			features.add(wekaFS);
+			
+			return features;
+			
+		} catch (InvalidFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.exit(1);
+		
+		return null;
+		
+
+	}
+
+	@Override
+	protected OperableStructure createOperableStructure(CandidateSentence sent) {
+		
+		return new OpenInformationExtractionOS(sent);
+	
+	}
+
+}

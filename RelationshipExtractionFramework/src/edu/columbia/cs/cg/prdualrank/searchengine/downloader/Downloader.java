@@ -33,7 +33,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 
-import edu.columbia.cs.cg.document.Document;
+import edu.columbia.cs.ref.model.Document;
 
 public class Downloader implements Runnable {
 

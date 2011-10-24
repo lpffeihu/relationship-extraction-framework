@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.document.TokenizedDocument;
-import edu.columbia.cs.cg.pattern.Pattern;
-import edu.columbia.cs.cg.relations.Entity;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.TokenizedDocument;
+import edu.columbia.cs.ref.model.entity.Entity;
+import edu.columbia.cs.ref.model.pattern.Pattern;
 import edu.columbia.cs.utils.Span;
 
 /**

@@ -32,14 +32,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.document.TokenizedDocument;
-import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.pattern.prdualrank.ExtractionPattern;
 import edu.columbia.cs.cg.pattern.prdualrank.SimpleAttributeExtractionPattern;
-import edu.columbia.cs.cg.relations.Entity;
-import edu.columbia.cs.cg.relations.Relationship;
-import edu.columbia.cs.cg.relations.RelationshipType;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.TokenizedDocument;
+import edu.columbia.cs.ref.model.entity.Entity;
+import edu.columbia.cs.ref.model.pattern.Pattern;
+import edu.columbia.cs.ref.model.relationship.Relationship;
+import edu.columbia.cs.ref.model.relationship.RelationshipType;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 
 public class AttributeContext {

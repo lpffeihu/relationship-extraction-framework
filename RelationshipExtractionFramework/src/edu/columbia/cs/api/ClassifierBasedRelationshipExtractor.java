@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import edu.columbia.cs.cg.candidates.CandidateSentence;
-import edu.columbia.cs.cg.candidates.CandidatesGenerator;
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.relations.Relationship;
-import edu.columbia.cs.cg.relations.RelationshipType;
-import edu.columbia.cs.cg.sentence.SentenceSplitter;
-import edu.columbia.cs.model.Model;
-import edu.columbia.cs.og.configuration.StructureConfiguration;
-import edu.columbia.cs.og.structure.OperableStructure;
+import edu.columbia.cs.ref.algorithm.CandidatesGenerator;
+import edu.columbia.cs.ref.model.CandidateSentence;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.StructureConfiguration;
+import edu.columbia.cs.ref.model.core.structure.OperableStructure;
+import edu.columbia.cs.ref.model.re.Model;
+import edu.columbia.cs.ref.model.relationship.Relationship;
+import edu.columbia.cs.ref.model.relationship.RelationshipType;
+import edu.columbia.cs.ref.tool.document.splitter.SentenceSplitter;
 
 /**
  * Implementation of the relationship extractor that uses a classifier to extract

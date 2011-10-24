@@ -36,11 +36,11 @@ import java.util.Map;
 import com.davidsoergel.conja.Function;
 import com.davidsoergel.conja.Parallel;
 
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.document.loaders.DocumentLoader;
-import edu.columbia.cs.cg.document.loaders.impl.RawDocumentLoader;
-import edu.columbia.cs.cg.document.preprocessing.Preprocessor;
 import edu.columbia.cs.cg.prdualrank.searchengine.downloader.Downloader;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.tool.loader.document.DocumentLoader;
+import edu.columbia.cs.ref.tool.loader.document.impl.RawDocumentLoader;
+import edu.columbia.cs.ref.tool.preprocessor.Preprocessor;
 
 public abstract class WebBasedSearchEngine implements SearchEngine {
 

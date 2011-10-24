@@ -2,22 +2,22 @@ import java.io.File;
 import java.util.Set;
 
 import weka.core.SerializationHelper;
-import edu.columbia.cs.cg.candidates.CandidateSentence;
-import edu.columbia.cs.cg.candidates.CandidatesSentenceReader;
-import edu.columbia.cs.og.algorithm.StructureGenerator;
-import edu.columbia.cs.og.configuration.StructureConfiguration;
-import edu.columbia.cs.og.core.CoreWriter;
-import edu.columbia.cs.og.core.impl.BagOfNGramsKernel;
-import edu.columbia.cs.og.core.impl.OpenInformationExtractionCore;
-import edu.columbia.cs.og.core.impl.SubsequencesKernel;
-import edu.columbia.cs.og.features.FeatureGenerator;
-import edu.columbia.cs.og.features.featureset.SequenceFS;
-import edu.columbia.cs.og.features.impl.EntityBasedChunkingFG;
-import edu.columbia.cs.og.features.impl.GenericPartOfSpeechFG;
-import edu.columbia.cs.og.features.impl.OpenNLPPartOfSpeechFG;
-import edu.columbia.cs.og.features.impl.OpenNLPTokenizationFG;
-import edu.columbia.cs.og.features.impl.SpansToStringsConvertionFG;
-import edu.columbia.cs.og.structure.OperableStructure;
+import edu.columbia.cs.ref.algorithm.StructureGenerator;
+import edu.columbia.cs.ref.algorithm.feature.generation.FeatureGenerator;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.EntityBasedChunkingFG;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.GenericPartOfSpeechFG;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPPartOfSpeechFG;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPTokenizationFG;
+import edu.columbia.cs.ref.algorithm.feature.generation.impl.SpansToStringsConvertionFG;
+import edu.columbia.cs.ref.model.CandidateSentence;
+import edu.columbia.cs.ref.model.StructureConfiguration;
+import edu.columbia.cs.ref.model.core.impl.BagOfNGramsKernel;
+import edu.columbia.cs.ref.model.core.impl.OpenInformationExtractionCore;
+import edu.columbia.cs.ref.model.core.impl.SubsequencesKernel;
+import edu.columbia.cs.ref.model.core.structure.OperableStructure;
+import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
+import edu.columbia.cs.ref.tool.io.CandidatesSentenceReader;
+import edu.columbia.cs.ref.tool.io.CoreWriter;
 import edu.columbia.cs.utils.Span;
 
 

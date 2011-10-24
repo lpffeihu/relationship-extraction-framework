@@ -33,8 +33,8 @@ import com.google.code.bing.search.schema.SourceType;
 import com.google.code.bing.search.schema.web.WebResult;
 import com.google.code.bing.search.schema.web.WebSearchOption;
 
-import edu.columbia.cs.cg.document.loaders.impl.RawDocumentLoader;
 import edu.columbia.cs.cg.prdualrank.searchengine.WebBasedSearchEngine;
+import edu.columbia.cs.ref.tool.loader.document.impl.RawDocumentLoader;
 
 public class BingSearchEngine extends WebBasedSearchEngine {
 

@@ -20,11 +20,11 @@ package edu.columbia.cs.cg.prdualrank.pattern.extractor;
 import java.util.List;
 import java.util.Map;
 
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.document.TokenizedDocument;
-import edu.columbia.cs.cg.pattern.Pattern;
-import edu.columbia.cs.cg.pattern.matchable.Matchable;
-import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.TokenizedDocument;
+import edu.columbia.cs.ref.model.pattern.Pattern;
+import edu.columbia.cs.ref.model.pattern.resources.Matchable;
+import edu.columbia.cs.ref.model.relationship.Relationship;
 
 public interface PatternExtractor<T extends Matchable> {
 

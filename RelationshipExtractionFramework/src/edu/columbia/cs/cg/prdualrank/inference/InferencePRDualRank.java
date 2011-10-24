@@ -18,13 +18,13 @@ package edu.columbia.cs.cg.prdualrank.inference;
 
 import java.util.SortedSet;
 
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.pattern.Pattern;
-import edu.columbia.cs.cg.pattern.matchable.Matchable;
 import edu.columbia.cs.cg.prdualrank.graph.PRDualRankGraph;
 import edu.columbia.cs.cg.prdualrank.inference.quest.QuestCalculator;
 import edu.columbia.cs.cg.prdualrank.inference.ranking.RankFunction;
-import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.pattern.Pattern;
+import edu.columbia.cs.ref.model.pattern.resources.Matchable;
+import edu.columbia.cs.ref.model.relationship.Relationship;
 
 public class InferencePRDualRank<T extends Matchable,D extends Document> {
 
