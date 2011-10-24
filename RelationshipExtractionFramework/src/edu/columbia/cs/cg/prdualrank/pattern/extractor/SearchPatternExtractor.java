@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import edu.columbia.cs.cg.document.Document;
-import edu.columbia.cs.cg.document.TokenizedDocument;
-import edu.columbia.cs.cg.pattern.Pattern;
 import edu.columbia.cs.cg.pattern.prdualrank.SearchPattern;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.resource.TupleContext;
-import edu.columbia.cs.cg.relations.Relationship;
+import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.TokenizedDocument;
+import edu.columbia.cs.ref.model.pattern.Pattern;
+import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 
 public abstract class SearchPatternExtractor<T extends Document> implements PatternExtractor<Document> {
