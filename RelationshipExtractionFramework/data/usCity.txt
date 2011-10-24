@@ -1,0 +1,1149 @@
+Anchorage
+Juneau
+Ketchikan
+Birmingham
+Hoover
+Tuscaloosa
+Decatur
+Huntsville
+Decatur
+Huntsville
+Dothan
+Montgomery
+Mobile
+Pago Pago
+Tafuna
+Dog Island
+Scrub Island
+The Valley
+Freetown
+Saint John's
+Little Rock
+North Little Rock
+Fort Smith
+Fayetteville
+Jonesboro
+Pine Bluff
+Flagstaff
+Yuma
+Chandler
+Mesa
+Phoenix
+Scottsdale
+Tempe
+Phoenix
+Casa Adobes
+Catalina Foothills
+Tucson
+Glendale
+Peoria
+Phoenix
+Freeport
+Nassau
+Bridgetown
+The Crane
+Devonshire
+St. George's
+Warwick
+Road Town
+Virgin Gorda
+Lodi
+Merced
+Modesto
+Stockton
+Tracy
+Turlock
+Los Angeles
+Carson
+Compton
+Gardena
+Hawthorne
+Inglewood
+Lynwood
+Redondo Beach
+Santa Monica
+Torrance
+Carson
+Compton
+Gardena
+Hawthorne
+Inglewood
+Lynwood
+Redondo Beach
+Santa Monica
+Torrance
+East Los Angeles
+Florence-Graham
+Huntington Park
+Montebello
+South Gate
+Cupertino
+Milpitas
+San Jose
+Santa Clara
+Sunnyvale
+San Francisco
+San Rafael
+Alameda
+Berkeley
+Castro Valley
+Fremont
+Hayward
+Oakland
+Richmond
+San Leandro
+Union City
+Chico
+Davis
+Redding
+Clovis
+Fresno
+Visalia
+Bellflower
+Cerritos
+Downey
+La Habra
+Lakewood
+Long Beach
+Norwalk
+Paramount
+Pico Rivera
+Whittier
+Chula Vista
+El Cajon
+La Mesa
+National City
+San Diego
+Santee
+Alhambra
+Arcadia
+Baldwin Park
+El Monte
+Hacienda Heights
+Monterey Park
+Pasadena
+Rosemead
+West Covina
+Daly City
+Mountain View
+Palo Alto
+Redwood City
+San Mateo
+South San Francisco
+Bakersfield
+Lancaster
+Palmdale
+Santa Clarita
+Fairfield
+Napa
+Petaluma
+Santa Rosa
+Vacaville
+Vallejo
+Anaheim
+Buena Park
+Fountain Valley
+Fullerton
+Garden Grove
+Huntington Beach
+Orange
+Santa Ana
+Tustin
+Westminster
+Yorba Linda
+Anaheim
+Buena Park
+Fountain Valley
+Fullerton
+Garden Grove
+Huntington Beach
+Orange
+Santa Ana
+Tustin
+Westminster
+Yorba Linda
+Apple Valley
+Carlsbad
+Encinitas
+Escondido
+Hesperia
+Oceanside
+San Marcos
+Victorville
+Vista
+Apple Valley
+Carlsbad
+Encinitas
+Escondido
+Hesperia
+Oceanside
+San Marcos
+Victorville
+Vista
+Camarillo
+Goleta
+Oxnard
+San Buenaventura
+Santa Barbara
+Santa Maria
+Simi Valley
+Thousand Oaks
+Burbank
+Glendale
+Burbank
+Glendale
+Salinas
+Santa Cruz
+San Diego
+Chino
+Chino Hills
+Diamond Bar
+Fontana
+Ontario
+Pomona
+Rancho Cucamonga
+Redlands
+Rialto
+San Bernardino
+Upland
+Arden-Arcade
+Citrus Heights
+Elk Grove
+Folsom
+Rancho Cordova
+Roseville
+Sacramento
+Antioch
+Concord
+Livermore
+Pittsburg
+Pleasanton
+Walnut Creek
+Costa Mesa
+Irvine
+Laguna Niguel
+Lake Forest
+Mission Viejo
+Newport Beach
+Corona
+Hemet
+Moreno Valley
+Riverside
+Temecula
+Calgary
+Lethbridge
+Medicine Hat
+Red Deer
+Calgary
+Lethbridge
+Medicine Hat
+Red Deer
+Edmonton
+St. Albert
+Edmonton
+St. Albert
+Kamloops
+Kelowna
+Nanaimo
+Prince George
+Victoria
+Kamloops
+Kelowna
+Nanaimo
+Prince George
+Victoria
+Abbotsford
+Burnaby
+Chilliwack
+Coquitlam
+New Westminster
+Port Coquitlam
+Richmond
+Surrey
+Vancouver
+Abbotsford
+Burnaby
+Chilliwack
+Coquitlam
+New Westminster
+Port Coquitlam
+Richmond
+Surrey
+Vancouver
+Winnipeg
+Fredericton
+Moncton
+Saint John
+St. John's
+Dawson City
+Whitehorse
+Dartmouth
+Halifax
+Toronto
+Toronto
+Brantford
+Cambridge
+Chatham
+Guelph
+Kitchener
+London
+Sarnia
+Windsor
+Brantford
+Cambridge
+Chatham
+Guelph
+Kitchener
+London
+Sarnia
+Windsor
+Kingston
+Ottawa
+Kingston
+Ottawa
+Barrie
+North Bay
+Peterborough
+Sault Ste. Marie
+Sudbury
+Barrie
+North Bay
+Peterborough
+Sault Ste. Marie
+Sudbury
+Thunder Bay
+Brampton
+Burlington
+Hamilton
+Mississauga
+Niagara Falls
+Pickering
+St. Catharines
+Vaughan
+Welland
+Brampton
+Burlington
+Hamilton
+Mississauga
+Niagara Falls
+Pickering
+St. Catharines
+Vaughan
+Welland
+Levis
+Quebec City
+Levis
+Quebec City
+Brossard
+Laval
+Repentigny
+Saint-Hyacinthe
+Saint-Jean-sur-Richelieu
+Saint-Jerome
+Terrebonne
+Brossard
+Laval
+Repentigny
+Saint-Hyacinthe
+Saint-Jean-sur-Richelieu
+Saint-Jerome
+Terrebonne
+Montreal
+Montreal
+Drummondville
+Gatineau
+Shawinigan
+Sherbrooke
+Trois-Rivieres
+Regina
+Saskatoon
+George Town
+Arvada
+Aurora
+Boulder
+Denver
+Highlands Ranch
+Lakewood
+Longmont
+Loveland
+Thornton
+Westminster
+Arvada
+Aurora
+Boulder
+Denver
+Highlands Ranch
+Lakewood
+Longmont
+Loveland
+Thornton
+Westminster
+Colorado Springs
+Pueblo
+Fort Collins
+Greeley
+Loveland
+Bridgeport
+Danbury
+Fairfield
+Greenwich
+Hamden
+Meriden
+Milford
+New Haven
+Norwalk
+Stamford
+Waterbury
+West Haven
+Bridgeport
+Danbury
+Fairfield
+Greenwich
+Hamden
+Meriden
+Milford
+New Haven
+Norwalk
+Stamford
+Waterbury
+West Haven
+Bristol
+Hartford
+Manchester
+New Britain
+West Hartford
+Washington D.C. area
+Wilmington
+Roseau
+Saint Joseph
+Azua de Compostela
+Boca Chica
+Santo Domingo
+Azua de Compostela
+Boca Chica
+Santo Domingo
+Azua de Compostela
+Boca Chica
+Santo Domingo
+Cape Coral
+Carol City
+Hialeah
+Kendale Lakes
+Kendall
+Miami
+Miami Beach
+Miramar
+Tamiami
+Carol City
+Hialeah
+Kendale Lakes
+Kendall
+Miami
+Miami Beach
+Miramar
+Tamiami
+Gainesville
+Spring Hill
+Daytona Beach
+Deltona
+Melbourne
+Orlando
+Palm Bay
+Melbourne
+Orlando
+Palm Bay
+Boca Raton
+Boynton Beach
+Delray Beach
+West Palm Beach
+Clearwater
+Largo
+Palm Harbor
+St. Petersburg
+Port St. Lucie
+Tampa
+Pensacola
+Tallahassee
+Lakeland
+Jacksonville
+Sarasota
+Coral Springs
+Davie
+Deerfield Beach
+Fort Lauderdale
+Hollywood
+Lauderhill
+Margate
+Pembroke Pines
+Plantation
+Pompano Beach
+Sunrise
+Tamarac
+Coral Springs
+Davie
+Deerfield Beach
+Fort Lauderdale
+Hollywood
+Lauderhill
+Margate
+Pembroke Pines
+Plantation
+Pompano Beach
+Sunrise
+Tamarac
+Albany
+Atlanta
+Sandy Springs
+Atlanta
+Sandy Springs
+Atlanta
+Sandy Springs
+Macon
+Athens
+Augusta
+Columbus
+Athens
+Augusta
+Columbus
+Atlanta
+Marietta
+Roswell
+Sandy Springs
+Atlanta
+Marietta
+Roswell
+Sandy Springs
+Atlanta
+Marietta
+Roswell
+Sandy Springs
+Savannah
+St. George's
+Victoria
+Dededo
+Hagatna
+Honolulu
+Cedar Rapids
+Iowa City
+Waterloo
+Ames
+Des Moines
+Davenport
+Dubuque
+Fairfield
+Mason City
+Council Bluffs
+Sioux City
+Boise
+Idaho Falls
+Nampa
+Pocatelllo
+Champaign
+Decatur
+Springfield
+Bloomington
+Peoria
+Chicago
+Chicago
+Belleville
+Harrisburg
+Aurora
+Naperville
+Wheaton
+Aurora
+Naperville
+Wheaton
+Berwyn
+Cicero
+Oak Lawn
+Oak Park
+Orland Park
+Chicago
+Chicago
+Joliet
+Rockford
+Joliet
+Rockford
+Arlington Heights
+Des Plaines
+Elgin
+Evanston
+Mount Prospect
+Palatine
+Schaumburg
+Skokie
+Waukegan
+Arlington Heights
+Des Plaines
+Elgin
+Evanston
+Mount Prospect
+Palatine
+Schaumburg
+Skokie
+Waukegan
+Gary
+Hammond
+Fort Wayne
+Indianapolis
+Elkhart
+South Bend
+Anderson
+Lafayette
+Muncie
+Bloomington
+Evansville
+Terre Haute
+Kingston
+Portmore
+Spanish Town
+Wichita
+Hutchinson
+Lawrence
+Topeka
+Kansas City
+Olathe
+Overland Park
+Bowling Green
+Owensboro
+Louisville
+Maysville
+Lexington
+Baton Rouge
+Bossier City
+Monroe
+Shreveport
+Lafayette
+Lake Charles
+Kenner
+Metairie
+New Orleans
+Laplace
+St. Rose
+Chicopee
+Pittsfield
+Springfield
+Brockton
+Fall River
+Framingham
+New Bedford
+Taunton
+Worcester
+Brockton
+Fall River
+Framingham
+New Bedford
+Taunton
+Worcester
+Boston
+Cambridge
+Newton
+Quincy
+Waltham
+Boston
+Cambridge
+Newton
+Quincy
+Waltham
+Lynn
+Malden
+Medford
+Waltham
+Weymouth
+Lynn
+Malden
+Medford
+Waltham
+Weymouth
+Haverhill
+Lawrence
+Lowell
+Haverhill
+Lawrence
+Lowell
+Aspen Hill
+Bethesda
+Bowie
+Frederick
+Gaithersburg
+Germantown
+Silver Spring
+Wheaton-Glenmont
+Aspen Hill
+Bethesda
+Bowie
+Frederick
+Gaithersburg
+Germantown
+Silver Spring
+Wheaton-Glenmont
+Baltimore
+Columbia
+Dundalk
+Ellicott City
+Towson
+Baltimore
+Columbia
+Dundalk
+Ellicott City
+Towson
+Portland
+Muskegon
+Shelby
+Farmington Hills
+Pontiac
+Rochester Hills
+Royal Oak
+Southfield
+Troy
+Waterford
+Farmington Hills
+Pontiac
+Rochester Hills
+Royal Oak
+Southfield
+Troy
+Waterford
+Battle Creek
+Kalamazoo
+Dearborn
+Dearborn Heights
+Detroit
+Redford
+Taylor
+Clinton
+Lansing
+St. Clair Shores
+Sterling Heights
+Warren
+Grand Rapids
+Wyoming
+Ann Arbor
+Canton
+Livonia
+Westland
+Flint
+Sainte Marie
+Saginaw
+Duluth
+St Cloud
+Rochester
+Minneapolis
+St. Paul
+Brooklyn Park
+Coon Rapids
+Maple Grove
+Plymouth
+Bloomington
+Burnsville
+Minnetonka
+Florissant
+St. Louis
+Springfield
+Columbia
+St. Charles
+St. Peters
+Clinton
+Warrensburg
+Independence
+Kansas City
+Lee's Summit
+St. Joseph
+Biloxi
+Gulfport
+Jackson
+Jackson
+Greenville
+Tupelo
+Billings
+Great Falls
+Missoula
+Brades
+Plymouth
+Greenville
+Rocky Mount
+Greensboro
+High Point
+Winston-Salem
+Charlotte
+Concord
+Gastonia
+Charlotte
+Concord
+Gastonia
+Asheville
+Fayetteville
+Jacksonville
+Wilmington
+Cary
+Durham
+Raleigh
+Bismarck
+Fargo
+North Platte
+Scottsbluff
+Lincoln
+Omaha
+Lincoln
+Omaha
+Manchester
+Nashua
+Bayonne
+Jersey City
+Union City
+Bayonne
+Jersey City
+Union City
+Trenton
+Brick Township
+Edison
+Toms River
+Brick Township
+Edison
+Toms River
+Camden
+Vineland
+Elizabeth
+Clifton
+East Orange
+Irvington
+Newark
+Passaic
+Paterson
+Wayne
+Clifton
+East Orange
+Irvington
+Newark
+Passaic
+Paterson
+Wayne
+Albuquerque
+Farmington
+Gallup
+Santa Fe
+Alamogordo
+Las Cruces
+Rio Rancho
+Henderson
+Las Vegas
+Paradise
+Spring Valley
+Sunrise Manor
+Carson City
+Reno
+Sparks
+New York City
+New York City
+New York City
+Syracuse
+Utica
+Hempstead
+Albany
+Schenectady
+Rochester
+Endicott
+Ithaca
+Babylon
+Brentwood
+Brookhaven
+Southampton
+Buffalo
+Cheektowaga
+Niagara Falls
+Tonawanda
+New York City
+New York City
+New York City
+New York City
+Cornwall
+Montgomery
+Woodstock
+Mount Vernon
+New Rochelle
+White Plains
+Yonkers
+Saipan
+Cleveland
+Euclid
+Lakewood
+Parma
+Akron
+Canton
+Youngstown
+Akron
+Canton
+Youngstown
+Sandusky
+Toledo
+Sandusky
+Toledo
+Elyria
+Lorain
+Mentor
+Cincinnati
+Hamilton
+Columbus
+Chillicothe
+Zanesville
+Dayton
+Kettering
+Springfield
+Midwest City
+Norman
+Oklahoma City
+Lawton
+Broken Arrow
+Tulsa
+Broken Arrow
+Tulsa
+Beaverton
+Gresham
+Hillsboro
+Portland
+Salem
+Beaverton
+Gresham
+Hillsboro
+Portland
+Salem
+Bend
+Eugene
+Medford
+Springfield
+Bend
+Eugene
+Medford
+Springfield
+Levittown
+Philadelphia
+Levittown
+Philadelphia
+Pittsburgh
+Pittsburgh
+Scranton
+Allentown
+Bethlehem
+Reading
+Allentown
+Bethlehem
+Reading
+Lancaster
+Elwood City
+Kensington
+Elwood City
+Kensington
+Erie
+Arecibo
+Humacao
+San Juan
+Trujillo Alto
+Arecibo
+Humacao
+San Juan
+Trujillo Alto
+Cranston
+Pawtucket
+Providence
+Warwick
+Columbia
+Charleston
+Greenville
+Rapid City
+Sioux Falls
+Basseterre
+Sandy Point Town
+Castries
+Vieux Fort
+Kingstown
+Port Elizabeth
+Chattanooga
+Johnson City
+Murfreesboro
+Nashville
+Jackson
+Knoxville
+Memphis
+Clarksville
+San Antonio
+Arlington
+Carrollton
+Dallas
+Flower Mound
+Garland
+Grand Prairie
+Irving
+Lewisville
+McKinney
+Mesquite
+Plano
+Richardson
+Arlington
+Carrollton
+Dallas
+Flower Mound
+Garland
+Grand Prairie
+Irving
+Lewisville
+McKinney
+Mesquite
+Plano
+Richardson
+Arlington
+Carrollton
+Dallas
+Flower Mound
+Garland
+Grand Prairie
+Irving
+Lewisville
+McKinney
+Mesquite
+Plano
+Richardson
+Killeen
+Temple
+Waco
+Abilene
+San Angelo
+Corpus Christi
+Victoria
+Beaumont
+Galveston
+Port Arthur
+Midland
+Odessa
+Austin
+Round Rock
+Baytown
+Houston
+Missouri City
+Pasadena
+Sugar Land
+The Woodlands
+Baytown
+Houston
+Missouri City
+Pasadena
+Sugar Land
+The Woodlands
+Baytown
+Houston
+Missouri City
+Pasadena
+Sugar Land
+The Woodlands
+Amarillo
+Lubbock
+Arlington
+Fort Worth
+North Richland Hills
+Arlington
+Fort Worth
+North Richland Hills
+Boerne
+Canyon Lake
+Gonzales
+Longview
+Tyler
+Longview
+Tyler
+El Paso
+Diboll
+Lufkin
+Waller
+Bowie
+Lake Dallas
+Wichita Falls
+Brownsville
+Harlingen
+Laredo
+McAllen
+Bryan
+College Station
+Port of Spain
+San Fernando
+Cockburn Town
+Sandy Point
+Charlotte Amalie
+Port Alucroix
+Brigham City
+Logan
+Tremonton
+Layton
+Ogden
+Orem
+Provo
+Salt Lake City
+Sandy
+Taylorsville
+West Jordan
+West Valley City
+Layton
+Ogden
+Orem
+Provo
+Salt Lake City
+Sandy
+Taylorsville
+West Jordan
+West Valley City
+Castlewood
+Hillsville
+Woodlawn
+Lynchburg
+Roanoke
+Alexandria
+Annandale
+Arlington
+Burke
+Dale City
+Reston
+Alexandria
+Annandale
+Arlington
+Burke
+Dale City
+Reston
+Chesapeake
+Hampton
+Newport News
+Norfolk
+Portsmouth
+Suffolk
+Virginia Beach
+Richmond
+Colchester
+Burlington
+Kent
+Seattle
+Shoreline
+Federal Way
+Lakewood
+Tacoma
+Belingham
+Vancouver
+Bellevue
+Everett
+Renton
+Kennewick
+Spokane
+Yakima
+Kenosha
+Racine
+Milwaukee
+Janesville
+La Crosse
+Madison
+Eau Claire
+Eau Claire
+Appleton
+Green Bay
+Oshkosh
+Sheboygan
+Charleston
+Huntington
+Charleston
+Huntington
+Cheyenne

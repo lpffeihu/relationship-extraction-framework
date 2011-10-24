@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +17,7 @@ import edu.columbia.cs.cg.document.preprocessing.impl.HTMLContentKeeper;
 import edu.columbia.cs.cg.document.segmentator.DocumentSegmentator;
 import edu.columbia.cs.cg.document.segmentator.impl.SimpleSegmentDocumentSegmentator;
 import edu.columbia.cs.cg.document.tagger.Tagger;
+import edu.columbia.cs.cg.document.tagger.entity.EntitySpan;
 import edu.columbia.cs.cg.document.tagger.entity.impl.DictionaryBasedEntityTagger;
 import edu.columbia.cs.cg.document.tokenized.tokenizer.OpenNLPTokenizer;
 import edu.columbia.cs.cg.document.tokenized.tokenizer.Tokenizer;
@@ -56,6 +59,289 @@ public class PRDualRankTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		new PRDualRankTest().runCapitalCountry();
+		new PRDualRankTest().runPhysicsNobel();
+		new PRDualRankTest().runAreaCode();
+		
+	}
+
+	private void runAreaCode() {
+		
+		// TODO Auto-generated method stub
+		
+		int extractionPatternLenght = 5;
+		int numberOfPhrases = 2;
+		int iterations = 3;
+		int window = 5;
+		int minsupport = 5;
+		int k_nolabel = 50;
+		int k_seed = 20;
+		int ngram = 3;
+		int span = 10;
+
+		String locationType = "location";
+		String numberType = "number";
+
+		
+		String locationFile = "data/usCity.txt"; //should be a Person File
+		Dictionary locationdictionary = new Dictionary(new File(locationFile), ";",locationType);
+		
+		String numberFile = "data/areaCode.txt"; 
+		Dictionary numberdictionary = new Dictionary(new File(numberFile), ";",numberType);
+		
+		String usCityRole = "city";
+		String areaCodeRole = "areaCode";
+		
+		//countries Dictionary
+		String usCityFile = "data/usCity.txt";
+		Dictionary usCitydictionary = new Dictionary(new File(usCityFile), ";",usCityRole);
+
+		//capitals Dictionary
+		String areaCodeFile = "data/areaCode.txt";
+		Dictionary areaCodedictionary = new Dictionary(new File(areaCodeFile), ";",areaCodeRole);
+		
+		//Tokenizer used for the tokenization. Ideally the same.
+		Tokenizer tokenizer = new OpenNLPTokenizer("en-token.bin");
+		
+		
+		//Type of tuples to extract
+		RelationshipType rType = new RelationshipType("AreaCodeOfCity", usCityRole,areaCodeRole);
+		
+		EntityTypeConstraint physicsConstraint = new EntityTypeConstraint(locationType);
+		rType.setConstraints(physicsConstraint, usCityRole);
+		
+		EntityTypeConstraint yearOfBirthConstraint = new EntityTypeConstraint(numberType);
+		rType.setConstraints(yearOfBirthConstraint, areaCodeRole);
+		
+		RelationshipConstraint constraint = new WordDistanceBetweenEntities(tokenizer, span);
+		
+		rType.setConstraints(constraint);
+		
+		EntityMatcher personMatcher = new DictionaryEntityMatcher(locationdictionary);
+		rType.setMatchers(personMatcher, usCityRole);
+		
+		EntityMatcher yearMatcher = new DictionaryEntityMatcher(areaCodedictionary);
+		rType.setMatchers(yearMatcher, areaCodeRole);
+		
+		
+		Set<RelationshipType> relationshipTypes = new HashSet<RelationshipType>();
+		relationshipTypes.add(rType);
+		
+		//How to segment the html documents
+		DocumentSegmentator docSegmentator = new SimpleSegmentDocumentSegmentator();
+		
+		//Dictionary for Country
+		Tagger<EntitySpan,Entity> personDictionaryTagger = new DictionaryBasedEntityTagger(locationType, usCitydictionary, tokenizer);
+		
+		//Dictionary for Capitals
+		Tagger<EntitySpan,Entity> yearDictionaryTagger = new DictionaryBasedEntityTagger(numberType, numberdictionary, tokenizer );
+		
+		//Preprocessor for html documents;
+		Preprocessor preprocessor = new HTMLContentKeeper();
+		
+		//Loader from string to Document.
+		RawDocumentLoader loader = new RawDocumentLoader(relationshipTypes, preprocessor , docSegmentator, personDictionaryTagger, yearDictionaryTagger);
+		
+		//Generation of queries based on Concatenation
+		QueryGenerator<String> qg = new ConcatQueryGenerator();
+
+		//Bing Search Engine
+		SearchEngine se = new BingSearchEngine(loader);
+		
+		//Ranking functions
+		double betaextr = 1.0;
+		RankFunction<Pattern<Relationship, TokenizedDocument>> extractpatternRankFunction = new FScoreBasedRankFunction<Pattern<Relationship,TokenizedDocument>>(betaextr);
+		double betatup = 1.0;
+		RankFunction<Relationship> tupleRankFunction = new FScoreBasedRankFunction<Relationship>(betatup);
+		double betasearch = 1.0;
+		RankFunction<Pattern<Document, TokenizedDocument>> searchpatternRankFunction = new FScoreBasedRankFunction<Pattern<Document,TokenizedDocument>>(betasearch);
+				
+		Words.initialize(new File("data/stopWords.txt"), null);
+		
+		//Index And Search.
+		
+		Set<String> stopW = Words.getStopWords();
+		
+//		TokenizerBasedAnalyzer myTokenizerAnalyzer = new TokenizerBasedAnalyzer(tokenizer,stopW);
+
+		TokenBasedAnalyzer myAnalyzer = new TokenBasedAnalyzer(stopW);
+
+		QueryGenerator<Query> forIndexQueryGenerator = new LuceneQueryGenerator(myAnalyzer);
+		
+		PatternExtractor<Document> spe = new WindowedSearchPatternExtractor<Document>(window, ngram, numberOfPhrases);
+		
+		QuestCalculator<Document, TokenizedDocument> spqc = new MapBasedQuestCalculator<Document,TokenizedDocument>(new NumberOfIterationsConvergence(iterations));
+		
+		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(span,extractionPatternLenght,rType);
+		
+		QuestCalculator<Relationship,TokenizedDocument> epqc = new MapBasedQuestCalculator<Relationship,TokenizedDocument>(new NumberOfIterationsConvergence(iterations));
+		
+		PRDualRank prDualRank = new PRDualRank(spe, epe, se, qg, k_seed, minsupport, k_nolabel, searchpatternRankFunction, 
+				extractpatternRankFunction, tupleRankFunction, tokenizer, rType, myAnalyzer,forIndexQueryGenerator,spqc,epqc);
+	
+		List<OperableStructure> seeds = new ArrayList<OperableStructure>();
+	
+		seeds.add(generateOperableStructure(rType,"1",locationType,usCityRole,"Chicago",numberType,areaCodeRole,"312"));
+		seeds.add(generateOperableStructure(rType,"2",locationType,usCityRole,"Chicago",numberType,areaCodeRole,"872"));
+		seeds.add(generateOperableStructure(rType,"3",locationType,usCityRole,"Atlanta",numberType,areaCodeRole,"470"));
+		seeds.add(generateOperableStructure(rType,"4",locationType,usCityRole,"Oklahoma City",numberType,areaCodeRole,"405"));
+		seeds.add(generateOperableStructure(rType,"5",locationType,usCityRole,"Nashville",numberType,areaCodeRole,"615"));
+		seeds.add(generateOperableStructure(rType,"6",locationType,usCityRole,"Seattle",numberType,areaCodeRole,"206"));
+		seeds.add(generateOperableStructure(rType,"7",locationType,usCityRole,"Memphis",numberType,areaCodeRole,"901"));
+		
+		Model out = prDualRank.train(seeds);
+		
+		try {
+			System.setOut(new PrintStream(new File("CityAC.txt")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(out.toString());
+
+		
+	}
+
+	private void runPhysicsNobel() {
+		
+		// TODO Auto-generated method stub
+		
+		int extractionPatternLenght = 5;
+		int numberOfPhrases = 2;
+		int iterations = 3;
+		int window = 5;
+		int minsupport = 5;
+		int k_nolabel = 50;
+		int k_seed = 20;
+		int ngram = 3;
+		int span = 10;
+
+		String personType = "person";
+		String yearType = "year";
+
+		
+		String personFile = "data/Physics.txt"; //should be a Person File
+		Dictionary persondictionary = new Dictionary(new File(personFile), ";",personType);
+		
+		String yobFile = "data/yearOfBirth.txt"; 
+		Dictionary yeardictionary = new Dictionary(new File(yobFile), ";",yearType);
+		
+		String physicRole = "physic";
+		String yearOfBirthRole = "yearOfBirth";
+		
+		//countries Dictionary
+		String physicsFile = "data/Physics.txt";
+		Dictionary physicsdictionary = new Dictionary(new File(physicsFile), ";",physicRole);
+
+		//capitals Dictionary
+		String yearOfBirthFile = "data/yearOfBirth.txt";
+		Dictionary yearOfBirthdictionary = new Dictionary(new File(yearOfBirthFile), ";",yearOfBirthRole);
+		
+		//Tokenizer used for the tokenization. Ideally the same.
+		Tokenizer tokenizer = new OpenNLPTokenizer("en-token.bin");
+		
+		
+		//Type of tuples to extract
+		RelationshipType rType = new RelationshipType("YearOfBirthPhysic", physicRole,yearOfBirthRole);
+		
+		EntityTypeConstraint physicsConstraint = new EntityTypeConstraint(personType);
+		rType.setConstraints(physicsConstraint, physicRole);
+		
+		EntityTypeConstraint yearOfBirthConstraint = new EntityTypeConstraint(yearType);
+		rType.setConstraints(yearOfBirthConstraint, yearOfBirthRole);
+		
+		RelationshipConstraint constraint = new WordDistanceBetweenEntities(tokenizer, span);
+		
+		rType.setConstraints(constraint);
+		
+		EntityMatcher personMatcher = new DictionaryEntityMatcher(persondictionary);
+		rType.setMatchers(personMatcher, physicRole);
+		
+		EntityMatcher yearMatcher = new DictionaryEntityMatcher(yearOfBirthdictionary);
+		rType.setMatchers(yearMatcher, yearOfBirthRole);
+		
+		
+		Set<RelationshipType> relationshipTypes = new HashSet<RelationshipType>();
+		relationshipTypes.add(rType);
+		
+		//How to segment the html documents
+		DocumentSegmentator docSegmentator = new SimpleSegmentDocumentSegmentator();
+		
+		//Dictionary for Country
+		Tagger<EntitySpan,Entity> personDictionaryTagger = new DictionaryBasedEntityTagger(personType, physicsdictionary, tokenizer);
+		
+		//Dictionary for Capitals
+		Tagger<EntitySpan,Entity> yearDictionaryTagger = new DictionaryBasedEntityTagger(yearType, yeardictionary, tokenizer );
+		
+		//Preprocessor for html documents;
+		Preprocessor preprocessor = new HTMLContentKeeper();
+		
+		//Loader from string to Document.
+		RawDocumentLoader loader = new RawDocumentLoader(relationshipTypes, preprocessor , docSegmentator, personDictionaryTagger, yearDictionaryTagger);
+		
+		//Generation of queries based on Concatenation
+		QueryGenerator<String> qg = new ConcatQueryGenerator();
+
+		//Bing Search Engine
+		SearchEngine se = new BingSearchEngine(loader);
+		
+		//Ranking functions
+		double betaextr = 1.0;
+		RankFunction<Pattern<Relationship, TokenizedDocument>> extractpatternRankFunction = new FScoreBasedRankFunction<Pattern<Relationship,TokenizedDocument>>(betaextr);
+		double betatup = 1.0;
+		RankFunction<Relationship> tupleRankFunction = new FScoreBasedRankFunction<Relationship>(betatup);
+		double betasearch = 1.0;
+		RankFunction<Pattern<Document, TokenizedDocument>> searchpatternRankFunction = new FScoreBasedRankFunction<Pattern<Document,TokenizedDocument>>(betasearch);
+				
+		Words.initialize(new File("data/stopWords.txt"), null);
+		
+		//Index And Search.
+		
+		Set<String> stopW = Words.getStopWords();
+		
+//		TokenizerBasedAnalyzer myTokenizerAnalyzer = new TokenizerBasedAnalyzer(tokenizer,stopW);
+
+		TokenBasedAnalyzer myAnalyzer = new TokenBasedAnalyzer(stopW);
+
+		QueryGenerator<Query> forIndexQueryGenerator = new LuceneQueryGenerator(myAnalyzer);
+		
+		PatternExtractor<Document> spe = new WindowedSearchPatternExtractor<Document>(window, ngram, numberOfPhrases);
+		
+		QuestCalculator<Document, TokenizedDocument> spqc = new MapBasedQuestCalculator<Document,TokenizedDocument>(new NumberOfIterationsConvergence(iterations));
+		
+		PatternExtractor<Relationship> epe = new ExtractionPatternExtractor<Relationship>(span,extractionPatternLenght,rType);
+		
+		QuestCalculator<Relationship,TokenizedDocument> epqc = new MapBasedQuestCalculator<Relationship,TokenizedDocument>(new NumberOfIterationsConvergence(iterations));
+		
+		PRDualRank prDualRank = new PRDualRank(spe, epe, se, qg, k_seed, minsupport, k_nolabel, searchpatternRankFunction, 
+				extractpatternRankFunction, tupleRankFunction, tokenizer, rType, myAnalyzer,forIndexQueryGenerator,spqc,epqc);
+	
+		List<OperableStructure> seeds = new ArrayList<OperableStructure>();
+	
+		seeds.add(generateOperableStructure(rType,"1",personType,physicRole,"Alexei Alexeyevich Abrikosov",yearType,yearOfBirthRole,"1928"));
+		seeds.add(generateOperableStructure(rType,"2",personType,physicRole,"Subrahmanyan Chandrasekhar",yearType,yearOfBirthRole,"1910"));
+		seeds.add(generateOperableStructure(rType,"3",personType,physicRole,"Pierre Curie",yearType,yearOfBirthRole,"1859"));
+		seeds.add(generateOperableStructure(rType,"4",personType,physicRole,"Albert Fert",yearType,yearOfBirthRole,"1938"));
+		seeds.add(generateOperableStructure(rType,"5",personType,physicRole,"Max Theodor Felix Von Laue",yearType,yearOfBirthRole,"1879"));
+		
+		Model out = prDualRank.train(seeds);
+		
+		try {
+			System.setOut(new PrintStream(new File("physicsYOB.txt")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(out.toString());
+
+		
+	}
+
+	private void runCapitalCountry() {
+		
 		// TODO Auto-generated method stub
 		
 		int extractionPatternLenght = 5;
@@ -113,10 +399,10 @@ public class PRDualRankTest {
 		DocumentSegmentator docSegmentator = new SimpleSegmentDocumentSegmentator();
 		
 		//Dictionary for Country
-		Tagger countryDictionaryTagger = new DictionaryBasedEntityTagger(locationType, countriessdictionary, tokenizer);
+		Tagger<EntitySpan,Entity> countryDictionaryTagger = new DictionaryBasedEntityTagger(locationType, countriessdictionary, tokenizer);
 		
 		//Dictionary for Capitals
-		Tagger capitalDictionaryTagger = new DictionaryBasedEntityTagger(locationType, capitalsdictionary, tokenizer );
+		Tagger<EntitySpan,Entity> capitalDictionaryTagger = new DictionaryBasedEntityTagger(locationType, capitalsdictionary, tokenizer );
 		
 		//Preprocessor for html documents;
 		Preprocessor preprocessor = new HTMLContentKeeper();
@@ -163,25 +449,32 @@ public class PRDualRankTest {
 	
 		List<OperableStructure> seeds = new ArrayList<OperableStructure>();
 	
-		seeds.add(generateOperableStructure(rType,"1",locationType,countryRole,"Canada",capitalRole,"Ottawa"));
-//		seeds.add(generateOperableStructure(rType,"2",locationType,countryRole,"China",capitalRole,"Beijing"));
-//		seeds.add(generateOperableStructure(rType,"3",locationType,countryRole,"Bulgaria",capitalRole,"Sofia"));
-//		seeds.add(generateOperableStructure(rType,"4",locationType,countryRole,"France",capitalRole,"Paris"));
-//		seeds.add(generateOperableStructure(rType,"5",locationType,countryRole,"Portugal",capitalRole,"Lisbon"));
+		seeds.add(generateOperableStructure(rType,"1",locationType,countryRole,"Canada",locationType,capitalRole,"Ottawa"));
+		seeds.add(generateOperableStructure(rType,"2",locationType,countryRole,"China",locationType,capitalRole,"Beijing"));
+		seeds.add(generateOperableStructure(rType,"3",locationType,countryRole,"Bulgaria",locationType,capitalRole,"Sofia"));
+		seeds.add(generateOperableStructure(rType,"4",locationType,countryRole,"France",locationType,capitalRole,"Paris"));
+		seeds.add(generateOperableStructure(rType,"5",locationType,countryRole,"Portugal",locationType,capitalRole,"Lisbon"));
 		
 		Model out = prDualRank.train(seeds);
+		
+		try {
+			System.setOut(new PrintStream(new File("capitalCountry.txt")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		System.out.println(out.toString());
 		
 	}
 
-	private static OperableStructure generateOperableStructure(RelationshipType rType, String id, String entityType,String countryRole, String country, String capitalRole, String capital) {
+	private static OperableStructure generateOperableStructure(RelationshipType rType, String id, String entityType,String entityRole, String entityValue, String entity2Type,String entity2Role, String entity2Value) {
 		
 		Relationship r1 = new Relationship(rType);
-		Entity countryE = new Entity(id, entityType, 0, country.length(), country, null);
-		r1.setRole(countryRole, countryE);
-		Entity capitalE = new Entity(id, entityType, 0, capital.length(), capital, null);
-		r1.setRole(capitalRole, capitalE);
+		Entity entity = new Entity(id, entityType, 0, entityRole.length(), entityValue, null);
+		r1.setRole(entityRole, entity);
+		Entity entity2 = new Entity(id, entity2Type, 0, entity2Role.length(), entity2Value, null);
+		r1.setRole(entity2Role, entity2);
 		return new RelationOperableStructure(r1);
 		
 	}

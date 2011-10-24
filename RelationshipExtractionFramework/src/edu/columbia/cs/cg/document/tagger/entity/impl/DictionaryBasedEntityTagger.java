@@ -183,7 +183,7 @@ public class DictionaryBasedEntityTagger extends EntityTagger<EntitySpan,Entity>
 	 */
 	private String createId(int idDocument, int dEntityDoc, String typeChunk, String tagAnnotator) {
 		
-		return idDocument + "-" + dEntityDoc + "-" + typeChunk + "-" + tag;
+		return idDocument + "-" + dEntityDoc + "-" + typeChunk + "-" + tagAnnotator;
 		
 	}
 
