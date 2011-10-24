@@ -1,5 +1,5 @@
 /**
- * Gives the interface for any pattern extractor in PRDualRank. The word "any" comes from all the different kind of <b>Extraction Patterns</b> that can be implemented.
+ * Gives the interface for any pattern extractor in PRDualRank. The word "any" relies on all the different kind of <b>Patterns</b> that can be implemented.
  * 
  * <br>
  * This class is used for our implementation of: 

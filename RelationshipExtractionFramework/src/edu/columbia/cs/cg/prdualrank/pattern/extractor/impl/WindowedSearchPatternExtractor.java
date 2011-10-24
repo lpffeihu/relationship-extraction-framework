@@ -60,7 +60,7 @@ public class WindowedSearchPatternExtractor<T extends Document> extends SearchPa
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor#extractPatterns(edu.columbia.cs.cg.document.TokenizedDocument, edu.columbia.cs.cg.relations.Relationship, java.util.List)
+	 * @see edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor#getTupleContexts(edu.columbia.cs.cg.document.TokenizedDocument, edu.columbia.cs.cg.relations.Relationship, java.util.List)
 	 */
 	@Override
 	protected List<TupleContext> getTupleContexts(TokenizedDocument document,

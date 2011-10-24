@@ -1,3 +1,20 @@
+/**
+ * Gives the interface for any search pattern extractor in PRDualRank. The word "any" relies on all the different kind of <b>Search Patterns</b> that can be implemented.
+ * 
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br>
+ * For further information, 
+ * 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 package edu.columbia.cs.cg.prdualrank.pattern.extractor;
 
 import java.util.ArrayList;
@@ -16,8 +33,6 @@ import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 
 public abstract class SearchPatternExtractor<T extends Document> implements PatternExtractor<Document> {
-
-	
 	
 	private int ngram;
 	private int numberOfPhrases;
@@ -26,6 +41,11 @@ public abstract class SearchPatternExtractor<T extends Document> implements Patt
 		this.ngram = ngram;
 		this.numberOfPhrases = numberOfPhrases;
 	}
+
+	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor#extractPatterns(edu.columbia.cs.cg.document.TokenizedDocument, edu.columbia.cs.cg.relations.Relationship, java.util.List)
+	 */
 
 	@Override
 	public Map<Pattern<Document, TokenizedDocument>, Integer> extractPatterns(
