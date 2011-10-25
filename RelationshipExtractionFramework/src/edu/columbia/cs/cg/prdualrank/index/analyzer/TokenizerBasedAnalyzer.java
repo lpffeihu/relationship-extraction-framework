@@ -18,7 +18,8 @@ import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
 import edu.columbia.cs.utils.Span;
 
 /**
- * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. 
+ * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. This class is an implementation
+ * of {@link Analyzer}. This allows us to take advantage of Lucene's search capabilities.
  *  
  * <br>
  * This class is used for our implementation of: 

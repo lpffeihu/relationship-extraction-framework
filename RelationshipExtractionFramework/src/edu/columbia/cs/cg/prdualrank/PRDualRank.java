@@ -65,7 +65,7 @@ import edu.columbia.cs.utils.Words;
  * 
  * <b>Description</b><br><br>
  * 
- * Main algorithm of PRDualRank to generate search and extraction patterns. The method <b>train<\b> generates a PRDualRank model instance.
+ * Main algorithm of PRDualRank to generate search and extraction patterns. The method <b>train</b> generates a PRDualRank model instance.
  * 
  * <br>
  * 

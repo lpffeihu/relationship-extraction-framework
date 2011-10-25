@@ -8,12 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.saxon.query.QueryParser;
-
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.LowerCaseFilter;
-import org.apache.lucene.analysis.StopFilter;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
@@ -29,13 +23,11 @@ import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
 import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
-import edu.columbia.cs.cg.prdualrank.index.reader.TokenBasedReader;
-import edu.columbia.cs.cg.prdualrank.index.tokenizer.SpanBasedTokenizer;
-import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl.LuceneQueryGenerator;
 import edu.columbia.cs.ref.model.TokenizedDocument;
 
 /**
- * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. 
+ * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. An instance of {@link IndexWriter} and an instance
+ * of {@link IndexSearcher} are used.
  *  
  * <br>
  * This class is used for our implementation of: 

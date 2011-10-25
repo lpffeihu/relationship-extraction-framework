@@ -29,7 +29,7 @@ import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.utils.Span;
 
 /**
- * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. 
+ * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. Lucene Query Definitions are considered.
  *  
  * <br>
  * This class is used for our implementation of: 
@@ -41,7 +41,7 @@ import edu.columbia.cs.utils.Span;
  * 
  * <b>Description</b><br><br>
  * 
- * Class used to generate the queries to issue using Lucene Engine.
+ * Class used to generate the queries to issue to an indexer using Lucene Engine.
  * 
  * <br>
  * @see <a href="http://lucene.apache.org/"> Apache Lucene Engine </a>

@@ -1,6 +1,4 @@
 package edu.columbia.cs.cg.prdualrank.index.analyzer;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.Reader;
 import java.util.Set;
 
@@ -12,11 +10,11 @@ import org.apache.lucene.util.Version;
 
 import edu.columbia.cs.cg.prdualrank.index.reader.TokenBasedReader;
 import edu.columbia.cs.cg.prdualrank.index.tokenizer.SpanBasedTokenizer;
-import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
 import edu.columbia.cs.utils.Span;
 
 /**
- * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. 
+ * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. This class is an implementation
+ * of {@link Analyzer}. This allows us to take advantage of Lucene's search capabilities.
  *  
  * <br>
  * This class is used for our implementation of: 

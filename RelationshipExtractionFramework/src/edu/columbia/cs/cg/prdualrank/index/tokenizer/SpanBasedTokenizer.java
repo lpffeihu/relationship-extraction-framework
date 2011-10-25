@@ -2,16 +2,17 @@ package edu.columbia.cs.cg.prdualrank.index.tokenizer;
 import java.io.IOException;
 
 import org.apache.lucene.analysis.Tokenizer;
-import org.apache.lucene.analysis.standard.ClassicTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
-import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.search.IndexSearcher;
 
 import edu.columbia.cs.utils.Span;
 
 /**
- * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. 
+ * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. This is our implementation of a {@link Tokenizer} to be
+ * used by {@link IndexWriter} and {@link IndexSearcher}.
  *  
  * <br>
  * This class is used for our implementation of: 

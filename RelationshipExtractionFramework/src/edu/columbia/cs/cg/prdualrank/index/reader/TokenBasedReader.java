@@ -3,10 +3,13 @@ package edu.columbia.cs.cg.prdualrank.index.reader;
 import java.io.IOException;
 import java.io.Reader;
 
+import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
+import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenizerBasedAnalyzer;
 import edu.columbia.cs.utils.Span;
 
 /**
- * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. 
+ * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. In this case, an implementation of {@link Reader} is written. This implementation
+ * will be used by our implemented analyzers (see {@link TokenBasedAnalyzer}, {@link TokenizerBasedAnalyzer}).
  *  
  * <br>
  * This class is used for our implementation of: 
@@ -22,7 +25,9 @@ import edu.columbia.cs.utils.Span;
  * 
  * <br>
  * @see <a href="http://lucene.apache.org/"> Apache Lucene Engine </a>
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
+ * @see TokenBasedAnalyzer
+ * @see TokenizerBasedAnalyzer 
  * @author      Pablo Barrio
  * @author		Goncalo Simoes
  * @version     0.1
