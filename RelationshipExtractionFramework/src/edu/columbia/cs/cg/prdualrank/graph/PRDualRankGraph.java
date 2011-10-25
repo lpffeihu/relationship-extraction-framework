@@ -28,6 +28,31 @@ import edu.columbia.cs.ref.model.pattern.Pattern;
 import edu.columbia.cs.ref.model.pattern.resources.Matchable;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 
+/**
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * The graph connecting patterns and tuples as defined in PRDualRank paper.
+ * <br>
+ * This graph associates a Matchable Object with a Document object storing the frequencies with which they occur in the data.
+ * 
+ * <br>
+ * For more information about Graphs, see <b>Section 4</b> of the mentioned paper.
+ * 
+ * <br>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
+
 public class PRDualRankGraph<T extends Matchable,D extends Document> {
 
 	Map<Pattern<T,D>,Integer> patternFrequency;

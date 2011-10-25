@@ -1,22 +1,3 @@
-/**
- * Graph Generator for the <b>Search patterns</b>. A <b>Search Pattern</b> matches a tuple when the tuple appears in any of the documents retrieved
- * after issuing a query using the search pattern. 
- * <br>
- * The frequency is based on the number of documents that fit the condition described above.
- * 
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
- * 
- * <br>
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
- * @author      Pablo Barrio
- * @author		Goncalo Simoes
- * @version     0.1
- * @since       2011-10-07
- */
 package edu.columbia.cs.cg.prdualrank.graph.generator;
 
 import java.util.ArrayList;
@@ -40,6 +21,32 @@ import edu.columbia.cs.ref.model.pattern.Pattern;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
 import edu.columbia.cs.utils.MegaCartesianProduct;
+
+/**
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * Graph Generator for the <b>Search patterns</b>. A <b>Search Pattern</b> matches a tuple when the tuple appears in any of the documents retrieved
+ * after issuing a query using the search pattern. 
+ * <br>
+ * The frequency is based on the number of documents that fit the condition described above.
+ * 
+ * <br>
+ * For more information about Graphs, see <b>Section 4</b> of the mentioned paper.
+ * 
+ * <br>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 
 public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument> extends GraphGenerator<Document,TokenizedDocument> {
 

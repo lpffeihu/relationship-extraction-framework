@@ -1,24 +1,4 @@
-/**
- * Class used to generate the queries to issue using Lucene Engine.
- * 
- * <br>
- * For this Class, Apache Lucene Engine is required. 
- * @see <a href="http://lucene.apache.org/"> Lucene </a>
- * 
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
- * 
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
- * 
- * 
- * @author      Pablo Barrio
- * @author		Goncalo Simoes
- * @version     0.1
- * @since       2011-10-07
- */
+
 package edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl;
 
 import java.io.IOException;
@@ -48,8 +28,33 @@ import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.utils.Span;
 
-public class LuceneQueryGenerator extends QueryGenerator<Query> {
+/**
+ * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. 
+ *  
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * Class used to generate the queries to issue using Lucene Engine.
+ * 
+ * <br>
+ * @see <a href="http://lucene.apache.org/"> Apache Lucene Engine </a>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 
+public class LuceneQueryGenerator extends QueryGenerator<Query> {
+	
+	
 	private QueryParser qp;
 	private TokenBasedAnalyzer tbAnalyzer;
 

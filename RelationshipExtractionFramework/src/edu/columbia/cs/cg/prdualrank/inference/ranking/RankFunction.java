@@ -1,22 +1,3 @@
-/**
- * Abstract class to provide the behavior of different ranking functions that are based on precision and recall. 
- * <br>
- * Classes that extend this one have to overwrite <b>requiresPrecision</b> and/or <b>requiredRecall</b> accordingly to the measure. For instance, <b>F-Measure</b> 
- * implements both, because it requires both.
- *
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
- * 
- * <br>
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
- * @author      Pablo Barrio
- * @author		Goncalo Simoes
- * @version     0.1
- * @since       2011-10-07
- */
 package edu.columbia.cs.cg.prdualrank.inference.ranking;
 
 import java.util.Comparator;
@@ -24,6 +5,33 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import edu.columbia.cs.ref.algorithm.evaluation.measure.impl.FMeasure;
+
+/**
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * Abstract class to provide the behavior of different ranking functions that are based on precision and recall. 
+ * <br>
+ * Classes that extend this one have to overwrite <b>requiresPrecision</b> and/or <b>requiredRecall</b> accordingly to the measure. For instance, <b> {@link FMeasure} </b> 
+ * implements both, because it requires both. <br>
+ * For more information about ranking, see <b>Section 6</b> of the mentioned paper.
+ * 
+ * <br>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @see FMeasure
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 
 public abstract class RankFunction <T> {
 

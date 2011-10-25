@@ -1,22 +1,3 @@
-/**
- * Apache Lucene Indexer and Searcher. Used for optimal matching of the search patterns. 
- * <br>
- * For this Class, Apache Lucene Engine is required. 
- * @see <a href="http://lucene.apache.org/"> Lucene </a>
- * 
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
- * 
- * <br>
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
- * @author      Pablo Barrio
- * @author		Goncalo Simoes
- * @version     0.1
- * @since       2011-10-07
- */
 package edu.columbia.cs.cg.prdualrank.index;
 
 
@@ -52,6 +33,32 @@ import edu.columbia.cs.cg.prdualrank.index.reader.TokenBasedReader;
 import edu.columbia.cs.cg.prdualrank.index.tokenizer.SpanBasedTokenizer;
 import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.impl.LuceneQueryGenerator;
 import edu.columbia.cs.ref.model.TokenizedDocument;
+
+/**
+ * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. 
+ *  
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * Apache Lucene Indexer and Searcher. Used for optimal matching of the search patterns. <br>
+ * Read <b>Algorithm PatternSearch(To,S,E)</b> in Figure 9, Section 5 of the mentioned paper for more detailed information.
+ * 
+ * <br>
+ * @see <a href="http://lucene.apache.org/"> Apache Lucene Engine </a>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
+
 
 public class Index {
 

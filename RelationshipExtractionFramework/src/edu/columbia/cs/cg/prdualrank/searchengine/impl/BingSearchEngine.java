@@ -1,23 +1,3 @@
-/**
- * Search Engine used to issue queries to Bing Search Engine. The user has to write its own API key.
- *
- * <br>
- * For this Class, Bing API is required. 
- * @see <a href="http://msdn.microsoft.com/en-us/library/dd900818.aspx"> Bing API </a>
- * 
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
- * 
- * <br>
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
- * @author      Pablo Barrio
- * @author		Goncalo Simoes
- * @version     0.1
- * @since       2011-10-07
- */
 package edu.columbia.cs.cg.prdualrank.searchengine.impl;
 
 import java.net.MalformedURLException;
@@ -35,6 +15,32 @@ import com.google.code.bing.search.schema.web.WebSearchOption;
 
 import edu.columbia.cs.cg.prdualrank.searchengine.WebBasedSearchEngine;
 import edu.columbia.cs.ref.tool.loader.document.impl.RawDocumentLoader;
+
+/**
+ * <br>
+ * For this Class, <a href="http://msdn.microsoft.com/en-us/library/dd900818.aspx">Bing API</a> is required. 
+ *  
+ * <br>
+ * 
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * Search Engine used to issue queries to Bing Search Engine. The user has to write its own API key.
+ * 
+ * <br>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
+ * @see <a href="http://msdn.microsoft.com/en-us/library/dd900818.aspx"> Bing API </a> 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 
 public class BingSearchEngine extends WebBasedSearchEngine {
 

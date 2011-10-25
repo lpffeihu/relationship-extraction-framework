@@ -1,24 +1,3 @@
-/**
- * Tokenizer for <b>Apache Lucene</b> Search Engine based on the already calculated tokens of the element we want either to index or search for.
- *
- * <br>
- * For this Class, Apache Lucene Engine is required. 
- * @see <a href="http://lucene.apache.org/"> Lucene </a>
- * 
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
- * 
- * <br>
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
- *
- * @author      Pablo Barrio
- * @author		Goncalo Simoes
- * @version     0.1
- * @since       2011-10-07
- */
 package edu.columbia.cs.cg.prdualrank.index.tokenizer;
 import java.io.IOException;
 
@@ -31,6 +10,29 @@ import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 
 import edu.columbia.cs.utils.Span;
 
+/**
+ * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. 
+ *  
+ * <br>
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * Tokenizer for <b>Apache Lucene</b> Search Engine based on the already calculated tokens of the element we want either to index or search for.
+ * 
+ * <br>
+ * @see <a href="http://lucene.apache.org/"> Apache Lucene Engine </a>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 
 public class SpanBasedTokenizer extends Tokenizer {
 

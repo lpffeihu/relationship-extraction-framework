@@ -30,6 +30,32 @@ import edu.columbia.cs.ref.model.TokenizedDocument;
 import edu.columbia.cs.ref.model.pattern.Pattern;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 
+/**
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * Generates a graph, based on the extraction patterns and based on the assumption that extraction patterns only match the tuples whose
+ * context match the pattern.
+ * <br>
+ * Different type of extraction patterns can be defined. For instance, an <b>Extraction Pattern</b> "COMPANY was acquired by BUYER", matches the tuple context: "You Tube was acquired by Google"
+ * 
+ * <br>
+ * For more information about Graphs, see <b>Section 4</b> of the mentioned paper.
+ * 
+ * <br>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
+
 public class ExtractionGraphGenerator<T extends Relationship, D extends TokenizedDocument> extends GraphGenerator<Relationship,TokenizedDocument>{
 
 	/* (non-Javadoc)

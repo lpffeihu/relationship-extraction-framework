@@ -1,23 +1,3 @@
-/**
- * The model used to make PRDualRank part of the <b>Relationship Extraction Framework</b>. 
- * <br>
- * The model contains all the ranked <b>Search and Extraction Patterns</b>. Also includes additional information (ranking and values) of the tuples extracted during generation
- * of patterns. With all this information we get the Pattern - Recall Duality properties.
- * 
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
- * 
- * <br>
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
- *
- * @author      Pablo Barrio
- * @author		Goncalo Simoes
- * @version     0.1
- * @since       2011-10-07
- */
 package edu.columbia.cs.cg.prdualrank.model;
 
 import java.util.List;
@@ -32,6 +12,29 @@ import edu.columbia.cs.ref.model.pattern.resources.Matchable;
 import edu.columbia.cs.ref.model.re.Model;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
+
+/**
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * The model used to make PRDualRank part of the <b>Relationship Extraction Framework</b>. 
+ * <br>
+ * The model contains all the ranked <b>Search and Extraction Patterns</b>. Also includes additional information (ranking and values) of the tuples extracted during generation
+ * of patterns. <br> With all of this information we can observe the Pattern - Recall Duality properties.
+ * 
+ * <br>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 
 public class PRDualRankModel<S extends Matchable,E extends Matchable, D extends Document> extends Model {
 

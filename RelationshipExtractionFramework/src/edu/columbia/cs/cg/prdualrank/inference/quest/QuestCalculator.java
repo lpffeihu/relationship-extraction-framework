@@ -1,23 +1,3 @@
-/**
- * Defines the behavior of the QUEST functions defined in PRDualRank.
- *
- * <br>
- * For this Class, Apache Lucene Engine is required. 
- * @see <a href="http://lucene.apache.org/"> Lucene </a>
- * 
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
- * 
- * <br>
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
- * @author      Pablo Barrio
- * @author		Goncalo Simoes
- * @version     0.1
- * @since       2011-10-07
- */
 package edu.columbia.cs.cg.prdualrank.inference.quest;
 
 import java.util.Map;
@@ -28,6 +8,29 @@ import edu.columbia.cs.ref.model.Document;
 import edu.columbia.cs.ref.model.pattern.Pattern;
 import edu.columbia.cs.ref.model.pattern.resources.Matchable;
 import edu.columbia.cs.ref.model.relationship.Relationship;
+
+/**
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * Defines the behavior of the QUEST functions defined in PRDualRank.
+ * 
+ * <br>
+ * For more information, please read the Inference formulas in <b>Figure 4</b> of the mentioned paper.
+ * 
+ * <br>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 
 public interface QuestCalculator<T extends Matchable,D extends Document> {
 

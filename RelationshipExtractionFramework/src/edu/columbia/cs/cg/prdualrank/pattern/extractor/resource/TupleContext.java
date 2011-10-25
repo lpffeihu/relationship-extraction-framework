@@ -1,4 +1,24 @@
+package edu.columbia.cs.cg.prdualrank.pattern.extractor.resource;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import edu.columbia.cs.utils.Span;
+
 /**
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
  * This class represents the text surrounding a tuple or many tuples. Is used in the generation of <b>Search Patterns<\b> using Window Generation or Document Generation respectively. 
  * 
  * For Document Search Pattern Generation, since no restriction in the size of arrays surrounding tuples will be provided, all the text except for the tuple attribute values will be considered
@@ -13,31 +33,18 @@
  * <br>One of the <b>Tuple Context</b> (Considering the first two occurrences of <b>Google</b> and <b>YouTube</b>):
  * 
  * <br>1. ["When","the","acquisition","is","complete"] COMPANY ["will","retain","its","distinct","brand","identity","strengthening","and","complementing"] BUYER ["'s","own","fast-growing","video","business","YouTube","will","continue","to","be"]
-* 
- *
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * <br><br>
+ * 
+ * For more information, read <b>Definition 1</b> in Section 3.1 of the mentioned paper.
  * 
  * <br>
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
  * @author      Pablo Barrio
  * @author		Goncalo Simoes
  * @version     0.1
  * @since       2011-10-07
  */
-package edu.columbia.cs.cg.prdualrank.pattern.extractor.resource;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import edu.columbia.cs.utils.Span;
 
 public class TupleContext {
 

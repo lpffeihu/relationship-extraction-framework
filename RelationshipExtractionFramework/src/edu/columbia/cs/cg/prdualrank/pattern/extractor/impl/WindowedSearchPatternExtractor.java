@@ -41,7 +41,40 @@ import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.utils.Span;
 
-
+/**
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * This class defines the behavior of the generation of search pattern as discussed with one of the authors of PRDualRank: <a href="mailto:fang2@illinois.edu"><b>Yuan Fang</b></a>.
+ * <br>
+ * Notice that it differs from the one described in the paper on the <b>Universe of words</b> used to generate the <b>Search Patterns</b>.
+ * 
+ * <br>
+ * In this case, a window around the tuples is used. However, in the paper, such window is not described.
+ * 
+ * <br>
+ * According to the authors, this approach was used to run the experiments to obtain better performance (in time) of the results. Processing all the words in a document is computationally expensive.
+ * 
+ * <br>
+ * For the original implementation, please see the DocumentSearchPatternExtractor class. Consider that the execution time will increase considerably compared to this implementation.
+ * 
+ * <br><br>
+ * No definition can be pointed out to the paper due to implementation details described above.
+ * 
+ * <br>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
+ * @see DocumentSearchPatternExtractor 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 
 public class WindowedSearchPatternExtractor<T extends Document> extends SearchPatternExtractor<Document> {
 

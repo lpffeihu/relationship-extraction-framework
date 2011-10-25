@@ -1,20 +1,3 @@
-/**
- * Main algorithm of PRDualRank to generate search and extraction patterns. The method <b>train<\b> generates a PRDualRank model instance.
- *
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
- *
- * <br>
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
- *
- * @author      Pablo Barrio
- * @author		Goncalo Simoes
- * @version     0.1
- * @since       2011-10-07
- */
 package edu.columbia.cs.cg.prdualrank;
 
 import java.io.IOException;
@@ -71,6 +54,30 @@ import edu.columbia.cs.ref.model.relationship.RelationshipType;
 import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
 import edu.columbia.cs.utils.MegaCartesianProduct;
 import edu.columbia.cs.utils.Words;
+
+/**
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * Main algorithm of PRDualRank to generate search and extraction patterns. The method <b>train<\b> generates a PRDualRank model instance.
+ * 
+ * <br>
+ * 
+ * This algorithm represents the behavior described in <b>Algorithm PatternSearch(To,S,E)</b> in Figure 9 on Section 5 of the mentioned paper.
+ * 
+ * <br>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 
 public class PRDualRank implements Engine{
 

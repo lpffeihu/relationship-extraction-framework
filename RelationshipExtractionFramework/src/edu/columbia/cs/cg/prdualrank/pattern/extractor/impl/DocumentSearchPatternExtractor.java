@@ -1,20 +1,3 @@
-/**
- * This class defines the behavior of the generation of search pattern as stated in PRDualRank.
- * <br>
- * This class is used for our implementation of: 
- * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
- * 
- * <br>
- * For further information, 
- * 
- * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>
- *
- * @author      Pablo Barrio
- * @author		Goncalo Simoes
- * @version     0.1
- * @since       2011-10-07
- */
-
 package edu.columbia.cs.cg.prdualrank.pattern.extractor.impl;
 
 import java.util.ArrayList;
@@ -28,6 +11,30 @@ import edu.columbia.cs.ref.model.TokenizedDocument;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.utils.Span;
+
+/**
+ * This class is used for our implementation of: 
+ * <b> "Searching Patterns for Relation Extraction over the Web: Rediscovering the Pattern-Relation Duality" </b>. Y. Fang and K. C.-C. Chang. In WSDM, pages 825-834, 2011.
+ * 
+ * For further information, <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a>.
+ * 
+ * <br><br>
+ * 
+ * <b>Description</b><br><br>
+ * 
+ * This class defines the behavior of the generation of search pattern as stated in <b>Algorithm PatternSearch(To,S,E)</b> in Figure 9 on Section 5 and <b>Definition 1</b> in Section 3.1.
+ * 
+ * <br><br>
+ * For an efficient implementation (different to what is described in the paper, but discussed with the authors) refer to {@link WindowedSearchPatternExtractor}.
+ * 
+ * <br>
+ * @see <a href="http://www.wsdm2011.org/"> WSDM 2011 Conference Website </a> 
+ * @see WindowedSearchPatternExtractor
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
+ */
 
 public class DocumentSearchPatternExtractor<T extends Document> extends SearchPatternExtractor<Document> {
 
