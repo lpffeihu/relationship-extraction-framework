@@ -15,7 +15,7 @@ import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.pattern.Pattern;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
-import edu.columbia.cs.utils.MegaCartesianProduct;
+import edu.columbia.cs.utils.NAryCartesianProduct;
 
 /**
  * This class is used for our implementation of: 
@@ -122,7 +122,7 @@ public class AttributeContext {
 			
 		}
 			
-		List<Map<String, SimpleAttributeExtractionPattern<Entity, TokenizedDocument>>> combinations = MegaCartesianProduct.generateAllPossibilities(patterns);
+		List<Map<String, SimpleAttributeExtractionPattern<Entity, TokenizedDocument>>> combinations = NAryCartesianProduct.generateAllPossibilities(patterns);
 		
 		List<Pattern<Relationship,TokenizedDocument>> extractionPatterns = new ArrayList<Pattern<Relationship,TokenizedDocument>>();
 		

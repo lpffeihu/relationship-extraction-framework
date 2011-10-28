@@ -108,9 +108,9 @@ public class TaggedGraph extends OperableStructure {
 		GraphFS<Integer,String> depGraph= getFeatures(StanfordNLPDependencyGraphFG.class);
 		SimpleGraph<Integer,String> g = depGraph.getGraph();
 		for(Pair<Pair<Integer,Integer>,String> edge : g.getEdges()){
-			Pair<Integer,Integer> edgeNodes = edge.a();
-			String label = edge.b();
-			graph.addEdge(edgeNodes.a(), edgeNodes.b(), label);
+			Pair<Integer,Integer> edgeNodes = edge.first();
+			String label = edge.second();
+			graph.addEdge(edgeNodes.first(), edgeNodes.second(), label);
 		}
 		
 		graph.normalizePaths();

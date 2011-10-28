@@ -46,7 +46,7 @@ import edu.columbia.cs.ref.tool.tagger.entity.impl.DictionaryBasedEntityTagger;
 import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
 import edu.columbia.cs.ref.tool.tokenizer.impl.OpenNLPTokenizer;
 import edu.columbia.cs.utils.Dictionary;
-import edu.columbia.cs.utils.MegaCartesianProduct;
+import edu.columbia.cs.utils.NAryCartesianProduct;
 import edu.columbia.cs.utils.Words;
 
 
@@ -256,7 +256,7 @@ public class PatternExtractionTest {
 
 		List<Relationship> matchingTuples = new ArrayList<Relationship>();
 		
-		List<Map<String, Entity>> possibilities = MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole);
+		List<Map<String, Entity>> possibilities = NAryCartesianProduct.generateAllPossibilities(candidateEntitiesForRole);
 		
 		for(Map<String,Entity> candidate : possibilities){
 			

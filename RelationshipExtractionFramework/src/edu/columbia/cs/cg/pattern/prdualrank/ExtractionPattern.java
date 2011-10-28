@@ -17,7 +17,7 @@ import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.pattern.Pattern;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
-import edu.columbia.cs.utils.MegaCartesianProduct;
+import edu.columbia.cs.utils.NAryCartesianProduct;
 
 /**
  * The Class ExtractionPattern represents a pattern that can be used for Relationship
@@ -82,7 +82,7 @@ public class ExtractionPattern<T extends Relationship, D extends TokenizedDocume
 			
 		}
 		
-		List<Map<String, Entity>> combinations = MegaCartesianProduct.generateAllPossibilities(combinationsMap);
+		List<Map<String, Entity>> combinations = NAryCartesianProduct.generateAllPossibilities(combinationsMap);
 		
 		List<Relationship> tuples = new ArrayList<Relationship>();
 		

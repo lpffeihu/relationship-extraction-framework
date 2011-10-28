@@ -10,8 +10,27 @@ import edu.berkeley.compbio.jlibsvm.scaler.NoopScalingModel;
 import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
 
+/**
+ * This class converts the training data as represented in our framework to the format
+ * needed by <a href="http://dev.davidsoergel.com/trac/jlibsvm/">JLibSVM</a>. This
+ * class is used by the binary engine which means that it returns the data as
+ * a <code>BinaryClassificationProblemImpl<String, OperableStructure></code>
+ *
+ * @see <a href="http://dev.davidsoergel.com/trac/jlibsvm/">JLibSVM</a>
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class OperableStructureToBinarySVMproblemConverter {
 
+	/**
+	 * Converts the training data into a <code>BinaryClassificationProblemImpl<String, OperableStructure></code>
+	 *
+	 * @param train the training data
+	 * @param relLabel the relationship type that the binary classifier must extract
+	 * @return the representation of a binary SVM problem of <a href="http://dev.davidsoergel.com/trac/jlibsvm/">JLibSVM</a>
+	 */
 	public static BinaryClassificationProblemImpl<String, OperableStructure> convert(
 			List<OperableStructure> train, RelationshipType relLabel) {
 		Map<OperableStructure,String> examples = new HashMap<OperableStructure,String>();

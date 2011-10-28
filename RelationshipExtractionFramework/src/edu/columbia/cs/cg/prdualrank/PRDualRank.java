@@ -52,7 +52,7 @@ import edu.columbia.cs.ref.model.re.Model;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
 import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
-import edu.columbia.cs.utils.MegaCartesianProduct;
+import edu.columbia.cs.utils.NAryCartesianProduct;
 import edu.columbia.cs.utils.Words;
 
 /**
@@ -294,7 +294,7 @@ public class PRDualRank implements Engine{
 
 		List<Relationship> matchingTuples = new ArrayList<Relationship>();
 		
-		List<Map<String, Entity>> possibilities = MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole);
+		List<Map<String, Entity>> possibilities = NAryCartesianProduct.generateAllPossibilities(candidateEntitiesForRole);
 		
 		for(Map<String,Entity> candidate : possibilities){
 			

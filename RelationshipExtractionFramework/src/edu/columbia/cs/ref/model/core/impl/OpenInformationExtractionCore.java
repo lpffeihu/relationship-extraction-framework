@@ -24,8 +24,30 @@ import edu.columbia.cs.utils.AlternativeOpenIEFeatures;
 import edu.columbia.cs.utils.Span;
 import edu.washington.cs.knowitall.extractor.conf.ReVerbFeatures;
 
+/**
+ * This class is used for the implementation of the ReVerb confidence function that is described in: 
+ * <b> "Identifying Relations for Open Information Extraction" </b>. A. Fader and S. Soderland and O. Etzioni. In Conference on Empirical Methods in Natural Language Processing 2011, 2011.
+ * For further information, <a href="http://reverb.cs.washington.edu/"> ReVerb Website </a>.
+ * 
+ * <br>
+ * <br>
+ * 
+ * This core defines the type of structure that is used by the Open Information Extraction confidence function:
+ * OpenInformationExtractionOS. Additionally, it defines the mandatory features needed: (i) tokenization;
+ * (ii) Conversion from spans to strings; (iii) POS tagging; (iv) the chunker; (v) the entity-based spliting
+ * of the sentence and the creation of the respective Weka Instance object.
+ *
+ * @see <a href="http://reverb.cs.washington.edu/">ReVerb Website</a>, <a href="http://www.cs.waikato.ac.nz/ml/weka/">Weka</a>
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class OpenInformationExtractionCore extends Core {
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.model.core.Core#createMandatoryFeatureGenerators()
+	 */
 	@Override
 	protected List<FeatureGenerator> createMandatoryFeatureGenerators() {
 		// TODO OpenNLPtoken Chunks entitySplits
@@ -73,6 +95,9 @@ public class OpenInformationExtractionCore extends Core {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.model.core.Core#createOperableStructure(edu.columbia.cs.ref.model.CandidateSentence)
+	 */
 	@Override
 	protected OperableStructure createOperableStructure(CandidateSentence sent) {
 		

@@ -81,9 +81,9 @@ public class DependencyGraph extends SimpleGraph<TokenInformation,String>{
 		}
 		buf.append(")\n");
 		for(Pair<Pair<Integer,Integer>,String> p : getEdges()){
-			int n1 = p.a().a();
-			int n2 = p.a().b();
-			String label = p.b();
+			int n1 = p.first().first();
+			int n2 = p.first().second();
+			String label = p.second();
 			buf.append("(" + n1 + "," + n2+ ")" +nodes[n1] + "-" + label + "->" + nodes[n2] + " (" + edgesProb[n1][n2] + " - " + inShortestPath[n1][n2] + ")\n");
 		}
 		buf.append("(");
@@ -238,8 +238,8 @@ public class DependencyGraph extends SimpleGraph<TokenInformation,String>{
 		HashMap<Integer,Integer> translatorTable = new HashMap<Integer,Integer>();
 		DependencyGraph newGraph = new DependencyGraph(numNodes, 1.0);
 		for(Pair<Pair<Integer, Integer>, String> edge : shortestPathEdges){
-			int origin=edge.a().a();
-			int destiny=edge.a().b();
+			int origin=edge.first().first();
+			int destiny=edge.first().second();
 			Integer originNew = translatorTable.get(origin);
 			if(originNew==null){
 				originNew=translatorTable.size();
@@ -252,7 +252,7 @@ public class DependencyGraph extends SimpleGraph<TokenInformation,String>{
 				translatorTable.put(destiny, destinyNew);
 				newGraph.addNode(destinyNew, getNodes()[destiny].getLabel().copyNoShortestPath());
 			}
-			newGraph.addEdge(originNew, destinyNew, edge.b());
+			newGraph.addEdge(originNew, destinyNew, edge.second());
 		}
 		
 		//newGraph.normalizePaths();
@@ -272,9 +272,9 @@ public class DependencyGraph extends SimpleGraph<TokenInformation,String>{
 		}
 		
 		for(Pair<Pair<Integer,Integer>,String> edge : this.getEdges()){
-			int origin=edge.a().a();
-			int destiny=edge.a().b();
-			newGraph.addEdge(origin, destiny, edge.b());
+			int origin=edge.first().first();
+			int destiny=edge.first().second();
+			newGraph.addEdge(origin, destiny, edge.second());
 		}
 		
 		//newGraph.normalizePaths();

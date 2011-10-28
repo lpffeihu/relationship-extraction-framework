@@ -15,7 +15,7 @@ import edu.columbia.cs.ref.model.Document;
 import edu.columbia.cs.ref.model.TokenizedDocument;
 import edu.columbia.cs.ref.model.pattern.Pattern;
 import edu.columbia.cs.ref.model.relationship.Relationship;
-import edu.columbia.cs.utils.MegaCartesianProduct;
+import edu.columbia.cs.utils.NAryCartesianProduct;
 
 /**
  * This class is used for our implementation of: 
@@ -97,7 +97,7 @@ public abstract class SearchPatternExtractor<T extends Document> implements Patt
 			
 			ngramsMap.put(i, ngrams);
 			
-			List<Map<Integer,String[]>> patternwords = MegaCartesianProduct.generateAllPossibilities(ngramsMap);
+			List<Map<Integer,String[]>> patternwords = NAryCartesianProduct.generateAllPossibilities(ngramsMap);
 			
 			for (Map<Integer, String[]> patternsWord : patternwords) {
 				

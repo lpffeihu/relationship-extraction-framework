@@ -18,7 +18,7 @@ import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
 import edu.columbia.cs.ref.tool.document.splitter.SentenceSplitter;
-import edu.columbia.cs.utils.MegaCartesianProduct;
+import edu.columbia.cs.utils.NAryCartesianProduct;
 import edu.columbia.cs.utils.Span;
 
 /**
@@ -193,7 +193,7 @@ public class CandidatesGenerator {
 				Set<Entity> entitiesForRole = roleConstraint.getCompatibleEntities(ents);
 				candidateEntitiesForRole.put(role, entitiesForRole);
 			}
-			for(Map<String,Entity> candidate : MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole)){
+			for(Map<String,Entity> candidate : NAryCartesianProduct.generateAllPossibilities(candidateEntitiesForRole)){
 				Relationship newRelationship = new Relationship(t);
 				for(Entry<String,Entity> entry : candidate.entrySet()){
 					newRelationship.setRole(entry.getKey(), entry.getValue());

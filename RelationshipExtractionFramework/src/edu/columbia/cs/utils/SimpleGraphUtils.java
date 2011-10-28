@@ -47,14 +47,14 @@ public class SimpleGraphUtils implements Serializable{
 		
 		for(Pair<Pair<Integer,Integer>,String> p1 : e1){
 			for(Pair<Pair<Integer,Integer>,String> p2 : e2){
-				int i1=p1.a().a();
-				int i2=p1.a().b();
-				int j1=p2.a().a();
-				int j2=p2.a().b();
+				int i1=p1.first().first();
+				int i2=p1.first().second();
+				int j1=p2.first().first();
+				int j2=p2.first().second();
 				SimpleGraphNode<TokenInformation> node12 = nodes1[i2];
 				SimpleGraphNode<TokenInformation> node22 = nodes2[j2];
-				String label1 = p1.b();
-				String label2 = p2.b();
+				String label1 = p1.second();
+				String label2 = p2.second();
 				
 				TokenInformation info12 = node12.getLabel();
 				TokenInformation info22 = node22.getLabel();

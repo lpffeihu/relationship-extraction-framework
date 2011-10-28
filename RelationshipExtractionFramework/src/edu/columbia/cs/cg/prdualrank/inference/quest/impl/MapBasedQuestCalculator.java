@@ -158,7 +158,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 	}
 
 	private double getPrecision(Pattern<T,D> pattern) {
-		return patternTable.get(pattern).a();
+		return patternTable.get(pattern).first();
 	}
 
 	private <E> void setPrecision(E pattern, double precision, Map<E,Pair<Double,Double>> table) {
@@ -167,7 +167,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		double recall = 0.0;
 		
 		if (value != null)
-			recall = value.b();
+			recall = value.second();
 			
 		table.put(pattern, new Pair<Double,Double>(precision,recall));
 		
@@ -209,7 +209,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 			return 0.0;
 		}
 		
-		return pair.a();
+		return pair.first();
 	}
 
 	private double calculateRecall(Relationship tuple,PRDualRankGraph<T,D> gs) {
@@ -232,7 +232,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 			return 0;
 		}
 
-		return pair.b();
+		return pair.second();
 	}
 
 	private <E> void setRecall(E key, double recall, Map<E,Pair<Double,Double>> table) {
@@ -242,7 +242,7 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 		double precision = 0.0;
 		
 		if (value != null)	
-			precision = value.a();
+			precision = value.first();
 			
 		table.put(key, new Pair<Double,Double>(precision,recall));
 		
@@ -290,8 +290,8 @@ public class MapBasedQuestCalculator<T extends Matchable,D extends Document> imp
 			Map<E, Double> recall) {
 
 		for (Entry<E, Pair<Double, Double>> entry : table.entrySet()) {
-			precision.put(entry.getKey(), entry.getValue().a());
-			recall.put(entry.getKey(), entry.getValue().b());
+			precision.put(entry.getKey(), entry.getValue().first());
+			recall.put(entry.getKey(), entry.getValue().second());
 			
 		}
 

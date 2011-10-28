@@ -1,9 +1,6 @@
 package edu.columbia.cs.ref.model.core.structure.impl;
 
-import java.util.Set;
-
 import weka.core.Instance;
-
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.EntitySplitsFG;
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.KnowItAllChunkingFG;
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenInformationExtractionFG;
@@ -13,34 +10,76 @@ import edu.columbia.cs.ref.model.CandidateSentence;
 import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.core.structure.WekableStructure;
 import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
-import edu.columbia.cs.ref.model.re.impl.WekaClassifierModel;
 import edu.columbia.cs.utils.Span;
 
+/**
+ * This class is used for the implementation of the ReVerb confidence function that is described in: 
+ * <b> "Identifying Relations for Open Information Extraction" </b>. A. Fader and S. Soderland and O. Etzioni. In Conference on Empirical Methods in Natural Language Processing 2011, 2011.
+ * For further information, <a href="http://reverb.cs.washington.edu/"> ReVerb Website </a>.
+ *
+ * <br>
+ * <br>
+ * 
+ * This operable structure stores a representation of a sentence as an Instance that uses
+ * the features used by ReVerb.
+ * 
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class OpenInformationExtractionOS extends OperableStructure implements WekableStructure {
 
+	/** The tokens. */
 	private String tokens;
+	
+	/** The pos. */
 	private String pos;
+	
+	/** The chunks. */
 	private String chunks;
+	
+	/** The first. */
 	private String first;
+	
+	/** The first indexes. */
 	private String firstIndexes;
+	
+	/** The middle. */
 	private String middle;
+	
+	/** The middle indexes. */
 	private String middleIndexes;
+	
+	/** The second. */
 	private String second;
+	
+	/** The second indexes. */
 	private String secondIndexes;
+	
+	/** The string. */
 	private String string;
+	
+	/** The instance. */
 	private Instance instance;
 	
 	
+	/**
+	 * Instantiates a new OpenInformationExtractionOS given a candidate sentence.
+	 *
+	 * @param c the candidate sentence associated to this structure
+	 */
 	public OpenInformationExtractionOS(CandidateSentence c) {
 		super(c);
 	}
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -2183612647555553754L;
 	
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.model.core.structure.OperableStructure#initialize()
+	 */
 	@Override
 	public void initialize() {
 		string = null;	
@@ -112,6 +151,9 @@ public class OpenInformationExtractionOS extends OperableStructure implements We
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString(){
 		
 		return getStringVersion();
@@ -126,6 +168,9 @@ public class OpenInformationExtractionOS extends OperableStructure implements We
 		return string;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.model.core.structure.WekableStructure#getInstance()
+	 */
 	@Override
 	public Instance getInstance() {
 		return instance;

@@ -12,8 +12,26 @@ import edu.berkeley.compbio.jlibsvm.scaler.NoopScalingModel;
 import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
 
+/**
+ * This class converts the training data as represented in our framework to the format
+ * needed by <a href="http://dev.davidsoergel.com/trac/jlibsvm/">JLibSVM</a>. This
+ * class is used by the multiclass engine which means that it returns the data as
+ * a <code>MultiClassProblemImpl<String, OperableStructure></code>
+ *
+ * @see <a href="http://dev.davidsoergel.com/trac/jlibsvm/">JLibSVM</a>
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class OperableStructureToMulticlassSVMproblemConverter {
 
+	/**
+	 * Converts the training data into a <code>MultiClassProblemImpl<String, OperableStructure></code>
+	 *
+	 * @param train the training data
+	 * @return the representation of a multiclass SVM problem of <a href="http://dev.davidsoergel.com/trac/jlibsvm/">JLibSVM</a>
+	 */
 	public static MultiClassProblemImpl<String, OperableStructure> convert(
 			List<OperableStructure> train) {
 		Map<OperableStructure,String> examples = new HashMap<OperableStructure,String>();

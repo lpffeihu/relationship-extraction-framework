@@ -20,7 +20,7 @@ import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.pattern.Pattern;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
-import edu.columbia.cs.utils.MegaCartesianProduct;
+import edu.columbia.cs.utils.NAryCartesianProduct;
 
 /**
  * This class is used for our implementation of: 
@@ -131,7 +131,7 @@ public class SearchGraphGenerator<T extends Document,D extends TokenizedDocument
 
 		List<Relationship> matchingTuples = new ArrayList<Relationship>();
 		
-		for(Map<String,Entity> candidate : MegaCartesianProduct.generateAllPossibilities(candidateEntitiesForRole)){
+		for(Map<String,Entity> candidate : NAryCartesianProduct.generateAllPossibilities(candidateEntitiesForRole)){
 			
 			Relationship newRelationship = new Relationship(relationshipType);
 			

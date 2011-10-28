@@ -64,9 +64,9 @@ public class SimpleGraph <T,U extends Serializable> implements Serializable {
 	public String toString(){
 		StringBuffer buf = new StringBuffer();
 		for(Pair<Pair<Integer,Integer>,U> p : edges){
-			int n1 = p.a().a();
-			int n2 = p.a().b();
-			U label = p.b();
+			int n1 = p.first().first();
+			int n2 = p.first().second();
+			U label = p.second();
 			buf.append(nodes[n1] + "-" + label + "->" + nodes[n2] + "\n");
 		}
 		

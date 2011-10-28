@@ -101,20 +101,20 @@ public class ShortestPathKernel extends Kernel {
 		int entity2=-1;
 		
 		for(Pair<Pair<Integer, Integer>, String> edge : path){
-			Pair<Integer, Integer> p = edge.a();
+			Pair<Integer, Integer> p = edge.first();
 			
-			TokenInformation origin = nodes[p.a()].getLabel();
+			TokenInformation origin = nodes[p.first()].getLabel();
 			if(origin.isEntity1()){
-				entity1=p.a();
+				entity1=p.first();
 			}else if(origin.isEntity2()){
-				entity2=p.a();
+				entity2=p.first();
 			}
 			
-			TokenInformation destiny = nodes[p.b()].getLabel();
+			TokenInformation destiny = nodes[p.second()].getLabel();
 			if(destiny.isEntity1()){
-				entity1=p.b();
+				entity1=p.second();
 			}else if(destiny.isEntity2()){
-				entity2=p.b();
+				entity2=p.second();
 			}
 		}
 		
@@ -125,19 +125,19 @@ public class ShortestPathKernel extends Kernel {
 			Pair<Integer, Integer> p=null;
 			for(Pair<Pair<Integer, Integer>, String> edge : path){
 				if(!processedEdges.contains(edge)){
-					p = edge.a();
-					if(p.a()==currentToken || p.b()==currentToken){
+					p = edge.first();
+					if(p.first()==currentToken || p.second()==currentToken){
 						processedEdges.add(edge);
 						break;
 					}
 				}
 			}
-			if(p.a()==currentToken){
+			if(p.first()==currentToken){
 				sPath.add(createEdgeFeatureVector(true));
-				currentToken=p.b();
+				currentToken=p.second();
 			}else{
 				sPath.add(createEdgeFeatureVector(false));
-				currentToken=p.a();
+				currentToken=p.first();
 			}
 			sPath.add(createTokenFeatureVector(nodes[currentToken].getLabel()));
 		}

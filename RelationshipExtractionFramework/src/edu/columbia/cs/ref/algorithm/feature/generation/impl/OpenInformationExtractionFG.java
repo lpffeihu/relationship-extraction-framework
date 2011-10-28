@@ -24,16 +24,51 @@ import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedExtraction;
 import edu.washington.cs.knowitall.util.Range;
 
+/**
+ * This class is used for the implementation of the ReVerb confidence function that is described in: 
+ * <b> "Identifying Relations for Open Information Extraction" </b>. A. Fader and S. Soderland and O. Etzioni. In Conference on Empirical Methods in Natural Language Processing 2011, 2011.
+ * For further information, <a href="http://reverb.cs.washington.edu/"> ReVerb Website </a>.
+ * 
+ * <br>
+ * <br>
+ * 
+ * The Class OpenInformationExtractionFG is a candidate sentence feature generator which transforms all the
+ * information from the features needed for Open Information Extraction into a WekaInstanceFS. Thus, the 
+ * constructor of this class receives the information needed by Open Information Extraction: a tokenizer,
+ * a part-of-speech tagger, a chunker and an entity based splitter.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class OpenInformationExtractionFG extends
 		CandidateSentenceFeatureGenerator<WekaInstanceFS> {
 
+	/** The Constant TMP_LABEL_OPTIMIZATION. */
 	private static final String TMP_LABEL_OPTIMIZATION = WekaClassifierModel.NEGATIVE_LABEL;
 	
+	/** The tokenizer. */
 	private FeatureGenerator<SequenceFS<String>> tokenizer;
+	
+	/** The pos tagger. */
 	private FeatureGenerator<SequenceFS<String>> posTagger;
+	
+	/** The chunker. */
 	private FeatureGenerator<SequenceFS<String>> chunker;
+	
+	/** The section split. */
 	private FeatureGenerator<SequenceFS<Span>> sectionSplit;
 	
+	/**
+	 * Instantiates a new OpenInformationExtractionFG.
+	 *
+	 * @param featureSet the feature set needed by open information extraction
+	 * @param tokenizer the tokenizer
+	 * @param posTagger the part-of-speech tagger
+	 * @param chunker the chunker
+	 * @param sectionSplit the entity-based sentence split
+	 */
 	public OpenInformationExtractionFG(AlternativeOpenIEFeatures featureSet,
 			FeatureGenerator<SequenceFS<String>> tokenizer,
 			FeatureGenerator<SequenceFS<String>> posTagger,
@@ -46,12 +81,16 @@ public class OpenInformationExtractionFG extends
 		this.sectionSplit=sectionSplit;
 	}
 	
+	/** The I efeatures. */
 	private AlternativeOpenIEFeatures IEfeatures; //= new ReVerbFeatures().getFeatureSet();
 
+	/** The num features. */
 	private int numFeatures;
 
+	/** The attributes. */
 	private FastVector attributes = null;
 	
+	/** The dataset. */
 	private Instances dataset = null;
 	
 	private OpenInformationExtractionFG(AlternativeOpenIEFeatures featureSet){
@@ -84,6 +123,9 @@ public class OpenInformationExtractionFG extends
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.algorithm.feature.generation.CandidateSentenceFeatureGenerator#extractFeatures(edu.columbia.cs.ref.model.CandidateSentence)
+	 */
 	@Override
 	protected WekaInstanceFS extractFeatures(CandidateSentence candidateSentence) {
 		
@@ -144,6 +186,9 @@ public class OpenInformationExtractionFG extends
 		return new Range(start, length);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.algorithm.feature.generation.CandidateSentenceFeatureGenerator#retrieveRequiredFeatureGenerators()
+	 */
 	@Override
 	protected List<FeatureGenerator> retrieveRequiredFeatureGenerators() {
 		ArrayList<FeatureGenerator> ret = new ArrayList<FeatureGenerator>();
