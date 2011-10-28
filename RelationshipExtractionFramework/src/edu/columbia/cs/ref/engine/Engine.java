@@ -1,5 +1,6 @@
 package edu.columbia.cs.ref.engine;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -33,5 +34,5 @@ public interface Engine {
 	 * @param list the training data
 	 * @return the relationship extraction model produced by this engine with the provided training data.
 	 */
-	public Model train(List<OperableStructure> list);
+	public Model train(Collection<OperableStructure> list);
 }

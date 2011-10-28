@@ -15,23 +15,43 @@ import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedExtraction;
 import edu.washington.cs.knowitall.util.Range;
 
-/***
- * This class defines the features used by the ReVerb confidence function. A reference
- * to the feature set can be obtained by calling the <code>getFeatureSet()</code> method
- * after constructing an instance of this class.
- * @author afader
- *
+
+/**
+ * This class is used for the implementation of the ReVerb confidence function that is described in: 
+ * <b> "Identifying Relations for Open Information Extraction" </b>. A. Fader and S. Soderland and O. Etzioni. In Conference on Empirical Methods in Natural Language Processing 2011, 2011.
+ * For further information, <a href="http://reverb.cs.washington.edu/"> ReVerb Website </a>.
+ * 
+ * <br><br>
+ * 
+ * This class contains the definition of the features that are used to assign a confidence score to the extraction.
+ * This set of features can be found in Table 4 of <b> "Identifying Relations for Open Information Extraction" </b>.
+ * Notice that this class is a wrapper for the class <code>edu.washington.cs.knowitall.extractor.conf.ReVerbFeatures</code>
+ * which has been copied verbatim from the code of the <a href="http://reverb.cs.washington.edu/">Reverb</a> project
+ * under the terms of GPL version 3.0
+ * 
+ * <br>
+ * @see <a href="http://reverb.cs.washington.edu/"> ReVerb Website </a>
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-10-07
  */
 public class AlternativeOpenIEFeatures implements Serializable{
 	
 	private HashMap<String, Predicate<ChunkedBinaryExtraction>> featureMap;
 	private transient BooleanFeatureSet<ChunkedBinaryExtraction> featureSet;
 	
+	/**
+	 * Creates an instance of an AlternativeOpenIEFeatures
+	 * 
+	 */
 	public AlternativeOpenIEFeatures() {
 		initFeatureSet();
 	}
 	
 	/**
+	 * Obtains the feature set used for the ReVerb confidence function
+	 * 
 	 * @return the feature set used for the ReVerb confidence function
 	 */
 	public BooleanFeatureSet<ChunkedBinaryExtraction> getFeatureSet() {

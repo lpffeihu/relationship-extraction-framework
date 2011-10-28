@@ -147,7 +147,7 @@ public class PRDualRank implements Engine{
 	 * @see edu.columbia.cs.engine.Engine#train(java.util.List)
 	 */
 	@Override
-	public Model train(List<OperableStructure> list) {
+	public Model train(Collection<OperableStructure> list) {
 		
 		HashMap<Pattern<Document,TokenizedDocument>, Integer> Ps = new HashMap<Pattern<Document,TokenizedDocument>, Integer>();
 		

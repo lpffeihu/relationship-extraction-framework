@@ -28,8 +28,6 @@ import edu.columbia.cs.utils.SimpleGraphNode;
 import edu.columbia.cs.utils.TokenInformation;
 
 public class ShortestPathKernel extends Kernel {
-	static final double DEFAULT_GAMMA = 5;
-	static final double DEFAULT_LAMBDA = 0.75;
 	static int numExec=0;
 
 	// gap penalty
@@ -39,17 +37,10 @@ public class ShortestPathKernel extends Kernel {
 	protected Map<OperableStructure,Double> m_mapStoK;
 	private boolean m_bNorm=true;
 
-	public ShortestPathKernel(double gamma, double lambda)
-	{
-		m_lambda = lambda;
-		m_mapStoK = Collections.synchronizedMap(new HashMap<OperableStructure,Double>());
-	}
-
 
 	public ShortestPathKernel() 
 	{
 		// Default values.
-		m_lambda = DEFAULT_LAMBDA;
 		m_mapStoK = Collections.synchronizedMap(new HashMap<OperableStructure,Double>());
 	}
 	
@@ -70,12 +61,6 @@ public class ShortestPathKernel extends Kernel {
 	public double selfKernel(TaggedGraph s)
 	{
 		if (m_bCache) {
-			// get string representation of relation instance
-			
-			//System.out.println(strText);
-			//for (int i = 0; i < s.length; i++)
-			//	strText += s[i][0] + " ";
-			// get cached value
 			Double dblk = (Double) m_mapStoK.get(s);
 			if (dblk == null) {
 				double k = kernel(s, s);
@@ -200,11 +185,7 @@ public class ShortestPathKernel extends Kernel {
 	protected List<FeatureGenerator> createMandatoryFeatureGenerators() {
 		List<FeatureGenerator> fg = new ArrayList<FeatureGenerator>();
 
-		//TODO: the tokenizer should be received in the constructor
 		try {
-			//The only mandatory feature is the chunker... However, the chunker
-			//also depends on the results of the tokenizer. Thus, we need to create a
-			//tokenizer and a DependentFeatureGenerator in this case
 			fg.add(new StanfordNLPDependencyGraphFG("englishPCFG.ser.gz",new EntityBasedChunkingFG(new OpenNLPTokenizationFG("en-token.bin"))));
 		} catch (InvalidFormatException e) {
 			e.printStackTrace();
@@ -222,10 +203,6 @@ public class ShortestPathKernel extends Kernel {
 	
 	@Override
 	public double evaluate(OperableStructure s1, OperableStructure s2) {
-		//lock.lock();
-		//System.out.println("S1= " + normKernel(s1,s1));
-		//System.out.println("S2= " + normKernel(s2,s2));
-		
 		if(s1.hashCode()>s2.hashCode()){
 			OperableStructure temp=s2;
 			s2=s1;
@@ -236,7 +213,6 @@ public class ShortestPathKernel extends Kernel {
 		if(dyn1!=null){
 			Double dyn2 = dyn1.get(s2);
 			if(dyn2!=null){
-				//System.out.println("Reusing");
 				return dyn2;
 			}
 		}

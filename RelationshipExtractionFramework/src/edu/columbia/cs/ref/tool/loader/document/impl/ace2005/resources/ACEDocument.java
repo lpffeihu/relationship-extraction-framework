@@ -15,13 +15,13 @@ import edu.columbia.cs.ref.model.Segment;
  * <br>
  * <br>
  * 
- * This class should not be used to load documents to our framework. It is only for internal use.
- * 
- * <br>
- * <br>
- * 
  * This class is an adaptation of the class created by Razvan Bunescu used to load ACE 2003.
  * The original class can be found in http://ace.cs.ohio.edu/~razvan/code/ssk_re.tar.gz
+ * 
+ * <br>
+ * <br>
+ * 
+ * This class should not be used to load documents to our framework. It is only for internal use.
  * 
  * @author      Pablo Barrio
  * @author		Goncalo Simoes

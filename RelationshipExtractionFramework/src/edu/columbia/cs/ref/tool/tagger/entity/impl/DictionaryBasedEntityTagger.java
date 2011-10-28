@@ -30,24 +30,10 @@ import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
 import edu.columbia.cs.utils.Dictionary;
 
 /**
- * The DictionaryBasedEntityTagger extends EntityTagger.
- *
- * <br>
- * <br>
- *
- * Instances of this class use a dictionary to annotate the entities of the text.
- * 
- * <br>
- * <br>
- * 
- * The algorithm used for the dictionary matching is the Aho-Corasick algorithm. For
- * more details about this algorithm please refer to:
- * 
- * <br>
- * <br>
- * 
- * Aho, Alfred V.; Margaret J. Corasick (June 1975). "Efficient string matching: An aid to
- * bibliographic search". Communications of the ACM 18 (6): 333-340.
+ * The DictionaryBasedEntityTagger extends EntityTagger and corresponds to an implementation
+ * of the Aho-Corasick dictionary matching algorithm described in <b> "Efficient string matching:
+ * An aid to bibliographic search" </b>. A. Aho and M. Corasick. In Communications of the ACM 18 (6),
+ * pages 333-340, June 1975.
  * 
  * <br>
  * <br>

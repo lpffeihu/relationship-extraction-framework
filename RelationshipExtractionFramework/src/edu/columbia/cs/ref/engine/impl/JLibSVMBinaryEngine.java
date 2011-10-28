@@ -1,5 +1,7 @@
 package edu.columbia.cs.ref.engine.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -64,7 +66,7 @@ public class JLibSVMBinaryEngine implements Engine {
 	 * @see edu.columbia.cs.ref.engine.Engine#train(java.util.List)
 	 */
 	@Override
-	public Model train(List<OperableStructure> train) {
+	public Model train(Collection<OperableStructure> train) {
 		KernelFunction<OperableStructure> kernel = (Kernel)conf.getCore();
 		ImmutableSvmParameterPoint.Builder<String, OperableStructure> builder = new ImmutableSvmParameterPoint.Builder<String, OperableStructure>();
 		builder.C=50;
@@ -78,7 +80,7 @@ public class JLibSVMBinaryEngine implements Engine {
 		JLibsvmCompositeBinaryModel compositeModel = new JLibsvmCompositeBinaryModel(conf,relTypes);
 		
 		for(RelationshipType t : relTypes){
-			BinaryClassificationProblemImpl<String,OperableStructure> problem = OperableStructureToBinarySVMproblemConverter.convert(train,t);
+			BinaryClassificationProblemImpl<String,OperableStructure> problem = OperableStructureToBinarySVMproblemConverter.convert(new ArrayList<OperableStructure>(train),t);
 	
 			BinaryClassificationSVM<String,OperableStructure> binary = new C_SVC<String,OperableStructure>();
 			

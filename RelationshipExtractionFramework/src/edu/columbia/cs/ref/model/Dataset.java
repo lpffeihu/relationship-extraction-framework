@@ -15,7 +15,7 @@ import java.util.Set;
 import edu.columbia.cs.ref.tool.loader.Loader;
 
 /**
- * The Class Dataset represents a dataset of a given type of atomic elements (e.g., Documents, Candidate Setencens).
+ * The Class Dataset represents a dataset of a given type of atomic elements (e.g., Documents, Candidate Sentences).
  *
  * <br>
  * <br>

@@ -1,5 +1,7 @@
 package edu.columbia.cs.ref.engine.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -67,7 +69,7 @@ public class JLibSVMMulticlassEngine implements Engine {
 	 * @see edu.columbia.cs.ref.engine.Engine#train(java.util.List)
 	 */
 	@Override
-	public Model train(List<OperableStructure> train) {
+	public Model train(Collection<OperableStructure> train) {
 		KernelFunction<OperableStructure> kernel = (Kernel)conf.getCore();
 		ImmutableSvmParameterPoint.Builder<String, OperableStructure> builder = new ImmutableSvmParameterPoint.Builder<String, OperableStructure>();
 		builder.C=50;
@@ -76,7 +78,7 @@ public class JLibSVMMulticlassEngine implements Engine {
 		
 		ImmutableSvmParameterPoint<String, OperableStructure> params = builder.build();
 		
-		MultiClassProblemImpl<String,OperableStructure> problem = OperableStructureToMulticlassSVMproblemConverter.convert(train);
+		MultiClassProblemImpl<String,OperableStructure> problem = OperableStructureToMulticlassSVMproblemConverter.convert(new ArrayList<OperableStructure>(train));
 	
 		BinaryClassificationSVM<String,OperableStructure> binary = new C_SVC<String,OperableStructure>();
 		

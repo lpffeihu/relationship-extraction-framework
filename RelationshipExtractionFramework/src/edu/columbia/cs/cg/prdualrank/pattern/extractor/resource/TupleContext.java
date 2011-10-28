@@ -19,7 +19,7 @@ import edu.columbia.cs.utils.Span;
  * 
  * <b>Description</b><br><br>
  * 
- * This class represents the text surrounding a tuple or many tuples. Is used in the generation of <b>Search Patterns<\b> using Window Generation or Document Generation respectively. 
+ * This class represents the text surrounding a tuple or many tuples. Is used in the generation of <b>Search Patterns</b> using Window Generation or Document Generation respectively. 
  * 
  * For Document Search Pattern Generation, since no restriction in the size of arrays surrounding tuples will be provided, all the text except for the tuple attribute values will be considered
  * in <b>Search Pattern</b> generation. 

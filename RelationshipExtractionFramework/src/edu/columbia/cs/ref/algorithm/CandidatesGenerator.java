@@ -29,7 +29,7 @@ import edu.columbia.cs.utils.Span;
  * <br>
  * 
  * A candidate generator contains a splitter that will split sentences accordingly. It is important to know
- * that even though the behavihor of the candidate generator is mainly driven by the sentence segmentation
+ * that even though the behavior of the candidate generator is mainly driven by the sentence segmentation
  * there is one major exception: if the sentence segmentation tries to split a sentence in the middle
  * of an entity, this decision will be ignored and the two resulting sentences will become only one.
  * 

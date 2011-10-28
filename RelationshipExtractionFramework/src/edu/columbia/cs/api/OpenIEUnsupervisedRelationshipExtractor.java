@@ -2,45 +2,32 @@ package edu.columbia.cs.api;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import weka.classifiers.Classifier;
-
-import edu.columbia.cs.ref.algorithm.CandidatesGenerator;
-import edu.columbia.cs.ref.model.CandidateSentence;
 import edu.columbia.cs.ref.model.Document;
 import edu.columbia.cs.ref.model.Sentence;
-import edu.columbia.cs.ref.model.StructureConfiguration;
-import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.entity.Entity;
-import edu.columbia.cs.ref.model.re.Model;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
 import edu.columbia.cs.ref.tool.chunker.Chunker;
-import edu.columbia.cs.ref.tool.chunker.impl.OpenNLPChunker;
 import edu.columbia.cs.ref.tool.document.splitter.SentenceSplitter;
-import edu.columbia.cs.ref.tool.document.splitter.impl.OpenNLPMESplitter;
 import edu.columbia.cs.ref.tool.postagger.POSTagger;
-import edu.columbia.cs.ref.tool.postagger.impl.OpenNLPPOSTagger;
 import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
-import edu.columbia.cs.ref.tool.tokenizer.impl.OpenNLPTokenizer;
 import edu.columbia.cs.utils.AlternativeOpenIEConfFunction;
 import edu.columbia.cs.utils.Span;
 import edu.washington.cs.knowitall.extractor.ReVerbExtractor;
 import edu.washington.cs.knowitall.extractor.conf.ConfidenceFunctionException;
-import edu.washington.cs.knowitall.extractor.conf.ReVerbConfFunction;
 import edu.washington.cs.knowitall.nlp.ChunkedSentence;
 import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
 
 /**
- * Implementation of the relationship extractor that is based on the unsupervised
- * learning of KnowItAll. Additionally, this extractor can use a classifier to determine
- * the confidence that each result of the unsupervised learning is a relationship (ReVerb
- * approach)
+ * This class is used for the implementation of the KnowItAll/Reverb unsupervised
+ * relationship extraction described in 
+ * <b> "Identifying Relations for Open Information Extraction" </b>. A. Fader and S. Soderland and O. Etzioni. In Conference on Empirical Methods in Natural Language Processing 2011, 2011.
+ * For further information, <a href="http://reverb.cs.washington.edu/">ReVerb Website</a>.
  * 
  * <br>
  * <br>
@@ -51,12 +38,17 @@ import edu.washington.cs.knowitall.nlp.extraction.ChunkedBinaryExtraction;
  * <br>
  * <br>
  * 
- * To know more about KnowItAll or Reverb please refer to:
+ * This extractor can use a classifier to determine
+ * the confidence that each result of the unsupervised learning is a relationship (ReVerb
+ * approach)
  * 
+ * <br>
+ * <br>
  * 
- * <a href="http://ai.cs.washington.edu/pubs/279">Identifying Relations for Open
- * Information Extraction</a>
+ * To know more about KnowItAll or Reverb please refer to <a href="http://reverb.cs.washington.edu/">http://reverb.cs.washington.edu/</a>
  * 
+ * <br>
+ * @see <a href="http://reverb.cs.washington.edu/"> ReVerb Website </a>
  * @author      Pablo Barrio
  * @author		Goncalo Simoes
  * @version     0.1

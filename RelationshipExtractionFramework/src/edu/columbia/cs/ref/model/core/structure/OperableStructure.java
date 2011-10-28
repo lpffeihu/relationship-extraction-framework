@@ -79,6 +79,5 @@ public abstract class OperableStructure implements Serializable {
 
 	public void add(WekaInstanceFS wekaInstanceFS) {
 		throw new UnsupportedOperationException();
-		
 	}
 }

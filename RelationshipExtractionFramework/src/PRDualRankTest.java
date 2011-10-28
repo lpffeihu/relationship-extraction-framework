@@ -61,10 +61,15 @@ public class PRDualRankTest {
 	 */
 	public static void main(String[] args) {
 		
-		new PRDualRankTest().runCapitalCountry();
-		new PRDualRankTest().runPhysicsNobel();
-		new PRDualRankTest().runAreaCode();
+		int arg = Integer.parseInt(args[0]);
 		
+		if(arg==0){
+			new PRDualRankTest().runCapitalCountry();
+		}else if(arg==1){
+			new PRDualRankTest().runPhysicsNobel();
+		}else{
+			new PRDualRankTest().runAreaCode();
+		}
 	}
 
 	private void runAreaCode() {

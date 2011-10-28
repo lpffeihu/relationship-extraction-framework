@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -84,11 +85,15 @@ public class WekaClassifierEngine implements Engine {
 	 * @see edu.columbia.cs.ref.engine.Engine#train(java.util.List)
 	 */
 	@Override
-	public Model train(List<OperableStructure> list) {
+	public Model train(Collection<OperableStructure> list) {
 
 		for(RelationshipType type : relationshipTypes){
 			
-			Instance sampleInstance = ((WekableStructure)list.get(0)).getInstance();
+			Instance sampleInstance = null;
+			for(OperableStructure first : list){
+				sampleInstance = ((WekableStructure)first).getInstance();
+				break;
+			}
 			
 			FastVector attributes = generateAttributeFastVector(sampleInstance);
 			

@@ -13,7 +13,7 @@ import edu.columbia.cs.ref.model.feature.FeatureSet;
  * <br>
  * <br>
  * 
- * A feature generator is parameterized by the type of feature taht it produces.
+ * A feature generator is parameterized by the type of feature that it produces.
  *
  * @param <E> the type of feature that the generator produces.
  * @author      Pablo Barrio
