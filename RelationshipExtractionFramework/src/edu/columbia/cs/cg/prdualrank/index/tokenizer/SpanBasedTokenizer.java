@@ -8,7 +8,7 @@ import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.search.IndexSearcher;
 
-import edu.columbia.cs.utils.Span;
+import edu.columbia.cs.ref.model.Span;
 
 /**
  * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. This is our implementation of a {@link Tokenizer} to be

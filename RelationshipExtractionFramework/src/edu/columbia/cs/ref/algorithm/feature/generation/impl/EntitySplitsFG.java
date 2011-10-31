@@ -8,10 +8,10 @@ import java.util.List;
 import edu.columbia.cs.ref.algorithm.feature.generation.CandidateSentenceFeatureGenerator;
 import edu.columbia.cs.ref.algorithm.feature.generation.FeatureGenerator;
 import edu.columbia.cs.ref.model.CandidateSentence;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.feature.FeatureSet;
 import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
-import edu.columbia.cs.utils.Span;
 
 /**
  * The Class EntitySplitsFG divides each candidate sentence according to

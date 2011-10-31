@@ -8,8 +8,8 @@ import java.io.InputStream;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
 import opennlp.tools.util.InvalidFormatException;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
-import edu.columbia.cs.utils.Span;
 
 /**
  * The OpenNLPTokenizer is an implementation of the Tokenizer interface that uses

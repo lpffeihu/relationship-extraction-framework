@@ -7,10 +7,10 @@ import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenInformationExtr
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPPartOfSpeechFG;
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.SpansToStringsConvertionFG;
 import edu.columbia.cs.ref.model.CandidateSentence;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.core.structure.WekableStructure;
 import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
-import edu.columbia.cs.utils.Span;
 
 /**
  * This class is used for the implementation of the ReVerb confidence function that is described in: 

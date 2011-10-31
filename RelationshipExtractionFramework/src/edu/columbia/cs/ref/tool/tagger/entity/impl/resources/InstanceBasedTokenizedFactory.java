@@ -3,7 +3,7 @@ package edu.columbia.cs.ref.tool.tagger.entity.impl.resources;
 import com.aliasi.tokenizer.Tokenizer;
 import com.aliasi.tokenizer.TokenizerFactory;
 
-import edu.columbia.cs.utils.Span;
+import edu.columbia.cs.ref.model.Span;
 
 public class InstanceBasedTokenizedFactory implements TokenizerFactory{
 

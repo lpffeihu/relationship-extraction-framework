@@ -13,13 +13,13 @@ import java.util.Map.Entry;
 import edu.columbia.cs.ref.model.CandidateSentence;
 import edu.columbia.cs.ref.model.Document;
 import edu.columbia.cs.ref.model.Sentence;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.constraint.role.RoleConstraint;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
 import edu.columbia.cs.ref.tool.document.splitter.SentenceSplitter;
 import edu.columbia.cs.utils.NAryCartesianProduct;
-import edu.columbia.cs.utils.Span;
 
 /**
  * The candidate generator is responsible for generating all the candidate sentences from a given

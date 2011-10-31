@@ -22,7 +22,7 @@ import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.re.Model;
 import edu.columbia.cs.ref.model.re.impl.JLibsvmBinaryModel;
 import edu.columbia.cs.ref.model.re.impl.JLibsvmCompositeBinaryModel;
-import edu.columbia.cs.ref.model.re.impl.JLibsvmMulticlassModelModel;
+import edu.columbia.cs.ref.model.re.impl.JLibsvmMulticlassModel;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
 
 /**
@@ -84,7 +84,7 @@ public class JLibSVMMulticlassEngine implements Engine {
 		
 		MultiClassificationSVM<String,OperableStructure> multi = new MultiClassificationSVM<String,OperableStructure>(binary);
 		
-		return new JLibsvmMulticlassModelModel(multi.train(problem, params),conf,this.relationshipTypes);
+		return new JLibsvmMulticlassModel(multi.train(problem, params),conf,this.relationshipTypes);
 	}
 
 }

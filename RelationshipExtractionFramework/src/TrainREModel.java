@@ -15,6 +15,7 @@ import edu.columbia.cs.ref.engine.impl.JLibSVMBinaryEngine;
 import edu.columbia.cs.ref.model.CandidateSentence;
 import edu.columbia.cs.ref.model.Dataset;
 import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.StructureConfiguration;
 import edu.columbia.cs.ref.model.constraint.role.impl.EntityTypeConstraint;
 import edu.columbia.cs.ref.model.core.impl.ShortestPathKernel;
@@ -24,7 +25,6 @@ import edu.columbia.cs.ref.model.re.Model;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
 import edu.columbia.cs.ref.tool.document.splitter.impl.OpenNLPMESplitter;
 import edu.columbia.cs.ref.tool.loader.document.impl.ace2005.ACE2005Loader;
-import edu.columbia.cs.utils.Span;
 
 
 public class TrainREModel {

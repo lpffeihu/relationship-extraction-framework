@@ -12,6 +12,7 @@ import edu.columbia.cs.ref.algorithm.feature.generation.impl.EntityBasedChunking
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.StanfordNLPDependencyGraphFG;
 import edu.columbia.cs.ref.model.CandidateSentence;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.feature.impl.GraphFS;
@@ -19,7 +20,6 @@ import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
 import edu.columbia.cs.utils.DependencyGraph;
 import edu.columbia.cs.utils.Pair;
 import edu.columbia.cs.utils.SimpleGraph;
-import edu.columbia.cs.utils.Span;
 import edu.columbia.cs.utils.TokenInformation;
 
 public class TaggedGraph extends OperableStructure {

@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.TokenizedDocument;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.pattern.Pattern;
-import edu.columbia.cs.utils.Span;
 
 /**
  * The Class SimpleAttributeExtractionPattern represents a pattern that can be used

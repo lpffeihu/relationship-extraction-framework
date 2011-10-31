@@ -10,7 +10,7 @@ import org.apache.lucene.util.Version;
 
 import edu.columbia.cs.cg.prdualrank.index.reader.TokenBasedReader;
 import edu.columbia.cs.cg.prdualrank.index.tokenizer.SpanBasedTokenizer;
-import edu.columbia.cs.utils.Span;
+import edu.columbia.cs.ref.model.Span;
 
 /**
  * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. This class is an implementation

@@ -5,7 +5,7 @@ import java.io.Reader;
 
 import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenBasedAnalyzer;
 import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenizerBasedAnalyzer;
-import edu.columbia.cs.utils.Span;
+import edu.columbia.cs.ref.model.Span;
 
 /**
  * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. In this case, an implementation of {@link Reader} is written. This implementation

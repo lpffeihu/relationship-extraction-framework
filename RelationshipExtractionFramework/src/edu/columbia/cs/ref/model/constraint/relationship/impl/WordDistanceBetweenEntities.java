@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.TokenizedDocument;
 import edu.columbia.cs.ref.model.constraint.relationship.RelationshipConstraint;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
-import edu.columbia.cs.utils.Span;
 
 /**
  * The Class WordDistanceBetweenEntities is an implementation of RelationshipConstraint

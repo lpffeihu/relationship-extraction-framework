@@ -15,13 +15,13 @@ import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPPartOfSpeech
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.SpansToStringsConvertionFG;
 import edu.columbia.cs.ref.model.CandidateSentence;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.core.Core;
 import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.core.structure.impl.OpenInformationExtractionOS;
 import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
 import edu.columbia.cs.ref.model.feature.impl.WekaInstanceFS;
 import edu.columbia.cs.utils.AlternativeOpenIEFeatures;
-import edu.columbia.cs.utils.Span;
 import edu.washington.cs.knowitall.extractor.conf.ReVerbFeatures;
 
 /**

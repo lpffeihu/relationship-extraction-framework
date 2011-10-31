@@ -21,19 +21,49 @@ import edu.columbia.cs.ref.algorithm.feature.generation.FeatureGenerator;
 import edu.columbia.cs.ref.algorithm.feature.generation.SentenceFeatureGenerator;
 import edu.columbia.cs.ref.model.CandidateSentence;
 import edu.columbia.cs.ref.model.Sentence;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.feature.FeatureSet;
 import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
-import edu.columbia.cs.utils.Span;
 
-//TODO: Should use the POS Tagger from the utils package
+
+/**
+ * The Class OpenNLPPartOfSpeechFG is a candidate sentence feature generator that 
+ * finds the part-of-speech tags of the words in a sentence according to a previously
+ * computed tokenization.
+ * 
+ * 
+ * <br>
+ * <br>
+ * 
+ * This class receives as input another feature generator that must produce the original
+ * tokenization.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<SequenceFS<String>> {
 
+	/** The tagger. */
 	private transient POSTaggerME tagger;
+	
+	/** The tokenizer. */
 	private FeatureGenerator<SequenceFS<String>> tokenizer;
+	
+	/** The path. */
 	private String path;
 
+	/**
+	 * Instantiates a new OpenNLPPartOfSpeechFG.
+	 *
+	 * @param path the path to the POS model
+	 * @param tokenizer the feature generator that produces the original tokenization
+	 * @throws InvalidFormatException the invalid format exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public OpenNLPPartOfSpeechFG(String path,FeatureGenerator<SequenceFS<String>> tokenizer) throws InvalidFormatException, IOException{
 		InputStream modelIn = null;
 		POSModel modelPOS=null;
@@ -45,6 +75,9 @@ public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<Seq
 		this.path=path;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.algorithm.feature.generation.CandidateSentenceFeatureGenerator#extractFeatures(edu.columbia.cs.ref.model.CandidateSentence)
+	 */
 	@Override
 	protected SequenceFS<String> extractFeatures(CandidateSentence sentence) {
 		
@@ -53,6 +86,9 @@ public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<Seq
 		return new SequenceFS<String>(tagger.tag(tokenization.toArray()));
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.algorithm.feature.generation.CandidateSentenceFeatureGenerator#retrieveRequiredFeatureGenerators()
+	 */
 	@Override
 	protected List<FeatureGenerator> retrieveRequiredFeatureGenerators() {
 		ArrayList<FeatureGenerator> ret = new ArrayList<FeatureGenerator>();
@@ -61,7 +97,7 @@ public class OpenNLPPartOfSpeechFG extends CandidateSentenceFeatureGenerator<Seq
 	
 		return ret;
 	}
-	
+
 	private void writeObject(ObjectOutputStream out) throws IOException{
 		out.defaultWriteObject();
 		out.writeObject(path);

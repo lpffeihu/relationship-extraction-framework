@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import edu.columbia.cs.utils.Span;
+import edu.columbia.cs.ref.model.Span;
 
 /**
  * This class is used for our implementation of: 

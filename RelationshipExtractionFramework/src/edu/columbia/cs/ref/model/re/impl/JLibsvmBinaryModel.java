@@ -27,21 +27,64 @@ import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.re.Model;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
 
+/**
+ * The Class JLibsvmBinaryModel is an extention of the class Model that is based
+ * on a binary SVM classfier from <a href="http://dev.davidsoergel.com/trac/jlibsvm/">JLibSVM</a>.
+ * 
+ * <br>
+ * <br>
+ * 
+ * This model should not be created directly by the used. Instead, it should be created using
+ * an instance of the class <code>JLibSVMBinaryEngine</code>
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class JLibsvmBinaryModel extends Model{
+	
+	/** The Constant availableStatistics. */
 	private static final PredictionProperties[] availableStatistics = new PredictionProperties[]{PredictionProperties.CONFIDENCE,PredictionProperties.PROBABILITY_POSITIVE};
+	
+	/** The svm model. */
 	private transient BinaryModel<String,OperableStructure> svmModel;
+	
+	/** The last positive probability. */
 	private double lastPositiveProbability;
+	
+	/** The last negative probability. */
 	private double lastNegativeProbability;
+	
+	/** The last confidence. */
 	private double lastConfidence;
+	
+	/** The true label. */
 	private String trueLabel;
+	
+	/** The false label. */
 	private String falseLabel;
+	
+	/** The conf. */
 	private StructureConfiguration conf;
+	
+	/** The relationship type. */
 	private Set<RelationshipType> relationshipType;
 	
+	/**
+	 * Instantiates a new JLibsvmBinaryModel.
+	 */
 	public JLibsvmBinaryModel(){
 		
 	}
 	
+	/**
+	 * Instantiates a new JLibsvmBinaryModel.
+	 *
+	 * @param binary the binary classification model for relationship extraction
+	 * @param conf the structure configuration for the relationship extraction task this model performs
+	 * @param relationshipType the relationship type that this model extracts
+	 */
 	public JLibsvmBinaryModel(BinaryModel<String,OperableStructure> binary, StructureConfiguration conf, Set<RelationshipType> relationshipType){
 		svmModel=binary;
 		trueLabel=svmModel.getTrueLabel();
@@ -50,6 +93,9 @@ public class JLibsvmBinaryModel extends Model{
 		this.relationshipType=relationshipType;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.model.re.Model#getPredictedLabel(edu.columbia.cs.ref.model.core.structure.OperableStructure)
+	 */
 	@Override
 	public Set<String> getPredictedLabel(OperableStructure s) {
 		float predictedLabel=svmModel.predictValue(s);
@@ -73,11 +119,17 @@ public class JLibsvmBinaryModel extends Model{
 		//return predictedLabel;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.model.re.Model#getAvailablePredictionProperties()
+	 */
 	@Override
 	protected PredictionProperties[] getAvailablePredictionProperties() {
 		return availableStatistics;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.model.re.Model#getPredictionPropertyValue(edu.columbia.cs.ref.model.re.Model.PredictionProperties)
+	 */
 	@Override
 	protected Object getPredictionPropertyValue(
 			PredictionProperties predictionProperties) {
@@ -145,11 +197,17 @@ public class JLibsvmBinaryModel extends Model{
 		falseLabel=modelInfo.getFalseLabel();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.model.re.Model#getStructureConfiguration()
+	 */
 	@Override
 	public StructureConfiguration getStructureConfiguration() {
 		return conf;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.model.re.Model#getRelationshipTypes()
+	 */
 	@Override
 	public Set<RelationshipType> getRelationshipTypes() {
 		return relationshipType;

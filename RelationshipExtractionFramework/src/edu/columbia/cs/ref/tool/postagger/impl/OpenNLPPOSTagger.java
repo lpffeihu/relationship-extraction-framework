@@ -10,8 +10,8 @@ import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
 import opennlp.tools.util.InvalidFormatException;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.tool.postagger.POSTagger;
-import edu.columbia.cs.utils.Span;
 
 /**
  * The Class OpenNLPPOSTagger is an implementation of a POS tagger that uses

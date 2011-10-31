@@ -7,7 +7,6 @@ import java.util.Map;
 
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.tool.tokenizer.Tokenizer;
-import edu.columbia.cs.utils.Span;
 
 /**
  * Particular type of Document that went through a tokenization process.

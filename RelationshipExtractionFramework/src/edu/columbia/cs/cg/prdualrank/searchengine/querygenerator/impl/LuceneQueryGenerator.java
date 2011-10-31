@@ -23,10 +23,10 @@ import edu.columbia.cs.cg.prdualrank.index.analyzer.TokenizerBasedAnalyzer;
 import edu.columbia.cs.cg.prdualrank.index.reader.TokenBasedReader;
 import edu.columbia.cs.cg.prdualrank.searchengine.querygenerator.QueryGenerator;
 import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.TokenizedDocument;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.relationship.Relationship;
-import edu.columbia.cs.utils.Span;
 
 /**
  * For this Class, <a href="http://lucene.apache.org/">Apache Lucene Engine</a> is required. Lucene Query Definitions are considered.

@@ -1,6 +1,6 @@
 package edu.columbia.cs.ref.tool.tokenizer;
 
-import edu.columbia.cs.utils.Span;
+import edu.columbia.cs.ref.model.Span;
 
 /**
  * Tokenizer is an interface for objects that are responsible for splitting the text

@@ -1,32 +1,76 @@
-package edu.columbia.cs.utils;
+package edu.columbia.cs.ref.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The Class Span references a piece of a text document.
+ * 
+ * <br>
+ * <br>
+ * 
+ * A span is composed by two attributes: the starting index of the span
+ * and the ending index of the span.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class Span implements Serializable,Comparable<Span> {
+	
+	/** The start. */
 	private int start;
+	
+	/** The end. */
 	private int end;
 	
+	/**
+	 * Instantiates a new span given the starting index of the span
+	 * and the ending index of the span
+	 *
+	 * @param start the starting index of the span
+	 * @param end the ending index of the span
+	 */
 	public Span(int start, int end){
 		this.start=start;
 		this.end=end;
 	}
 	
+	/**
+	 * Instantiates a new span given a span in the format of <a href="http://incubator.apache.org/opennlp/">OpenNLP</a>:
+	 * <code>opennlp.tools.util.Span</code>
+	 *
+	 * @param openNLPSpan the span in the OpenNLP format
+	 */
 	public Span(opennlp.tools.util.Span openNLPSpan){
 		this.start=openNLPSpan.getStart();
 		this.end=openNLPSpan.getEnd();
 	}
 
+	/**
+	 * Returns the starting index of the span
+	 *
+	 * @return the starting index of the span
+	 */
 	public int getStart() {
 		return start;
 	}
 
+	/**
+	 * Returns the ending index of the span
+	 *
+	 * @return the ending index of the span
+	 */
 	public int getEnd() {
 		return end;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 	@Override
 	public int compareTo(Span s) {
 		
@@ -48,6 +92,12 @@ public class Span implements Serializable,Comparable<Span> {
 		
 	}
 	
+	/**
+	 * Determines if the input span intersects with this span
+	 *
+	 * @param s a different span
+	 * @return true, if the input span intersects with this span
+	 */
 	public boolean intersects(Span s){
 		int sstart = s.getStart();
 		
@@ -56,14 +106,29 @@ public class Span implements Serializable,Comparable<Span> {
 				|| sstart <= getStart() && getStart() < s.getEnd();
 	}
 
+	/**
+	 * Determines if the input span is contained within this span
+	 *
+	 * @param s a different span
+	 * @return true, if the input span is contained in this span
+	 */
 	public boolean contains(Span s) {
 		return start <= s.getStart() && s.getEnd() <= end;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString(){
 		return start + "-" + end;
 	}
 	
+	/**
+	 * Given a list of spans, returns list of spans that do not overlap.
+	 *
+	 * @param spans the original list of spans
+	 * @return the list of spans that do not overlap
+	 */
 	public static List<Span> calculateNotOverlappingSpans(List<Span> spans){
 		
 		// TODO returns the not overlapping spans ... use instersects.

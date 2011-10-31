@@ -7,12 +7,12 @@ import java.util.Map;
 
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.PatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.resource.AttributeContext;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.TokenizedDocument;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.pattern.Pattern;
 import edu.columbia.cs.ref.model.relationship.Relationship;
 import edu.columbia.cs.ref.model.relationship.RelationshipType;
-import edu.columbia.cs.utils.Span;
 
 /**
  * This class is used for our implementation of: 

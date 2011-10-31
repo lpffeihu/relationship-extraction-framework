@@ -36,10 +36,10 @@ import java.util.List;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.SearchPatternExtractor;
 import edu.columbia.cs.cg.prdualrank.pattern.extractor.resource.TupleContext;
 import edu.columbia.cs.ref.model.Document;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.TokenizedDocument;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.relationship.Relationship;
-import edu.columbia.cs.utils.Span;
 
 /**
  * This class is used for our implementation of: 

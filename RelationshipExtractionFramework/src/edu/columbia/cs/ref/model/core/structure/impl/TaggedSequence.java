@@ -8,11 +8,11 @@ import java.util.List;
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.EntityBasedChunkingFG;
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.ref.model.CandidateSentence;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.core.structure.optimization.FeaturesDictionary;
 import edu.columbia.cs.ref.model.entity.Entity;
 import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
-import edu.columbia.cs.utils.Span;
 
 public class TaggedSequence extends OperableStructure {
 	private int startFB;

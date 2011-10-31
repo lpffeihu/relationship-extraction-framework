@@ -7,17 +7,37 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The Class Words provides several methods to determine which words are valid
+ * terms for the Search engine
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class Words {
 
+	/** The Constant sym. */
 	private static final String[] sym = { "&", "_", ".", ",", "?", "!", ":", "-",
 		"\\", "/", ">", "<", "'", "\"", "|", ")", "(", ";", "{", "}" , "[" , "]","^","—","·"};
 	
+	/** The Constant defaultStopWords. */
 	private static final String defaultStopWords = "data/stopWords.txt";
 	
+	/** The stop words. */
 	private static Set<String> stopWords = null;
 	
+	/** The non searchable symbol. */
 	private static Set<String> nonSearchableSymbol = null;
 	
+	/**
+	 * Initializes the set of searchable symbols and the list of stop words. If
+	 * any of the inputs file is not null then default symbols are loaded.
+	 *
+	 * @param stopWordsFile the file with the stop words
+	 * @param nonSearchableSymbols the file with the non searchable symbols
+	 */
 	public static void initialize(File stopWordsFile, File nonSearchableSymbols){
 		if (nonSearchableSymbol == null){
 
@@ -77,6 +97,12 @@ public class Words {
 		
 	}
 
+	/**
+	 * Checks if the input word can be a query term.
+	 *
+	 * @param word the word that we want to know if can be a query term
+	 * @return true, if the input word can be a query term
+	 */
 	public static boolean isSearchable(String word) {
 				
 		String lowerCase = word.toLowerCase();
@@ -87,6 +113,11 @@ public class Words {
 		return true;
 	}
 
+	/**
+	 * Returns the set of stop words
+	 *
+	 * @return the set of stop words
+	 */
 	public static Set<String> getStopWords() {
 			
 		if (stopWords == null){

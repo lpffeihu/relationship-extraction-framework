@@ -11,10 +11,10 @@ import edu.columbia.cs.ref.algorithm.feature.generation.FeatureGenerator;
 import edu.columbia.cs.ref.algorithm.feature.generation.SentenceFeatureGenerator;
 import edu.columbia.cs.ref.model.CandidateSentence;
 import edu.columbia.cs.ref.model.Sentence;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.feature.FeatureSet;
 import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
-import edu.columbia.cs.utils.Span;
 import edu.washington.cs.knowitall.util.DefaultObjects;
 
 /**

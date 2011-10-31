@@ -10,6 +10,7 @@ import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPPartOfSpeech
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.OpenNLPTokenizationFG;
 import edu.columbia.cs.ref.algorithm.feature.generation.impl.SpansToStringsConvertionFG;
 import edu.columbia.cs.ref.model.CandidateSentence;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.StructureConfiguration;
 import edu.columbia.cs.ref.model.core.impl.BagOfNGramsKernel;
 import edu.columbia.cs.ref.model.core.impl.OpenInformationExtractionCore;
@@ -18,7 +19,6 @@ import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
 import edu.columbia.cs.ref.tool.io.CandidatesSentenceReader;
 import edu.columbia.cs.ref.tool.io.CoreWriter;
-import edu.columbia.cs.utils.Span;
 
 
 

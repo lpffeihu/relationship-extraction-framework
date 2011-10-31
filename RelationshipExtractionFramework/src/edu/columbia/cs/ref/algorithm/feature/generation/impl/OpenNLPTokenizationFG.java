@@ -18,18 +18,36 @@ import edu.berkeley.compbio.jlibsvm.binary.BinaryModel;
 import edu.columbia.cs.ref.algorithm.feature.generation.FeatureGenerator;
 import edu.columbia.cs.ref.algorithm.feature.generation.SentenceFeatureGenerator;
 import edu.columbia.cs.ref.model.Sentence;
+import edu.columbia.cs.ref.model.Span;
 import edu.columbia.cs.ref.model.core.structure.OperableStructure;
 import edu.columbia.cs.ref.model.feature.FeatureSet;
 import edu.columbia.cs.ref.model.feature.impl.SequenceFS;
 import edu.columbia.cs.ref.model.re.impl.JLibsvmModelInformation;
-import edu.columbia.cs.utils.Span;
 
-//TODO: This should call the tokenizer that is in the other package
+/**
+ * The Class OpenNLPTokenizationFG is a candidate sentence feature generator that 
+ * produces a tokenization of a sentence according to a previously.
+ *
+ * @author      Pablo Barrio
+ * @author		Goncalo Simoes
+ * @version     0.1
+ * @since       2011-09-27
+ */
 public class OpenNLPTokenizationFG extends SentenceFeatureGenerator<SequenceFS<Span>> implements Serializable {
 
+	/** The tokenizer. */
 	private transient Tokenizer tokenizer;
+	
+	/** The path. */
 	private String path;
 	
+	/**
+	 * Instantiates a new OpenNLPTokenizationFG
+	 *
+	 * @param path the path to the tokenization model
+	 * @throws InvalidFormatException the invalid format exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public OpenNLPTokenizationFG(String path) throws InvalidFormatException, IOException{
 		this.path=path;
 		InputStream modelIn = new FileInputStream(path);
@@ -47,6 +65,9 @@ public class OpenNLPTokenizationFG extends SentenceFeatureGenerator<SequenceFS<S
 		return result;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.algorithm.feature.generation.SentenceFeatureGenerator#extractFeatures(edu.columbia.cs.ref.model.Sentence)
+	 */
 	@Override
 	protected SequenceFS<Span> extractFeatures(Sentence sentence) {
 		String sentenceValue = sentence.getValue();
@@ -55,6 +76,9 @@ public class OpenNLPTokenizationFG extends SentenceFeatureGenerator<SequenceFS<S
 		return new SequenceFS<Span>(tokenSpans);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.columbia.cs.ref.algorithm.feature.generation.SentenceFeatureGenerator#retrieveRequiredFeatureGenerators()
+	 */
 	@Override
 	protected List<FeatureGenerator> retrieveRequiredFeatureGenerators() {
 		return new ArrayList<FeatureGenerator>();
