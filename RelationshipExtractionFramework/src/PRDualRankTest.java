@@ -57,7 +57,10 @@ import edu.columbia.cs.utils.Words;
 public class PRDualRankTest {
 
 	/**
-	 * @param args
+	 * This code was created for us to do these three experiments on the
+	 * servers without much configuration the arg was just an index to the
+	 * configuration. So... just disregard this and jump to one of the methods.
+	 * (They are all the same but I commented runAreaCode for your convenience).
 	 */
 	public static void main(String[] args) {
 		
@@ -73,9 +76,11 @@ public class PRDualRankTest {
 	}
 
 	private void runAreaCode() {
-		
-		// TODO Auto-generated method stub
-		
+		//These parameters are just our personal choice... Fell free to
+		//play around with them. I am pretty much sure that most of these
+		//parameters are from the paper but if they are not I think your
+		//best solution is to check the methods that use them because those
+		//methods are very well documented
 		int extractionPatternLenght = 5;
 		int numberOfPhrases = 2;
 		int iterations = 3;
@@ -86,16 +91,15 @@ public class PRDualRankTest {
 		int ngram = 3;
 		int span = 10;
 
+		//These are just the types used by the named entity taggers
 		String locationType = "location";
 		String numberType = "number";
 
-		
-		String locationFile = "data/usCity.txt"; //should be a Person File
+		String locationFile = "data/usCity.txt";
 		Dictionary locationdictionary = new Dictionary(new File(locationFile), ";",locationType);
-		
 		String numberFile = "data/areaCode.txt"; 
 		Dictionary numberdictionary = new Dictionary(new File(numberFile), ";",numberType);
-		
+		//Just the roles that each one perform in the relationship
 		String usCityRole = "city";
 		String areaCodeRole = "areaCode";
 		
@@ -111,22 +115,24 @@ public class PRDualRankTest {
 		Tokenizer tokenizer = new OpenNLPTokenizer("en-token.bin");
 		
 		
-		//Type of tuples to extract
+		//Type of tuples to extract and the constraints involved
 		RelationshipType rType = new RelationshipType("AreaCodeOfCity", usCityRole,areaCodeRole);
-		
 		EntityTypeConstraint physicsConstraint = new EntityTypeConstraint(locationType);
 		rType.setConstraints(physicsConstraint, usCityRole);
-		
 		EntityTypeConstraint yearOfBirthConstraint = new EntityTypeConstraint(numberType);
 		rType.setConstraints(yearOfBirthConstraint, areaCodeRole);
-		
+		//We only consider relationships at a distance less that 'span' tokens according to the tokenization
+		//provided
 		RelationshipConstraint constraint = new WordDistanceBetweenEntities(tokenizer, span);
-		
 		rType.setConstraints(constraint);
 		
+		//These are used for NER. We are only using dictionary based NER but you can use
+		//other stuff... A pattern based approach would be very cool but we don't have an
+		//implementation. If you need I can also make my master thesis available but
+		//in your case I don't think it would help because you don't have the training
+		//data
 		EntityMatcher personMatcher = new DictionaryEntityMatcher(locationdictionary);
-		rType.setMatchers(personMatcher, usCityRole);
-		
+		rType.setMatchers(personMatcher, usCityRole);	
 		EntityMatcher yearMatcher = new DictionaryEntityMatcher(areaCodedictionary);
 		rType.setMatchers(yearMatcher, areaCodeRole);
 		
@@ -152,7 +158,8 @@ public class PRDualRankTest {
 		//Generation of queries based on Concatenation
 		QueryGenerator<String> qg = new ConcatQueryGenerator();
 
-		//Bing Search Engine
+		//Bing Search Engine... You will need to implement your own engine here
+		//A standard Lucene engine should suffice
 		SearchEngine se = new BingSearchEngine(loader);
 		
 		//Ranking functions
@@ -166,7 +173,7 @@ public class PRDualRankTest {
 		Words.initialize(new File("data/stopWords.txt"), null);
 		
 		//Index And Search.
-		
+		//List of stop words
 		Set<String> stopW = Words.getStopWords();
 		
 //		TokenizerBasedAnalyzer myTokenizerAnalyzer = new TokenizerBasedAnalyzer(tokenizer,stopW);
@@ -188,6 +195,8 @@ public class PRDualRankTest {
 	
 		List<OperableStructure> seeds = new ArrayList<OperableStructure>();
 	
+		//generate seeds as operable structures... you can load these from a file... it would
+		//be better than having them hard coded as we do
 		seeds.add(generateOperableStructure(rType,"1",locationType,usCityRole,"Chicago",numberType,areaCodeRole,"312"));
 		seeds.add(generateOperableStructure(rType,"2",locationType,usCityRole,"Chicago",numberType,areaCodeRole,"872"));
 		seeds.add(generateOperableStructure(rType,"3",locationType,usCityRole,"Atlanta",numberType,areaCodeRole,"470"));
@@ -196,13 +205,16 @@ public class PRDualRankTest {
 		seeds.add(generateOperableStructure(rType,"6",locationType,usCityRole,"Seattle",numberType,areaCodeRole,"206"));
 		seeds.add(generateOperableStructure(rType,"7",locationType,usCityRole,"Memphis",numberType,areaCodeRole,"901"));
 		
+		
+		//Here is the important part. After this point, using PRDualRank or
+		//any other is basically the same.
 		Model out = prDualRank.train(seeds);
 		
 		try {
 			System.setOut(new PrintStream(new File("CityAC.txt")));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(1);
 		}
 		
 		System.out.println(out.toString());
@@ -211,9 +223,6 @@ public class PRDualRankTest {
 	}
 
 	private void runPhysicsNobel() {
-		
-		// TODO Auto-generated method stub
-		
 		int extractionPatternLenght = 5;
 		int numberOfPhrases = 2;
 		int iterations = 3;
@@ -337,19 +346,14 @@ public class PRDualRankTest {
 		try {
 			System.setOut(new PrintStream(new File("physicsYOB.txt")));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(1);
 		}
 		
 		System.out.println(out.toString());
-
-		
 	}
 
 	private void runCapitalCountry() {
-		
-		// TODO Auto-generated method stub
-		
 		int extractionPatternLenght = 5;
 		int numberOfPhrases = 2;
 		int iterations = 3;
@@ -466,8 +470,8 @@ public class PRDualRankTest {
 		try {
 			System.setOut(new PrintStream(new File("capitalCountry.txt")));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(1);
 		}
 		
 		System.out.println(out.toString());
